@@ -20,7 +20,6 @@ build
 # other
 eclipse
 run
-.zip
 
 # Files from Forge MDK
 forge*changelog.txt
