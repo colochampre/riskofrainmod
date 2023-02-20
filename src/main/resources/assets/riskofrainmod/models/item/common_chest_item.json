@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "riskofrainmod:item/common_chest_item"
+  }
+}
