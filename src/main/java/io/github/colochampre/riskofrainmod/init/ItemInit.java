@@ -1,7 +1,7 @@
 package io.github.colochampre.riskofrainmod.init;
 
 import io.github.colochampre.riskofrainmod.RoRmod;
-import net.minecraft.world.item.CreativeModeTabs;
+//import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
