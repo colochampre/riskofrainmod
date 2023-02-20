@@ -1,7 +1,10 @@
 package io.github.colochampre.riskofrainmod.entities;
 
+import io.github.colochampre.riskofrainmod.init.SoundInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -16,10 +19,8 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-
-import java.util.Random;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class LemurianEntity extends Monster {
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {
@@ -46,11 +47,45 @@ public class LemurianEntity extends Monster {
             .add(Attributes.ATTACK_DAMAGE, 3.5D)
             .add(Attributes.FOLLOW_RANGE, 32.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
-            .add(Attributes.MOVEMENT_SPEED, (double)0.3F);
+            .add(Attributes.MOVEMENT_SPEED, 0.3D);
   }
 
   public static boolean canSpawn(EntityType<LemurianEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
     return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
+  }
+
+  @Override
+  protected SoundEvent getAmbientSound() {
+    return SoundInit.LEMURIAN_AMBIENT.get();
+  }
+
+  protected SoundEvent getAttackSound() {
+    return SoundInit.LEMURIAN_ATTACK.get();
+  }
+
+  @Override
+  protected SoundEvent getDeathSound() {
+    return SoundInit.LEMURIAN_DEATH.get();
+  }
+
+  @Override
+  protected SoundEvent getHurtSound(DamageSource source) {
+    return SoundInit.LEMURIAN_HURT.get();
+  }
+
+  protected SoundEvent getStepSound() {
+    return SoundInit.LEMURIAN_STEP.get();
+  }
+
+  protected void playStepSound(BlockPos pos, BlockState blockState) {
+    this.playSound(this.getStepSound(), 0.15F, 1.0F);
+  }
+
+  @Override
+  public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
+    this.playSound(this.getStepSound(), 0.8F, 1.0F);
+    this.playSound(this.getStepSound(), 0.8F, 1.0F);
+    return super.causeFallDamage(p_147187_, p_147188_, p_147189_);
   }
 
   @Override
