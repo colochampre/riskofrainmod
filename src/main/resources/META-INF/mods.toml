@@ -1,17 +1,15 @@
-modLoader="javafml" #mandatory
-loaderVersion="[44,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+modLoader="javafml"
+loaderVersion="[44,)"
 license="MIT"
-[[mods]] #mandatory
+[[mods]]
 
 modId="riskofrain_items"
-version="1.0" #mandatory
+version="1.0"
 displayName="Risk of Rain Items"
 logoFile="logo.png"
-credits="Thanks for this example mod goes to Java"
-authors="Love, Cheese and small house plants"
-
+credits="Thanks everyone who supports the effort and HOPOO GAMES for providing us with such a universe."
+authors="Colo Champre"
 
 description='''
-
+This mod brings some content from the Risk of Rain universe into Minecraft!
 '''
-
