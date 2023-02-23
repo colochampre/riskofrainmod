@@ -10,21 +10,33 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.util.Mth;
 
 public class LemurianModel extends EntityModel<LemurianEntity> {
   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "lemurian_entity"), "main");
   private final ModelPart Core;
+  private ModelPart Stomach_axis;
+  private ModelPart Stomach;
+  private ModelPart Rib_cage_axis;
+  private ModelPart Rib_cage;
+  private ModelPart Neck_axis;
+  private ModelPart Neck;
+  private ModelPart head_axis;
+  private ModelPart Head;
+  private ModelPart Top_head;
+  private ModelPart Top_mouth;
+  private ModelPart Low_mouth_axis;
+  private ModelPart Low_mouth;
 
   public LemurianModel(ModelPart root) {
     this.Core = root.getChild("Core");
   }
 
   public static LayerDefinition createBodyLayer() {
-    MeshDefinition meshdefinition = new MeshDefinition();
-    PartDefinition partdefinition = meshdefinition.getRoot();
+    var mesh = new MeshDefinition();
+    PartDefinition parts = mesh.getRoot();
 
-    PartDefinition Core = partdefinition.addOrReplaceChild("Core", CubeListBuilder.create().texOffs(1, 58).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 10.5F, 0.0F));
+    PartDefinition Core = parts.addOrReplaceChild("Core", CubeListBuilder.create().texOffs(1, 58).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 10.5F, 0.0F));
     PartDefinition Stomach_axis = Core.addOrReplaceChild("Stomach_axis", CubeListBuilder.create().texOffs(10, 60).addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.08726646F, 0.0F, 0.0F));
     PartDefinition Stomach = Stomach_axis.addOrReplaceChild("Stomach", CubeListBuilder.create().texOffs(28, 10).addBox(-4.0F, -6.0F, -1.5F, 8.0F, 7.3F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
     PartDefinition Rib_cage_axis = Stomach.addOrReplaceChild("Rib_cage_axis", CubeListBuilder.create().texOffs(15, 60).addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -5.0F, -0.25F, 0.17453292F, 0.0F, 0.0F));
@@ -72,15 +84,20 @@ public class LemurianModel extends EntityModel<LemurianEntity> {
     PartDefinition Right_foot_axis = Right_leg_3.addOrReplaceChild("Right_foot_axis", CubeListBuilder.create().texOffs(70, 60).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 3.25F, 0.0F, 0.34906584F, 0.0F, 0.0F));
     PartDefinition Right_foot = Right_foot_axis.addOrReplaceChild("Right_foot", CubeListBuilder.create().texOffs(36, 52).addBox(-1.5F, 0.0F, -3.5F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-    return LayerDefinition.create(meshdefinition, 110, 64);
+    return LayerDefinition.create(mesh, 110, 64);
   }
 
   @Override
-  public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
     Core.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
   }
 
   @Override
-  public void setupAnim(@NotNull LemurianEntity entity, float limbSwing, float limbSwingAmmount, float ageInTicks, float headYaw, float headPitch) {
+  public void setupAnim(LemurianEntity entity, float limbSwing, float limbSwingAmmount, float ageInTicks, float headYaw, float headPitch) {
+    // Looking anims
+    this.Head.xRot = headPitch * ((float)Math.PI / 180F);
+    this.Head.yRot = headYaw * ((float)Math.PI / 180F);
+    // Idle anims
+    this.Low_mouth.xRot = Mth.cos(ageInTicks * 0.06F) * 0.09F;
   }
 }

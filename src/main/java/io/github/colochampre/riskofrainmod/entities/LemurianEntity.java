@@ -5,10 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -21,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class LemurianEntity extends Monster {
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {
@@ -91,5 +89,9 @@ public class LemurianEntity extends Monster {
   @Override
   protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
     return 1.62F;
+  }
+
+  public static boolean isMoving(LivingEntity entity) {
+    return entity.getX() != entity.xOld || entity.getY() != entity.yOld;
   }
 }
