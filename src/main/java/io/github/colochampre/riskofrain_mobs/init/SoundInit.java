@@ -1,6 +1,6 @@
-package io.github.colochampre.riskofrainmod.init;
+package io.github.colochampre.riskofrain_mobs.init;
 
-import io.github.colochampre.riskofrainmod.RoRmod;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;

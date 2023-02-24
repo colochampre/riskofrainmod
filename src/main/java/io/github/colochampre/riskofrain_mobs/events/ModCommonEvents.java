@@ -1,13 +1,10 @@
-package io.github.colochampre.riskofrainmod.events;
+package io.github.colochampre.riskofrain_mobs.events;
 
-import io.github.colochampre.riskofrainmod.RoRmod;
-import io.github.colochampre.riskofrainmod.entities.LemurianEntity;
-import io.github.colochampre.riskofrainmod.init.EntityInit;
-import io.github.colochampre.riskofrainmod.init.ItemInit;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
+import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

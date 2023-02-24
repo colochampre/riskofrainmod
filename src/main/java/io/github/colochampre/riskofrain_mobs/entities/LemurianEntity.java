@@ -1,6 +1,6 @@
-package io.github.colochampre.riskofrainmod.entities;
+package io.github.colochampre.riskofrain_mobs.entities;
 
-import io.github.colochampre.riskofrainmod.init.SoundInit;
+import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 
 public class LemurianEntity extends Monster {
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {

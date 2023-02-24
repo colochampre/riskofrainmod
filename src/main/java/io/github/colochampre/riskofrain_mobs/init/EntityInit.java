@@ -1,7 +1,7 @@
-package io.github.colochampre.riskofrainmod.init;
+package io.github.colochampre.riskofrain_mobs.init;
 
-import io.github.colochampre.riskofrainmod.RoRmod;
-import io.github.colochampre.riskofrainmod.entities.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
+import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;

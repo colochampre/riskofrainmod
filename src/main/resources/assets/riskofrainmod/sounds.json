@@ -4,7 +4,7 @@
     "category": "entity",
     "subtitle": "Drone shuts down ",
     "sounds": [
-      { "name": "riskofrainmod:entity/drone/drone_death1_01", "stream": true}
+      { "name": "riskofrain_mobs:entity/drone/drone_death1_01", "stream": true}
     ]
   },
 
@@ -13,9 +13,9 @@
     "category": "entity",
     "subtitle": "Drone shuts down",
     "sounds": [
-      { "name": "riskofrainmod:entity/drone/drone_death2_01", "stream": true},
-      { "name": "riskofrainmod:entity/drone/drone_death2_02", "stream": true},
-      { "name": "riskofrainmod:entity/drone/drone_death2_03", "stream": true}
+      { "name": "riskofrain_mobs:entity/drone/drone_death2_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/drone/drone_death2_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/drone/drone_death2_03", "stream": true}
     ]
   },
 
@@ -24,7 +24,7 @@
     "category": "entity",
     "subtitle": "Drone flying",
     "sounds": [
-      { "name": "riskofrainmod:entity/drone/drone_flying_01", "stream": true}
+      { "name": "riskofrain_mobs:entity/drone/drone_flying_01", "stream": true}
     ]
   },
 
@@ -33,7 +33,7 @@
     "category": "entity",
     "subtitle": "Drone turns on",
     "sounds": [
-      { "name": "riskofrainmod:entity/drone/drone_repair_01", "stream": true}
+      { "name": "riskofrain_mobs:entity/drone/drone_repair_01", "stream": true}
     ]
   },
 
@@ -42,12 +42,12 @@
     "category": "entity",
     "subtitle": "Gunner Drone shoots",
     "sounds": [
-      { "name": "riskofrainmod:entity/drone/drone_attack_01", "stream": true},
-      { "name": "riskofrainmod:entity/drone/drone_attack_02", "stream": true},
-      { "name": "riskofrainmod:entity/drone/drone_attack_03", "stream": true},
-      { "name": "riskofrainmod:entity/drone/drone_attack_04", "stream": true},
-      { "name": "riskofrainmod:entity/drone/drone_attack_05", "stream": true},
-      { "name": "riskofrainmod:entity/drone/drone_attack_06", "stream": true}
+      { "name": "riskofrain_mobs:entity/drone/drone_attack_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/drone/drone_attack_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/drone/drone_attack_03", "stream": true},
+      { "name": "riskofrain_mobs:entity/drone/drone_attack_04", "stream": true},
+      { "name": "riskofrain_mobs:entity/drone/drone_attack_05", "stream": true},
+      { "name": "riskofrain_mobs:entity/drone/drone_attack_06", "stream": true}
     ]
   },
 
@@ -56,13 +56,13 @@
     "category": "entity",
     "subtitle": "Lemurian hiss",
     "sounds": [
-      { "name": "riskofrainmod:entity/lemurian/lemurian_ambient_01", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_ambient_02", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_ambient_03", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_ambient_04", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_ambient_05", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_ambient_06", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_ambient_07", "stream": true}
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_ambient_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_ambient_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_ambient_03", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_ambient_04", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_ambient_05", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_ambient_06", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_ambient_07", "stream": true}
     ]
   },
 
@@ -71,10 +71,10 @@
     "category": "entity",
     "subtitle": "Lemurian attacks",
     "sounds": [
-      { "name": "riskofrainmod:entity/lemurian/lemurian_attack_01", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_attack_02", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_attack_03", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_attack_04", "stream": true}
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_attack_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_attack_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_attack_03", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_attack_04", "stream": true}
     ]
   },
 
@@ -83,10 +83,10 @@
     "category": "entity",
     "subtitle": "Lemurian dies",
     "sounds": [
-      { "name": "riskofrainmod:entity/lemurian/lemurian_death_01", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_death_02", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_death_03", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_death_04", "stream": true}
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_death_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_death_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_death_03", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_death_04", "stream": true}
     ]
   },
 
@@ -95,10 +95,10 @@
     "category": "entity",
     "subtitle": "Lemurian hurts",
     "sounds": [
-      { "name": "riskofrainmod:entity/lemurian/lemurian_hurt_01", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_hurt_02", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_hurt_03", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_hurt_04", "stream": true}
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_hurt_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_hurt_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_hurt_03", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_hurt_04", "stream": true}
     ]
   },
 
@@ -107,10 +107,10 @@
     "category": "entity",
     "subtitle": "Lemurian steps",
     "sounds": [
-      { "name": "riskofrainmod:entity/lemurian/lemurian_step_01", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_step_02", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_step_03", "stream": true},
-      { "name": "riskofrainmod:entity/lemurian/lemurian_step_04", "stream": true}
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_step_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_step_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_step_03", "stream": true},
+      { "name": "riskofrain_mobs:entity/lemurian/lemurian_step_04", "stream": true}
     ]
   },
 
@@ -119,8 +119,8 @@
     "category": "entity",
     "subtitle": "Stone Golem claps",
     "sounds": [
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_clap_01", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_clap_02", "stream": true}
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_clap_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_clap_02", "stream": true}
     ]
   },
 
@@ -129,7 +129,7 @@
     "category": "entity",
     "subtitle": "Stone Golem breaks",
     "sounds": [
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_death", "stream": true}
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_death", "stream": true}
     ]
   },
 
@@ -138,9 +138,9 @@
     "category": "entity",
     "subtitle": "Stone Golem dies",
     "sounds": [
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_death_voice_01", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_death_voice_02", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_death_voice_03", "stream": true}
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_death_voice_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_death_voice_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_death_voice_03", "stream": true}
     ]
   },
 
@@ -149,14 +149,14 @@
     "category": "entity",
     "subtitle": "Stone Golem hurts",
     "sounds": [
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_hurt_01", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_hurt_02", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_hurt_03", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_hurt_04", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_hurt_05", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_hurt_06", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_hurt_07", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_hurt_08", "stream": true}
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_hurt_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_hurt_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_hurt_03", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_hurt_04", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_hurt_05", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_hurt_06", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_hurt_07", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_hurt_08", "stream": true}
     ]
   },
 
@@ -165,7 +165,7 @@
     "category": "entity",
     "subtitle": "Stone Golem charging laser ",
     "sounds": [
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_laser_charge", "stream": true}
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_laser_charge", "stream": true}
     ]
   },
 
@@ -174,7 +174,7 @@
     "category": "entity",
     "subtitle": "Stone Golem shooting laser",
     "sounds": [
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_laser_fire", "stream": true}
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_laser_fire", "stream": true}
     ]
   },
 
@@ -183,9 +183,9 @@
     "category": "entity",
     "subtitle": "Stone Golem spawns",
     "sounds": [
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_spawn_01", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_spawn_02", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_spawn_03", "stream": true}
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_spawn_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_spawn_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_spawn_03", "stream": true}
     ]
   },
 
@@ -194,10 +194,10 @@
     "category": "entity",
     "subtitle": "Stone Golem steps",
     "sounds": [
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_step_01", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_step_02", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_step_03", "stream": true},
-      { "name": "riskofrainmod:entity/stone_golem/stone_golem_step_04", "stream": true}
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_step_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_step_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_step_03", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_step_04", "stream": true}
     ]
   },
 
@@ -206,7 +206,7 @@
     "category": "entity",
     "subtitle": "Advancement",
     "sounds": [
-      {"name": "riskofrainmod:entity/event/advancement_proc_01", "stream": true}
+      {"name": "riskofrain_mobs:entity/event/advancement_proc_01", "stream": true}
     ]
   },
 
@@ -215,7 +215,7 @@
     "category": "entity",
     "subtitle": "Level up",
     "sounds": [
-      {"name": "riskofrainmod:entity/event/level_up_proc_01", "stream": true}
+      {"name": "riskofrain_mobs:entity/event/level_up_proc_01", "stream": true}
     ]
   },
 
@@ -224,7 +224,7 @@
     "category": "entity",
     "subtitle": "Player dies",
     "sounds": [
-      {"name": "riskofrainmod:entity/event/player_death_proc_01", "stream": true}
+      {"name": "riskofrain_mobs:entity/event/player_death_proc_01", "stream": true}
     ]
   },
 
@@ -233,10 +233,10 @@
     "category": "item",
     "subtitle": "Coin",
     "sounds": [
-      { "name": "riskofrainmod:interactive/coin_proc_01", "stream": true},
-      { "name": "riskofrainmod:interactive/coin_proc_02", "stream": true},
-      { "name": "riskofrainmod:interactive/coin_proc_03", "stream": true},
-      { "name": "riskofrainmod:interactive/coin_proc_04", "stream": true}
+      { "name": "riskofrain_mobs:interactive/coin_proc_01", "stream": true},
+      { "name": "riskofrain_mobs:interactive/coin_proc_02", "stream": true},
+      { "name": "riskofrain_mobs:interactive/coin_proc_03", "stream": true},
+      { "name": "riskofrain_mobs:interactive/coin_proc_04", "stream": true}
     ]
   },
 
@@ -245,7 +245,7 @@
     "category": "entity",
     "subtitle": "Insufficient founds",
     "sounds": [
-      { "name": "riskofrainmod:interactive/insufficient_founds_01", "stream": true}
+      { "name": "riskofrain_mobs:interactive/insufficient_founds_01", "stream": true}
     ]
   },
 
@@ -254,7 +254,7 @@
     "category": "item",
     "subtitle": "Bustling Fungus proc",
     "sounds": [
-      { "name": "riskofrainmod:item/bustling_fungus/bustling_fungus_proc_01", "stream": true}
+      { "name": "riskofrain_mobs:item/bustling_fungus/bustling_fungus_proc_01", "stream": true}
     ]
   },
 
@@ -263,7 +263,7 @@
     "category": "item",
     "subtitle": "Bustling Fungus proc",
     "sounds": [
-      { "name": "riskofrainmod:item/bustling_fungus/bustling_fungus_proc_02", "stream": true}
+      { "name": "riskofrain_mobs:item/bustling_fungus/bustling_fungus_proc_02", "stream": true}
     ]
   },
 
@@ -272,8 +272,8 @@
     "category": "item",
     "subtitle": "Crowbar proc",
     "sounds": [
-      { "name": "riskofrainmod:item/crowbar/crowbar_proc_01", "stream": true},
-      { "name": "riskofrainmod:item/crowbar/crowbar_proc_02", "stream": true}
+      { "name": "riskofrain_mobs:item/crowbar/crowbar_proc_01", "stream": true},
+      { "name": "riskofrain_mobs:item/crowbar/crowbar_proc_02", "stream": true}
     ]
   },
 
@@ -282,12 +282,12 @@
     "category": "item",
     "subtitle": "Infusion proc",
     "sounds": [
-      { "name": "riskofrainmod:item/infusion/infusion_proc_01", "stream": true},
-      { "name": "riskofrainmod:item/infusion/infusion_proc_02", "stream": true},
-      { "name": "riskofrainmod:item/infusion/infusion_proc_03", "stream": true},
-      { "name": "riskofrainmod:item/infusion/infusion_proc_04", "stream": true},
-      { "name": "riskofrainmod:item/infusion/infusion_proc_05", "stream": true},
-      { "name": "riskofrainmod:item/infusion/infusion_proc_06", "stream": true}
+      { "name": "riskofrain_mobs:item/infusion/infusion_proc_01", "stream": true},
+      { "name": "riskofrain_mobs:item/infusion/infusion_proc_02", "stream": true},
+      { "name": "riskofrain_mobs:item/infusion/infusion_proc_03", "stream": true},
+      { "name": "riskofrain_mobs:item/infusion/infusion_proc_04", "stream": true},
+      { "name": "riskofrain_mobs:item/infusion/infusion_proc_05", "stream": true},
+      { "name": "riskofrain_mobs:item/infusion/infusion_proc_06", "stream": true}
     ]
   },
 
@@ -296,10 +296,10 @@
     "category": "item",
     "subtitle": "Lens crit proc",
     "sounds": [
-      { "name": "riskofrainmod:item/lens_makers_glasses/lens_crit_proc_01", "stream": true},
-      { "name": "riskofrainmod:item/lens_makers_glasses/lens_crit_proc_02", "stream": true},
-      { "name": "riskofrainmod:item/lens_makers_glasses/lens_crit_proc_03", "stream": true},
-      { "name": "riskofrainmod:item/lens_makers_glasses/lens_crit_proc_04", "stream": true}
+      { "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_01", "stream": true},
+      { "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_02", "stream": true},
+      { "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_03", "stream": true},
+      { "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_04", "stream": true}
     ]
   },
 
@@ -308,9 +308,9 @@
     "category": "item",
     "subtitle": "Rose Buckler proc",
     "sounds": [
-      { "name": "riskofrainmod:item/rose_buckler/rose_buckler_proc_01", "stream": true},
-      { "name": "riskofrainmod:item/rose_buckler/rose_buckler_proc_02", "stream": true},
-      { "name": "riskofrainmod:item/rose_buckler/rose_buckler_proc_03", "stream": true}
+      { "name": "riskofrain_mobs:item/rose_buckler/rose_buckler_proc_01", "stream": true},
+      { "name": "riskofrain_mobs:item/rose_buckler/rose_buckler_proc_02", "stream": true},
+      { "name": "riskofrain_mobs:item/rose_buckler/rose_buckler_proc_03", "stream": true}
     ]
   },
 
@@ -319,9 +319,9 @@
     "category": "item",
     "subtitle": "Tougher Times proc",
     "sounds": [
-      { "name": "riskofrainmod:item/tougher_times/tougher_times_proc_01", "stream": true},
-      { "name": "riskofrainmod:item/tougher_times/tougher_times_proc_02", "stream": true},
-      { "name": "riskofrainmod:item/tougher_times/tougher_times_proc_03", "stream": true}
+      { "name": "riskofrain_mobs:item/tougher_times/tougher_times_proc_01", "stream": true},
+      { "name": "riskofrain_mobs:item/tougher_times/tougher_times_proc_02", "stream": true},
+      { "name": "riskofrain_mobs:item/tougher_times/tougher_times_proc_03", "stream": true}
     ]
   }
 }

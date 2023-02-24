@@ -5,8 +5,8 @@ plugins {
 }
 
 version = '1.0'
-group = 'io.github.colochampre.riskofrainmod'
-archivesBaseName = 'riskofrainmod'
+group = 'io.github.colochampre.riskofrain_mobs'
+archivesBaseName = 'riskofrain_mobs'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -23,7 +23,7 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', archivesBaseName
 
             mods {
-                riskofrainmod {
+                riskofrain_mobs {
                     source sourceSets.main
                 }
             }
@@ -35,7 +35,7 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', archivesBaseName
 
             mods {
-                riskofrainmod {
+                riskofrain_mobs {
                     source sourceSets.main
                 }
             }
@@ -47,7 +47,7 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', archivesBaseName
 
             mods {
-                riskofrainmod {
+                riskofrain_mobs {
                     source sourceSets.main
                 }
             }
@@ -59,7 +59,7 @@ minecraft {
             args '--mod', archivesBaseName, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                riskofrainmod {
+                riskofrain_mobs {
                     source sourceSets.main
                 }
             }
@@ -80,7 +80,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "Risk of Rain Mod",
+                "Specification-Title"     : "Risk of Rain Mobs",
                 "Specification-Vendor"    : "Colo Champre",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,

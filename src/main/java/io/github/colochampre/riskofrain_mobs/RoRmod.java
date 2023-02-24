@@ -1,8 +1,8 @@
-package io.github.colochampre.riskofrainmod;
+package io.github.colochampre.riskofrain_mobs;
 
-import io.github.colochampre.riskofrainmod.init.EntityInit;
-import io.github.colochampre.riskofrainmod.init.ItemInit;
-import io.github.colochampre.riskofrainmod.init.SoundInit;
+import io.github.colochampre.riskofrain_mobs.init.EntityInit;
+import io.github.colochampre.riskofrain_mobs.init.ItemInit;
+import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(RoRmod.MODID)
 @Mod.EventBusSubscriber
 public class RoRmod {
-  public static final String MODID = "riskofrainmod";
+  public static final String MODID = "riskofrain_mobs";
 
   public RoRmod() {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

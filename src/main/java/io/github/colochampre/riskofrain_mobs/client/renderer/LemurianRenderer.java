@@ -1,8 +1,8 @@
-package io.github.colochampre.riskofrainmod.client.renderer;
+package io.github.colochampre.riskofrain_mobs.client.renderer;
 
-import io.github.colochampre.riskofrainmod.RoRmod;
-import io.github.colochampre.riskofrainmod.client.models.LemurianModel;
-import io.github.colochampre.riskofrainmod.entities.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
+import io.github.colochampre.riskofrain_mobs.client.models.LemurianModel;
+import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

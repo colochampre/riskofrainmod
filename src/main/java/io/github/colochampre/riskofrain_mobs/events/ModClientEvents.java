@@ -1,9 +1,9 @@
-package io.github.colochampre.riskofrainmod.events;
+package io.github.colochampre.riskofrain_mobs.events;
 
-import io.github.colochampre.riskofrainmod.RoRmod;
-import io.github.colochampre.riskofrainmod.client.models.LemurianModel;
-import io.github.colochampre.riskofrainmod.client.renderer.LemurianRenderer;
-import io.github.colochampre.riskofrainmod.init.EntityInit;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
+import io.github.colochampre.riskofrain_mobs.client.models.LemurianModel;
+import io.github.colochampre.riskofrain_mobs.client.renderer.LemurianRenderer;
+import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

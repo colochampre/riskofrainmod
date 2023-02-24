@@ -1,9 +1,9 @@
-package io.github.colochampre.riskofrainmod.client.models;
+package io.github.colochampre.riskofrain_mobs.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.colochampre.riskofrainmod.RoRmod;
-import io.github.colochampre.riskofrainmod.entities.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
+import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
