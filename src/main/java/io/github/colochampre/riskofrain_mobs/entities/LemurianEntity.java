@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class LemurianEntity extends Monster {
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
+    this.xpReward = 12;
   }
 
   @Override
