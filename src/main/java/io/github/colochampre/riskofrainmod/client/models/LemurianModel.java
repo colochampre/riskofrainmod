@@ -14,22 +14,102 @@ import net.minecraft.util.Mth;
 
 public class LemurianModel extends EntityModel<LemurianEntity> {
   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "lemurian_entity"), "main");
-  private final ModelPart Core;
-  private ModelPart Stomach_axis;
-  private ModelPart Stomach;
-  private ModelPart Rib_cage_axis;
-  private ModelPart Rib_cage;
-  private ModelPart Neck_axis;
-  private ModelPart Neck;
-  private ModelPart head_axis;
-  private ModelPart Head;
-  private ModelPart Top_head;
-  private ModelPart Top_mouth;
-  private ModelPart Low_mouth_axis;
-  private ModelPart Low_mouth;
+  protected final ModelPart Core;
+  protected ModelPart Stomach_axis;
+  protected ModelPart Stomach;
+  protected ModelPart Rib_cage_axis;
+  protected ModelPart Rib_cage;
+  protected ModelPart Neck_axis;
+  protected ModelPart Neck;
+  protected ModelPart Head_axis;
+  protected ModelPart Head;
+  protected ModelPart Top_head;
+  protected ModelPart Top_mouth;
+  protected ModelPart Low_mouth_axis;
+  protected ModelPart Low_mouth;
+  protected ModelPart Left_arm_axis;
+  protected ModelPart Left_arm;
+  protected ModelPart Left_shoulder_plate;
+  protected ModelPart Left_forearm_axis;
+  protected ModelPart Left_forearm;
+  protected ModelPart Left_claws;
+  protected ModelPart Right_arm_axis;
+  protected ModelPart Right_arm;
+  protected ModelPart Right_shoulder_plate;
+  protected ModelPart Right_forearm_axis;
+  protected ModelPart Right_forearm;
+  protected ModelPart Right_claws;
+  protected ModelPart Tail_1_axis;
+  protected ModelPart Tail_1;
+  protected ModelPart Tail_2_axis;
+  protected ModelPart Tail_2;
+  protected ModelPart Tail_3_axis;
+  protected ModelPart Tail_3;
+  protected ModelPart Left_leg_1_axis;
+  protected ModelPart Left_leg_1;
+  protected ModelPart Left_leg_2_axis;
+  protected ModelPart Left_leg_2;
+  protected ModelPart Left_leg_3_axis;
+  protected ModelPart Left_leg_3;
+  protected ModelPart Left_foot_axis;
+  protected ModelPart Left_foot;
+  protected ModelPart Right_leg_1_axis;
+  protected ModelPart Right_leg_1;
+  protected ModelPart Right_leg_2_axis;
+  protected ModelPart Right_leg_2;
+  protected ModelPart Right_leg_3_axis;
+  protected ModelPart Right_leg_3;
+  protected ModelPart Right_foot_axis;
+  protected ModelPart Right_foot;
 
   public LemurianModel(ModelPart root) {
     this.Core = root.getChild("Core");
+    this.Stomach_axis = Core.getChild("Stomach_axis");
+    this.Stomach = Stomach_axis.getChild("Stomach");
+    this.Rib_cage_axis = Stomach.getChild("Rib_cage_axis");
+    this.Rib_cage = Rib_cage_axis.getChild("Rib_cage");
+    this.Neck_axis = Rib_cage.getChild("Neck_axis");
+    this.Neck = Neck_axis.getChild("Neck");
+    this.Head_axis = Neck.getChild("Head_axis");
+    this.Head = Head_axis.getChild("Head");
+    this.Top_head = Head.getChild("Top_head");
+    this.Top_mouth = Head.getChild("Top_mouth");
+    this.Low_mouth_axis = Head.getChild("Low_mouth_axis");
+    this.Low_mouth = Low_mouth_axis.getChild("Low_mouth");
+    this.Left_arm_axis = Rib_cage.getChild("Left_arm_axis");
+    this.Left_arm = Left_arm_axis.getChild("Left_arm");
+    this.Left_shoulder_plate = Left_arm.getChild("Left_shoulder_plate");
+    this.Left_forearm_axis = Left_arm.getChild("Left_forearm_axis");
+    this.Left_forearm = Left_forearm_axis.getChild("Left_forearm");
+    this.Left_claws = Left_forearm.getChild("Left_claws");
+    this.Right_arm_axis = Rib_cage.getChild("Right_arm_axis");
+    this.Right_arm = Right_arm_axis.getChild("Right_arm");
+    this.Right_shoulder_plate = Right_arm.getChild("Right_shoulder_plate");
+    this.Right_forearm_axis = Right_arm.getChild("Right_forearm_axis");
+    this.Right_forearm = Right_forearm_axis.getChild("Right_forearm");
+    this.Right_claws = Right_forearm.getChild("Right_claws");
+    this.Tail_1_axis = Core.getChild("Tail_1_axis");
+    this.Tail_1 = Tail_1_axis.getChild("Tail_1");
+    this.Tail_2_axis = Tail_1.getChild("Tail_2_axis");
+    this.Tail_2 = Tail_2_axis.getChild("Tail_2");
+    this.Tail_3_axis = Tail_2.getChild("Tail_3_axis");
+    this.Tail_3 = Tail_3_axis.getChild("Tail_3");
+    this.Left_leg_1_axis = Core.getChild("Left_leg_1_axis");
+    this.Left_leg_1 = Left_leg_1_axis.getChild("Left_leg_1");
+    this.Left_leg_2_axis = Left_leg_1.getChild("Left_leg_2_axis");
+    this.Left_leg_2 = Left_leg_2_axis.getChild("Left_leg_2");
+    this.Left_leg_3_axis = Left_leg_2.getChild("Left_leg_3_axis");
+    this.Left_leg_3 = Left_leg_3_axis.getChild("Left_leg_3");
+    this.Left_foot_axis = Left_leg_3.getChild("Left_foot_axis");
+    this.Left_foot = Left_foot_axis.getChild("Left_foot");
+    this.Right_leg_1_axis = Core.getChild("Right_leg_1_axis");
+    this.Right_leg_1 = Right_leg_1_axis.getChild("Right_leg_1");
+    this.Right_leg_2_axis = Right_leg_1.getChild("Right_leg_2_axis");
+    this.Right_leg_2 = Right_leg_2_axis.getChild("Right_leg_2");
+    this.Right_leg_3_axis = Right_leg_2.getChild("Right_leg_3_axis");
+    this.Right_leg_3 = Right_leg_3_axis.getChild("Right_leg_3");
+    this.Right_foot_axis = Right_leg_3.getChild("Right_foot_axis");
+    this.Right_foot = Right_foot_axis.getChild("Right_foot");
   }
 
   public static LayerDefinition createBodyLayer() {
@@ -94,10 +174,35 @@ public class LemurianModel extends EntityModel<LemurianEntity> {
 
   @Override
   public void setupAnim(LemurianEntity entity, float limbSwing, float limbSwingAmmount, float ageInTicks, float headYaw, float headPitch) {
-    // Looking anims
-    this.Head.xRot = headPitch * ((float)Math.PI / 180F);
-    this.Head.yRot = headYaw * ((float)Math.PI / 180F);
-    // Idle anims
+    setLookAnim(headYaw, headPitch);
+    setIdleAnim(entity, ageInTicks);
+  }
+
+  private void setLookAnim(float headYaw, float headPitch) {
+    this.Head.xRot = headPitch * 0.023271058F;
+    this.Head.yRot = headYaw * 0.017453292F / 2.0F;
+    this.Rib_cage_axis.yRot = headYaw * 0.017453292F / 5.0F;
+    this.Stomach_axis.yRot = headYaw * 0.017453292F / 5.0F;
+  }
+
+  private void setIdleAnim(LemurianEntity entity, float ageInTicks) {
     this.Low_mouth.xRot = Mth.cos(ageInTicks * 0.06F) * 0.09F;
+    this.Neck.xRot = Mth.cos(ageInTicks * 0.06F) * 0.06F;
+    this.Neck.yRot = Mth.cos(ageInTicks * 0.04F) * 0.06F;
+    this.Neck.zRot = -Mth.cos(ageInTicks * 0.04F) * 0.06F;
+    this.Rib_cage.xRot = -Mth.cos(ageInTicks * 0.06F) * 0.06F;
+    this.Tail_1.xRot = Mth.cos(ageInTicks * 0.08F) * 0.09F;
+    this.Tail_1.zRot = Mth.cos(ageInTicks * 0.12F) * 0.06F;
+    this.Tail_2.zRot = Mth.cos(ageInTicks * 0.12F) * 0.06F;
+    this.Tail_3.zRot = Mth.cos(ageInTicks * 0.12F) * 0.06F;
+    if (!entity.isMoving(entity)) {
+      this.Head_axis.xRot = -0.5235988F + Mth.cos(ageInTicks * 0.06F) * 0.06F;
+      this.Head_axis.yRot = Mth.cos(ageInTicks * 0.05F) * 0.06F;
+      this.Head_axis.zRot = -Mth.cos(ageInTicks * 0.05F) * 0.06F;
+      this.Left_arm.xRot = -0.17453292F + -Mth.cos(ageInTicks * 0.06F) * 0.03F;
+      this.Left_arm.zRot = Mth.cos(ageInTicks * 0.09F) * 0.03F;
+      this.Right_arm.xRot = -0.17453292F + Mth.cos(ageInTicks * 0.06F) * 0.03F;
+      this.Right_arm.zRot = -Mth.cos(ageInTicks * 0.09F) * 0.03F;
+    }
   }
 }
