@@ -20,9 +20,12 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class LemurianEntity extends Monster {
+  private int attackTimer;
+
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
     this.xpReward = 12;
+
   }
 
   @Override
@@ -48,8 +51,27 @@ public class LemurianEntity extends Monster {
             .add(Attributes.MOVEMENT_SPEED, 0.3D);
   }
 
+  @Override
+  public void tick() {
+    super.tick();
+    if (this.attackTimer > 0) {
+      --this.attackTimer;
+    }
+  }
+
+  public int getAttackTimer() {
+    return this.attackTimer;
+  }
+
   public static boolean canSpawn(EntityType<LemurianEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
     return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
+  }
+
+  @Override
+  public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
+    this.playSound(this.getStepSound(), 0.8F, 1.0F);
+    this.playSound(this.getStepSound(), 0.8F, 1.0F);
+    return super.causeFallDamage(p_147187_, p_147188_, p_147189_);
   }
 
   @Override
@@ -77,13 +99,6 @@ public class LemurianEntity extends Monster {
 
   protected void playStepSound(BlockPos pos, BlockState blockState) {
     this.playSound(this.getStepSound(), 0.15F, 1.0F);
-  }
-
-  @Override
-  public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
-    this.playSound(this.getStepSound(), 0.8F, 1.0F);
-    this.playSound(this.getStepSound(), 0.8F, 1.0F);
-    return super.causeFallDamage(p_147187_, p_147188_, p_147189_);
   }
 
   @Override

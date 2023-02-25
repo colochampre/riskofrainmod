@@ -3,7 +3,7 @@
   "biomes": "#minecraft:is_overworld",
   "spawners": {
     "type": "riskofrain_mobs:stone_golem_entity",
-    "weight": 20,
+    "weight": 10,
     "minCount": 1,
     "maxCount": 1
   }

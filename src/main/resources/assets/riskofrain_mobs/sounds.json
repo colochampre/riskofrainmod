@@ -133,14 +133,14 @@
     ]
   },
 
-  "entity.stone_golem.death_voice":
+  "entity.stone_golem.growl":
   {
     "category": "entity",
     "subtitle": "Stone Golem dies",
     "sounds": [
-      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_death_voice_01", "stream": true},
-      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_death_voice_02", "stream": true},
-      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_death_voice_03", "stream": true}
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_growl_01", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_growl_02", "stream": true},
+      { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_growl_03", "stream": true}
     ]
   },
 

@@ -1,7 +1,11 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
+import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -15,11 +19,16 @@ import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class StoneGolemEntity extends Monster {
+  private int attackTimer;
 
   public StoneGolemEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
+    this.maxUpStep = 1.0F;
+    this.xpReward = 24;
   }
 
   @Override
@@ -42,12 +51,89 @@ public class StoneGolemEntity extends Monster {
             .add(Attributes.MOVEMENT_SPEED, 0.25D);
   }
 
+  @Override
+  public void tick() {
+    super.tick();
+    if (this.attackTimer > 0) {
+      --this.attackTimer;
+    }
+  }
+
+  public int getAttackTimer() {
+    return this.attackTimer;
+  }
+
   public static boolean canSpawn(EntityType<StoneGolemEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
     return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
   }
 
+  @Override
+  public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
+    this.playSound(this.getStepSound(), (p_147188_ + 2), 1.0F);
+    this.playSound(this.getStepSound(), (p_147188_ + 2), 1.2F);
+    return false;
+  }
+
   protected int decreaseAirSupply(int air) {
     return air;
+  }
+
+  @Nullable
+  @Override
+  public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+    this.playSound(this.getSpawnSound(), 4.0F, 1.0F);
+
+    return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
+  }
+
+  @Override
+  protected SoundEvent getAmbientSound() {
+    return null;
+  }
+
+  protected SoundEvent getAttackSound() {
+    return SoundInit.STONE_GOLEM_CLAP.get();
+  }
+
+  @Override
+  public void die(DamageSource src) {
+    this.playSound(this.getDeathVoiceSound(), 1.5F, 1.0F);
+    super.die(src);
+  }
+
+
+  @Override
+  protected SoundEvent getDeathSound() {
+    return SoundInit.STONE_GOLEM_DEATH.get();
+  }
+
+  protected SoundEvent getDeathVoiceSound() {
+    return (SoundEvent)SoundInit.STONE_GOLEM_GROWL.get();
+  }
+
+
+  @Override
+  protected SoundEvent getHurtSound(DamageSource source) {
+    return SoundInit.STONE_GOLEM_HURT.get();
+  }
+
+  protected SoundEvent getSpawnSound() {
+    return (SoundEvent)SoundInit.STONE_GOLEM_SPAWN.get();
+  }
+
+  protected SoundEvent getStepSound() {
+    return SoundInit.STONE_GOLEM_STEP.get();
+  }
+
+
+  protected void playStepSound(BlockPos pos, BlockState blockState) {
+    this.playSound(this.getStepSound(), 1.0F, 1.0F);
+  }
+
+
+  @Override
+  protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+    return 3.5F;
   }
 
   @Override
@@ -56,13 +142,13 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Override
-  protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-    return 3.5F;
-  }
-
-  @Override
   public boolean isInvulnerableTo(DamageSource src) {
-    return src == DamageSource.FREEZE || src == DamageSource.IN_WALL || src == DamageSource.LAVA || super.isInvulnerableTo(src);
+    return src == DamageSource.FREEZE ||
+            src == DamageSource.IN_WALL ||
+            src == DamageSource.IN_FIRE ||
+            src == DamageSource.LAVA ||
+            src == DamageSource.ON_FIRE ||
+            super.isInvulnerableTo(src);
   }
 
   public static boolean isMoving(LivingEntity entity) {
@@ -80,6 +166,7 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public boolean removeWhenFarAway(double p_21542_) {
-    return super.removeWhenFarAway(p_21542_);
+    return false;
   }
+
 }
