@@ -31,7 +31,7 @@ public class LemurianEntity extends Monster {
   @Override
   protected void registerGoals() {
     this.goalSelector.addGoal(1, new FloatGoal(this));
-    //this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolem.class, 8.0F, 0.8D, 1.0D));
+    this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolem.class, 8.0F, 0.8D, 1.0D));
     this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Creeper.class, 6.0F, 0.8D, 1.0D));
     this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
     this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.6D));
@@ -39,7 +39,6 @@ public class LemurianEntity extends Monster {
     this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
     this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
   }
 
   public static AttributeSupplier.Builder createAttributes() {

@@ -2,6 +2,7 @@ package io.github.colochampre.riskofrain_mobs.client.renderer;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.LemurianModel;
+import io.github.colochampre.riskofrain_mobs.client.renderer.layers.LemurianEyesLayer;
 import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -12,6 +13,7 @@ public class LemurianRenderer extends MobRenderer<LemurianEntity, LemurianModel>
 
   public LemurianRenderer(EntityRendererProvider.Context context) {
     super(context, new LemurianModel(context.bakeLayer(LemurianModel.LAYER_LOCATION)), 0.4F);
+    this.addLayer(new LemurianEyesLayer(this));
   }
 
   @Override

@@ -1,8 +1,10 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
+import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class StoneGolemEntity extends Monster {
+  private static final ResourceLocation LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
   private int attackTimer;
 
   public StoneGolemEntity(EntityType<? extends Monster> type, Level level) {
@@ -127,9 +130,13 @@ public class StoneGolemEntity extends Monster {
 
 
   protected void playStepSound(BlockPos pos, BlockState blockState) {
-    this.playSound(this.getStepSound(), 1.0F, 1.0F);
+    this.playSound(this.getStepSound(), 3.0F, 1.0F);
   }
 
+  @Override
+  protected ResourceLocation getDefaultLootTable() {
+    return LOOT_TABLE;
+  }
 
   @Override
   protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {

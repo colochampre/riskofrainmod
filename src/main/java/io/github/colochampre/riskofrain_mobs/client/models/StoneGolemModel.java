@@ -315,6 +315,7 @@ public class StoneGolemModel extends EntityModel<StoneGolemEntity> {
     this.right_shoulder.xRot = Mth.cos(ageInTicks * 0.06F) * 0.03F;
     this.right_shoulder.zRot = 0.7853982F + -Mth.cos(ageInTicks * 0.06F) * 0.03F;
   }
+
   // field_f = xRot | field_g = yRot | field_h = zRot
   private void setWalkingAnim(StoneGolemEntity entity, float limbSwing, float limbSwingAmount) {
     int i = entity.getAttackTimer();
@@ -351,21 +352,21 @@ public class StoneGolemModel extends EntityModel<StoneGolemEntity> {
   private void setAttackAnim(StoneGolemEntity entity, float ageInTicks) {
     int i = entity.getAttackTimer();
     if (i > 0) {
-      this.torso_axis.xRot = -(-0.1F + 0.1F * this.triangleWave((float)i - ageInTicks, 15.0F));
-      this.left_shoulder_axis.xRot = -0.75F + 0.75F * this.triangleWave((float)i - ageInTicks, 15.0F);
-      this.left_shoulder_axis.yRot = -(-0.25F + 0.25F * this.triangleWave((float)i - ageInTicks, 10.0F));
-      this.left_shoulder_axis.zRot = -0.25F + 0.25F * this.triangleWave((float)i - ageInTicks, 10.0F);
-      this.left_arm_1_axis.zRot = -(-0.5F + 0.5F * this.triangleWave((float)i - ageInTicks, 15.0F));
-      this.left_forearm_axis.xRot = -0.25F + 0.25F * this.triangleWave((float)i - ageInTicks, 15.0F);
-      this.left_forearm_axis.zRot = -(-0.25F + 0.25F * this.triangleWave((float)i - ageInTicks, 15.0F));
-      this.left_hand_1_axis.zRot = -0.5F + 0.5F * this.triangleWave((float)i - ageInTicks, 15.0F);
-      this.right_shoulder_axis.xRot = -0.75F + 0.75F * this.triangleWave((float)i - ageInTicks, 15.0F);
-      this.right_shoulder_axis.yRot = -0.25F + 0.25F * this.triangleWave((float)i - ageInTicks, 10.0F);
-      this.right_shoulder_axis.zRot = -(-0.25F + 0.25F * this.triangleWave((float)i - ageInTicks, 10.0F));
-      this.right_elbow_axis.zRot = -0.5F + 0.5F * this.triangleWave((float)i - ageInTicks, 15.0F);
-      this.right_forearm_axis.xRot = -0.25F + 0.25F * this.triangleWave((float)i - ageInTicks, 15.0F);
-      this.right_forearm_axis.zRot = -0.25F + 0.25F * this.triangleWave((float)i - ageInTicks, 15.0F);
-      this.right_hand_1_axis.zRot = -(-0.5F + 0.5F * this.triangleWave((float)i - ageInTicks, 15.0F));
+      this.torso_axis.xRot = -(-0.1F + 0.1F * this.triangleWave((float) i - ageInTicks, 15.0F));
+      this.left_shoulder_axis.xRot = -0.75F + 0.75F * this.triangleWave((float) i - ageInTicks, 15.0F);
+      this.left_shoulder_axis.yRot = -(-0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 10.0F));
+      this.left_shoulder_axis.zRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 10.0F);
+      this.left_arm_1_axis.zRot = -(-0.5F + 0.5F * this.triangleWave((float) i - ageInTicks, 15.0F));
+      this.left_forearm_axis.xRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 15.0F);
+      this.left_forearm_axis.zRot = -(-0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 15.0F));
+      this.left_hand_1_axis.zRot = -0.5F + 0.5F * this.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_shoulder_axis.xRot = -0.75F + 0.75F * this.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_shoulder_axis.yRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 10.0F);
+      this.right_shoulder_axis.zRot = -(-0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 10.0F));
+      this.right_elbow_axis.zRot = -0.5F + 0.5F * this.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_forearm_axis.xRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_forearm_axis.zRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_hand_1_axis.zRot = -(-0.5F + 0.5F * this.triangleWave((float) i - ageInTicks, 15.0F));
     }
   }
 
