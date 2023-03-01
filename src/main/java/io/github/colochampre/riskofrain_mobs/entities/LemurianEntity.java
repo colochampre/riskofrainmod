@@ -2,7 +2,11 @@ package io.github.colochampre.riskofrain_mobs.entities;
 
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -21,11 +25,12 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class LemurianEntity extends Monster {
   private int attackTimer;
+  private boolean rightHandSelected = true;
+  private int armSelected = 0;
 
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
     this.xpReward = 12;
-
   }
 
   @Override
@@ -51,10 +56,21 @@ public class LemurianEntity extends Monster {
   }
 
   @Override
-  public void tick() {
-    super.tick();
+  public void aiStep() {
+    super.aiStep();
     if (this.attackTimer > 0) {
       --this.attackTimer;
+    }
+    // Walking particles effect
+    if (this.getDeltaMovement().horizontalDistanceSqr() > (double)2.5000003E-7F && this.random.nextInt(5) == 0) {
+      int i = Mth.floor(this.getX());
+      int j = Mth.floor(this.getY() - (double)0.2F);
+      int k = Mth.floor(this.getZ());
+      BlockPos pos = new BlockPos(i, j, k);
+      BlockState blockstate = this.level.getBlockState(pos);
+      if (!blockstate.isAir()) {
+        this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate).setPos(pos), this.getX() + ((double)this.random.nextFloat() - 0.5D) * (double)this.getBbWidth(), this.getY() + 0.1D, this.getZ() + ((double)this.random.nextFloat() - 0.5D) * (double)this.getBbWidth(), 4.0D * ((double)this.random.nextFloat() - 0.5D), 0.5D, ((double)this.random.nextFloat() - 0.5D) * 4.0D);
+      }
     }
   }
 
@@ -71,6 +87,20 @@ public class LemurianEntity extends Monster {
     this.playSound(this.getStepSound(), 0.8F, 1.0F);
     this.playSound(this.getStepSound(), 0.8F, 1.0F);
     return super.causeFallDamage(p_147187_, p_147188_, p_147189_);
+  }
+
+  @Override
+  public boolean doHurtTarget(Entity entity) {
+    this.attackTimer = 10;
+    this.level.broadcastEntityEvent(this, (byte)4);
+    float f = this.getAttackDamage();
+    boolean flag = entity.hurt(DamageSource.mobAttack(this), f);
+    this.playSound(SoundInit.LEMURIAN_ATTACK.get(), 1.0F, 1.0F);
+    return flag;
+  }
+
+  private float getAttackDamage() {
+    return (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
   }
 
   @Override
@@ -103,6 +133,37 @@ public class LemurianEntity extends Monster {
   @Override
   protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
     return 1.62F;
+  }
+  /*
+  public BlockPos getLightPosition() {
+    BlockPos pos = new BlockPos(this.position());
+    if (!level.getBlockState(pos).canOcclude()) {
+      return pos.above();
+    }
+    return pos;
+  }
+  */
+  @Override
+  public void handleEntityEvent(byte b) {
+    if (b == 4) {
+      this.attackTimer = 10;
+      this.playSound(SoundInit.LEMURIAN_ATTACK.get(), 1.0F, 1.0F);
+    } else {
+      super.handleEntityEvent(b);
+    }
+  }
+
+  public boolean getSelectedArm() {
+    return this.rightHandSelected;
+  }
+
+  public void setRightArmSelected(boolean value) {
+    this.rightHandSelected = value;
+  }
+
+  public int getChoice() {
+    this.armSelected = ++this.armSelected % 2;
+    return this.armSelected;
   }
 
   public static boolean isMoving(LivingEntity entity) {

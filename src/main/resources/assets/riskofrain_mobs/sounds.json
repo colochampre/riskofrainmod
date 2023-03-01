@@ -54,7 +54,7 @@
   "entity.lemurian.ambient":
   {
     "category": "entity",
-    "subtitle": "Lemurian hiss",
+    "subtitle": "Lemurian hisses",
     "sounds": [
       { "name": "riskofrain_mobs:entity/lemurian/lemurian_ambient_01", "stream": true},
       { "name": "riskofrain_mobs:entity/lemurian/lemurian_ambient_02", "stream": true},
@@ -163,7 +163,7 @@
   "entity.stone_golem.laser_charge":
   {
     "category": "entity",
-    "subtitle": "Stone Golem charging laser ",
+    "subtitle": "Stone Golem charging laser",
     "sounds": [
       { "name": "riskofrain_mobs:entity/stone_golem/stone_golem_laser_charge", "stream": true}
     ]

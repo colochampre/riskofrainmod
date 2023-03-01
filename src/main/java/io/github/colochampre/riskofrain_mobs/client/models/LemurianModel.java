@@ -2,18 +2,18 @@ package io.github.colochampre.riskofrain_mobs.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class LemurianModel extends EntityModel<LemurianEntity> {
-  public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "lemurian_entity"), "main");
+@OnlyIn(Dist.CLIENT)
+public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
   protected final ModelPart core;
   protected ModelPart stomach_axis;
   protected ModelPart stomach;
@@ -61,6 +61,7 @@ public class LemurianModel extends EntityModel<LemurianEntity> {
   protected ModelPart right_leg_3;
   protected ModelPart right_foot_axis;
   protected ModelPart right_foot;
+  private int rightHandSelected;
 
   public LemurianModel(ModelPart root) {
     this.core = root.getChild("core");
@@ -176,14 +177,36 @@ public class LemurianModel extends EntityModel<LemurianEntity> {
   public void setupAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
     setLookAnim(headYaw, headPitch);
     setIdleAnim(entity, ageInTicks);
-    setWalkingAnim(entity, limbSwing, limbSwingAmount);
+    setWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
   }
 
+  @Override
+  public void prepareMobModel(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+    int i = entity.getAttackTimer();
+    if (i > 0) {
+      setAttackAnim(entity, i, ageInTicks);
+    } else {
+      entity.setRightArmSelected(true);
+      this.left_arm_axis.xRot = -0.08726646F + Mth.cos(limbSwing * 0.75F) * 0.75F * limbSwingAmount;
+      this.left_forearm_axis.xRot = -0.2617994F + Mth.cos(limbSwing * 0.75F) * 0.75F * limbSwingAmount;
+      this.right_arm_axis.xRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.75F * limbSwingAmount;
+      this.right_forearm_axis.xRot = -0.2617994F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.75F * limbSwingAmount;
+      this.head_axis.xRot = -0.5235988F + -Mth.cos(limbSwing * 1.5F) * 0.3F * limbSwingAmount;
+      this.neck_axis.xRot = 0.2617994F + Mth.cos(limbSwing * 1.5F) * 0.3F * limbSwingAmount;
+      this.left_arm_axis.zRot = 0.0F;
+      this.right_arm_axis.zRot = 0.0F;
+      this.rib_cage_axis.xRot = 0.17453292F;
+      this.rib_cage_axis.zRot = 0.0F;
+      this.stomach_axis.xRot = 0.08726646F;
+      this.stomach_axis.zRot = 0.0F;
+    }
+  }
+  // field_f = xRot | field_g = yRot | field_h = zRot
   private void setLookAnim(float headYaw, float headPitch) {
     this.head.xRot = headPitch * 0.023271058F;
     this.head.yRot = headYaw * 0.017453292F / 2.0F;
-    this.rib_cage_axis.yRot = headYaw * 0.017453292F / 5.0F;
-    this.stomach_axis.yRot = headYaw * 0.017453292F / 5.0F;
+    this.rib_cage_axis.yRot = headYaw * 0.017453292F / 2.0F;
+    this.stomach_axis.yRot = headYaw * 0.017453292F / 2.0F;
   }
 
   private void setIdleAnim(LemurianEntity entity, float ageInTicks) {
@@ -206,9 +229,8 @@ public class LemurianModel extends EntityModel<LemurianEntity> {
       this.right_arm.zRot = -Mth.cos(ageInTicks * 0.09F) * 0.03F;
     }
   }
-  // field_f = xRot | field_g = yRot | field_h = zRot
-  private void setWalkingAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount) {
-    int i = entity.getAttackTimer();
+
+  private void setWalkAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
     this.rib_cage_axis.yRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.15F * limbSwingAmount;
     this.stomach_axis.yRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.3F * limbSwingAmount;
     this.left_arm_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
@@ -224,20 +246,59 @@ public class LemurianModel extends EntityModel<LemurianEntity> {
     this.tail_1_axis.zRot = Mth.cos(limbSwing * 0.5F) * 0.31F * limbSwingAmount;
     this.tail_2_axis.zRot = Mth.cos(limbSwing * 0.5F) * 0.31F * limbSwingAmount;
     this.tail_3_axis.zRot = Mth.cos(limbSwing * 0.5F) * 0.31F * limbSwingAmount;
-    if (!(i > 0)) {
-      //entity.setSelectHand(true);
-      this.left_arm_axis.xRot = -0.08726646F + Mth.cos(limbSwing * 0.75F) * 0.75F * limbSwingAmount;
-      this.left_forearm_axis.xRot = -0.2617994F + Mth.cos(limbSwing * 0.75F) * 0.75F * limbSwingAmount;
-      this.right_arm_axis.xRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.75F * limbSwingAmount;
-      this.right_forearm_axis.xRot = -0.2617994F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.75F * limbSwingAmount;
-      this.head_axis.xRot = -0.5235988F + -Mth.cos(limbSwing * 1.5F) * 0.3F * limbSwingAmount;
-      this.neck_axis.xRot = 0.2617994F + Mth.cos(limbSwing * 1.5F) * 0.3F * limbSwingAmount;
-      this.left_arm_axis.zRot = 0.0F;
-      this.right_arm_axis.zRot = 0.0F;
-      this.rib_cage_axis.xRot = 0.17453292F;
-      this.rib_cage_axis.zRot = 0.0F;
-      this.stomach_axis.xRot = 0.08726646F;
-      this.stomach_axis.zRot = 0.0F;
+  }
+
+  private void setAttackAnim(LemurianEntity entity, int i, float ageInTicks) {
+    if (entity.getSelectedArm()) {
+      this.rightHandSelected = entity.getChoice();
+      entity.setRightArmSelected(false);
+    }
+    if (this.rightHandSelected == 0) { // right arm anims
+      //switch(RandomSource.create().nextIntBetweenInclusive(1, 3)) {
+      //case 1:
+      rightPunch(i, ageInTicks);
+      //break;
+      //case 2:
+      //break;
+      //case 3:
+      //break;
+      //}
+    } else { // left arm anims
+      //switch(RandomSource.create().nextIntBetweenInclusive(1, 3)) {
+      //case 1:
+      leftPunch(i, ageInTicks);
+      //break;
+      //case 2:
+      //break;
+      //case 3:
+      //break;
+      //}
     }
   }
+
+  private void rightPunch(int i, float ageInTicks) {
+    this.left_arm_axis.xRot = -0.75F + 0.75F * Mth.triangleWave((float) i - ageInTicks, 10.0F);
+    this.left_arm_axis.zRot = -0.5F + 0.5F * Mth.triangleWave((float) i - ageInTicks, 10.0F);
+    this.left_forearm_axis.xRot = 0.0F + -1.25F + 1.25F * Mth.triangleWave((float) i - ageInTicks, 5.0F);
+    this.right_arm_axis.zRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
+    this.rib_cage_axis.xRot = -(-0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 5.0F));
+    this.rib_cage_axis.zRot = -0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F);
+    this.stomach_axis.xRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
+    this.stomach_axis.zRot = -0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F);
+  }
+
+  private void leftPunch(int i, float ageInTicks) {
+    this.right_arm_axis.xRot = -0.75F + 0.75F * Mth.triangleWave((float) i - ageInTicks, 10.0F);
+    this.right_arm_axis.zRot = -(-0.5F + 0.5F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
+    this.right_forearm_axis.xRot = 0.0F + -1.25F + 1.25F * Mth.triangleWave((float) i - ageInTicks, 5.0F);
+    this.left_arm_axis.zRot = -0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F);
+    this.rib_cage_axis.xRot = -(-0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 5.0F));
+    this.rib_cage_axis.zRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
+    this.stomach_axis.xRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
+    this.stomach_axis.zRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
+  }
+
+  /*private float triangleWave(float n1, float n2) {
+    return (Math.abs(n1 % n2 - n2 * 0.5F) - n2 * 0.25F) / (n2 * 0.25F);
+  }*/
 }

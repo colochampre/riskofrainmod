@@ -8,10 +8,13 @@ import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(RoRmod.MODID)
 @Mod.EventBusSubscriber
 public class RoRmod {
+  public static final Logger LOGGER = LogManager.getLogger();
   public static final String MODID = "riskofrain_mobs";
 
   public RoRmod() {
