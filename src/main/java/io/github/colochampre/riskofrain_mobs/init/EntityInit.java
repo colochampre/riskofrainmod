@@ -16,5 +16,5 @@ public class EntityInit {
           () -> EntityType.Builder.of(LemurianEntity::new, MobCategory.MONSTER).sized(0.7f, 1.72f).build(RoRmod.MODID + ":lemurian_entity"));
 
   public static final RegistryObject<EntityType<StoneGolemEntity>> STONE_GOLEM_ENTITY = ENTITY_TYPES.register("stone_golem_entity",
-          () -> EntityType.Builder.of(StoneGolemEntity::new, MobCategory.MONSTER).sized(1.85f, 3.95f).build(RoRmod.MODID + ":stone_golem_entity"));
+          () -> EntityType.Builder.of(StoneGolemEntity::new, MobCategory.MONSTER).sized(1.66f, 3.95f).build(RoRmod.MODID + ":stone_golem_entity"));
 }

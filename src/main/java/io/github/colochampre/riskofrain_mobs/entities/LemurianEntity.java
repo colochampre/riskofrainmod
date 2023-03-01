@@ -61,21 +61,6 @@ public class LemurianEntity extends Monster {
     if (this.attackTimer > 0) {
       --this.attackTimer;
     }
-    // Walking particles effect
-    if (this.getDeltaMovement().horizontalDistanceSqr() > (double)2.5000003E-7F && this.random.nextInt(5) == 0) {
-      int i = Mth.floor(this.getX());
-      int j = Mth.floor(this.getY() - (double)0.2F);
-      int k = Mth.floor(this.getZ());
-      BlockPos pos = new BlockPos(i, j, k);
-      BlockState blockstate = this.level.getBlockState(pos);
-      if (!blockstate.isAir()) {
-        this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate).setPos(pos), this.getX() + ((double)this.random.nextFloat() - 0.5D) * (double)this.getBbWidth(), this.getY() + 0.1D, this.getZ() + ((double)this.random.nextFloat() - 0.5D) * (double)this.getBbWidth(), 4.0D * ((double)this.random.nextFloat() - 0.5D), 0.5D, ((double)this.random.nextFloat() - 0.5D) * 4.0D);
-      }
-    }
-  }
-
-  public int getAttackTimer() {
-    return this.attackTimer;
   }
 
   public static boolean canSpawn(EntityType<LemurianEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -101,6 +86,10 @@ public class LemurianEntity extends Monster {
 
   private float getAttackDamage() {
     return (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+  }
+
+  public int getAttackTimer() {
+    return this.attackTimer;
   }
 
   @Override
