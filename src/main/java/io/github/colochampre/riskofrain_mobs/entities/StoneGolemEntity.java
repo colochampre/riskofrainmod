@@ -59,8 +59,7 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   protected void registerGoals() {
-    this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 0.8D, true));
-    this.goalSelector.addGoal(4, new StoneGolemLaserGoal(this));
+    this.goalSelector.addGoal(4, new StoneGolemLaserGoal(this, 0.8D, false));
     this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.6D));
     this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
     this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
