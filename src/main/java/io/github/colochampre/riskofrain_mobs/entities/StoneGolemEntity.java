@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
+import io.github.colochampre.riskofrain_mobs.entities.goals.StoneGolemLaserGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -46,7 +48,7 @@ public class StoneGolemEntity extends Monster {
   private static final ResourceLocation LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(StoneGolemEntity.class, EntityDataSerializers.INT);
   private int attackTimer;
-  private int clientSideAttackTime;
+  public int clientSideAttackTime;
   private LivingEntity clientSideCachedAttackTarget;
 
   public StoneGolemEntity(EntityType<? extends Monster> type, Level level) {
@@ -57,6 +59,8 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   protected void registerGoals() {
+    this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 0.8D, true));
+    this.goalSelector.addGoal(4, new StoneGolemLaserGoal(this));
     this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.6D));
     this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
     this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -77,15 +81,82 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public void aiStep() {
-    super.aiStep();
     if (this.attackTimer > 0) {
       --this.attackTimer;
     }
     destroyLeavesBlocks();
     doFloorParticleEffect();
+    doLaserParticleEffects();
+    super.aiStep();
+  }
 
+  protected PathNavigation createNavigation(Level level) {
+    return new StoneGolemEntity.StoneGolemNavigation(this, level);
+  }
+
+  public static boolean canSpawn(EntityType<StoneGolemEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
+  }
+
+  @Override
+  public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
+    this.playSound(this.getStepSound(), (p_147188_ + 2), 1.0F);
+    this.playSound(this.getStepSound(), (p_147188_ + 2), 1.2F);
+    return false;
+  }
+
+  protected int decreaseAirSupply(int air) {
+    return air;
+  }
+
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
+  }
+
+  private void destroyLeavesBlocks() {
+    if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+      boolean flag = false;
+      AABB aabb = this.getBoundingBox().inflate(0.2D);
+
+      for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+        BlockState blockstate = this.level.getBlockState(blockpos);
+        Block block = blockstate.getBlock();
+        if (block instanceof LeavesBlock) {
+          flag = this.level.destroyBlock(blockpos, true, this) || flag;
+        }
+      }
+    }
+  }
+
+  @Override
+  public boolean doHurtTarget(Entity entity) {
+    this.attackTimer = 10;
+    this.level.broadcastEntityEvent(this, (byte) 4);
+    float f = this.getAttackDamage();
+    boolean flag = entity.hurt(DamageSource.mobAttack(this), f);
+    this.playSound(SoundInit.STONE_GOLEM_CLAP.get(), 3.0F, 1.0F);
+    this.strongKnockback(entity);
+    return flag;
+  }
+
+  private void doFloorParticleEffect() {
+    if (this.getDeltaMovement().horizontalDistanceSqr() > (double) 2.5000003E-7F && this.random.nextInt(5) == 0) {
+      int i = Mth.floor(this.getX());
+      int j = Mth.floor(this.getY() - (double) 0.2F);
+      int k = Mth.floor(this.getZ());
+      BlockPos pos = new BlockPos(i, j, k);
+      BlockState blockstate = this.level.getBlockState(pos);
+      if (!blockstate.isAir()) {
+        this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate).setPos(pos), this.getX() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), this.getY() + 0.1D, this.getZ() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), 4.0D * ((double) this.random.nextFloat() - 0.5D), 0.5D, ((double) this.random.nextFloat() - 0.5D) * 4.0D);
+      }
+    }
+  }
+
+  private void doLaserParticleEffects() {
     if (this.isAlive()) {
       if (this.level.isClientSide) {
+
         if (this.hasActiveAttackTarget()) {
           if (this.clientSideAttackTime < this.getAttackDuration()) {
             ++this.clientSideAttackTime;
@@ -112,63 +183,8 @@ public class StoneGolemEntity extends Monster {
           }
         }
       }
-    }
-  }
-
-  protected PathNavigation createNavigation(Level level) {
-    return new StoneGolemEntity.StoneGolemNavigation(this, level);
-  }
-
-  public static boolean canSpawn(EntityType<StoneGolemEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-    return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
-  }
-
-  @Override
-  public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
-    this.playSound(this.getStepSound(), (p_147188_ + 2), 1.0F);
-    this.playSound(this.getStepSound(), (p_147188_ + 2), 1.2F);
-    return false;
-  }
-
-  protected int decreaseAirSupply(int air) {
-    return air;
-  }
-
-  private void destroyLeavesBlocks() {
-    if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
-      boolean flag = false;
-      AABB aabb = this.getBoundingBox().inflate(0.2D);
-
-      for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
-        BlockState blockstate = this.level.getBlockState(blockpos);
-        Block block = blockstate.getBlock();
-        if (block instanceof LeavesBlock) {
-          flag = this.level.destroyBlock(blockpos, true, this) || flag;
-        }
-      }
-    }
-  }
-
-  @Override
-  public boolean doHurtTarget(Entity entity) {
-    this.attackTimer = 10;
-    this.level.broadcastEntityEvent(this, (byte) 4);
-    float f = this.getAttackDamage();
-    boolean flag = entity.hurt(DamageSource.mobAttack(this), f);
-    this.playSound(SoundInit.LEMURIAN_ATTACK.get(), 1.0F, 1.0F);
-    this.strongKnockback(entity);
-    return flag;
-  }
-
-  private void doFloorParticleEffect() {
-    if (this.getDeltaMovement().horizontalDistanceSqr() > (double) 2.5000003E-7F && this.random.nextInt(5) == 0) {
-      int i = Mth.floor(this.getX());
-      int j = Mth.floor(this.getY() - (double) 0.2F);
-      int k = Mth.floor(this.getZ());
-      BlockPos pos = new BlockPos(i, j, k);
-      BlockState blockstate = this.level.getBlockState(pos);
-      if (!blockstate.isAir()) {
-        this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate).setPos(pos), this.getX() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), this.getY() + 0.1D, this.getZ() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), 4.0D * ((double) this.random.nextFloat() - 0.5D), 0.5D, ((double) this.random.nextFloat() - 0.5D) * 4.0D);
+      if (this.hasActiveAttackTarget()) {
+        this.setYRot(this.yHeadRot);
       }
     }
   }
@@ -181,7 +197,7 @@ public class StoneGolemEntity extends Monster {
     return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
   }
 
-  @javax.annotation.Nullable
+  @Nullable
   public LivingEntity getActiveAttackTarget() {
     if (!this.hasActiveAttackTarget()) {
       return null;

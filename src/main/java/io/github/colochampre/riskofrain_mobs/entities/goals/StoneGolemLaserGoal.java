@@ -6,14 +6,14 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
 public class StoneGolemLaserGoal extends Goal {
   private final StoneGolemEntity golem;
-  private int attackTime;
+  private int laserAttackTick;
+  private int laserCooldown;
 
   public StoneGolemLaserGoal(StoneGolemEntity entity) {
     this.golem = entity;
@@ -30,7 +30,7 @@ public class StoneGolemLaserGoal extends Goal {
   }
 
   public void start() {
-    this.attackTime = -10;
+    this.laserAttackTick = -10;
     LivingEntity livingentity = this.golem.getTarget();
     if (livingentity != null) {
       this.golem.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
@@ -48,32 +48,42 @@ public class StoneGolemLaserGoal extends Goal {
 
   public void tick() {
     LivingEntity livingentity = this.golem.getTarget();
+    --this.laserCooldown;
+    boolean flag = this.golem.hasLineOfSight(livingentity);
     if (livingentity != null) {
-      this.golem.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
-      if (!this.golem.hasLineOfSight(livingentity)) {
+      this.golem.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
+      if (!flag) {
         this.golem.setTarget((LivingEntity) null);
       } else {
-        ++this.attackTime;
-        if (this.attackTime == 0) {
-          this.golem.setActiveAttackTarget(livingentity.getId());
-          if (!this.golem.isSilent()) {
-            this.golem.level.broadcastEntityEvent(this.golem, (byte) 21);
-            this.golem.playSound(this.getLaserChargeSound(), 2.0F, 1.0F);
-          }
-        } else if (this.attackTime >= this.golem.getAttackDuration()) {
-          float f = 2.0F;
-          if (this.golem.level.getDifficulty() == Difficulty.HARD) {
-            f *= 2.0F;
-          }
-
-          this.golem.playSound(this.getLaserFireSound(), 2.0F, 1.0F);
-          livingentity.hurt(DamageSource.indirectMagic(this.golem, this.golem), f);
-          livingentity.hurt(DamageSource.mobAttack(this.golem), this.golem.getAttackDamage());
-          this.golem.setTarget((LivingEntity) null);
-        }
+        laserTick(livingentity);
 
         super.tick();
       }
+    }
+  }
+
+  protected void laserTick(LivingEntity livingentity) {
+    if(this.laserCooldown <= 0) {
+      ++this.laserAttackTick;
+    }
+    if (this.laserAttackTick == 0) {
+      this.golem.setActiveAttackTarget(livingentity.getId());
+      if (!this.golem.isSilent()) {
+        this.golem.level.broadcastEntityEvent(this.golem, (byte) 21);
+        this.golem.playSound(this.getLaserChargeSound(), 2.0F, 1.0F);
+      }
+    } else if (this.laserAttackTick >= this.golem.getAttackDuration()) {
+      float f = 2.0F;
+      if (this.golem.level.getDifficulty() == Difficulty.HARD) {
+        f *= 2.0F;
+      }
+
+      this.golem.playSound(this.getLaserFireSound(), 2.0F, 1.0F);
+      this.golem.strongKnockback(livingentity);
+      livingentity.hurt(DamageSource.indirectMagic(this.golem, this.golem), f);
+      livingentity.hurt(DamageSource.mobAttack(this.golem), this.golem.getAttackDamage() / 2);
+      this.golem.setTarget((LivingEntity) null);
+      this.laserCooldown = 85;
     }
   }
 

@@ -124,6 +124,7 @@ public class LemurianEntity extends Monster {
     return 1.62F;
   }
   /*
+  // For eyes layer
   public BlockPos getLightPosition() {
     BlockPos pos = new BlockPos(this.position());
     if (!level.getBlockState(pos).canOcclude()) {
