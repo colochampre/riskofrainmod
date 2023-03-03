@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -77,19 +78,28 @@ public class LemurianEntity extends Monster {
   @Override
   public boolean doHurtTarget(Entity entity) {
     this.attackTimer = 10;
-    this.level.broadcastEntityEvent(this, (byte)4);
+    this.level.broadcastEntityEvent(this, (byte) 4);
     float f = this.getAttackDamage();
     boolean flag = entity.hurt(DamageSource.mobAttack(this), f);
     this.playSound(SoundInit.LEMURIAN_ATTACK.get(), 1.0F, 1.0F);
     return flag;
   }
 
-  private float getAttackDamage() {
-    return (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+  public float getAttackDamage() {
+    float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    if (this.level.getDifficulty() == Difficulty.HARD) {
+      f *= 2.0F;
+    }
+    return f;
   }
 
   public int getAttackTimer() {
     return this.attackTimer;
+  }
+
+  public int getChoice() {
+    this.armSelected = ++this.armSelected % 2;
+    return this.armSelected;
   }
 
   @Override
@@ -119,6 +129,10 @@ public class LemurianEntity extends Monster {
     this.playSound(this.getStepSound(), 0.15F, 1.0F);
   }
 
+  public boolean getSelectedArm() {
+    return this.rightHandSelected;
+  }
+
   @Override
   protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
     return 1.62F;
@@ -143,17 +157,17 @@ public class LemurianEntity extends Monster {
     }
   }
 
-  public boolean getSelectedArm() {
-    return this.rightHandSelected;
+  @Override
+  public boolean removeWhenFarAway(double distance) {
+    Difficulty difficulty = this.level.getDifficulty();
+    if ((difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD) && !(distance > 16384.0D)) {
+      return false;
+    }
+    return true;
   }
 
   public void setRightArmSelected(boolean value) {
     this.rightHandSelected = value;
-  }
-
-  public int getChoice() {
-    this.armSelected = ++this.armSelected % 2;
-    return this.armSelected;
   }
 
   public static boolean isMoving(LivingEntity entity) {

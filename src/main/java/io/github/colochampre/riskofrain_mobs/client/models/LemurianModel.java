@@ -205,8 +205,8 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
   private void setLookAnim(float headYaw, float headPitch) {
     this.head.xRot = headPitch * 0.023271058F;
     this.head.yRot = headYaw * 0.017453292F / 2.0F;
-    this.rib_cage_axis.yRot = headYaw * 0.017453292F / 2.0F;
-    this.stomach_axis.yRot = headYaw * 0.017453292F / 2.0F;
+    this.rib_cage.yRot = headYaw * 0.017453292F / 5.0F;
+    this.stomach.yRot = headYaw * 0.017453292F / 5.0F;
   }
 
   private void setIdleAnim(LemurianEntity entity, float ageInTicks) {

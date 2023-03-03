@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-public class StoneGolemLaserGoal extends Goal {
+public class StoneGolemAttackGoal extends Goal {
   private final StoneGolemEntity golem;
   private int laserAttackTick;
   private int laserCooldown = 0;
@@ -31,7 +31,7 @@ public class StoneGolemLaserGoal extends Goal {
   private int failedPathFindingPenalty = 0;
   private boolean canPenalize = false;
 
-  public StoneGolemLaserGoal(StoneGolemEntity entity, double speed, boolean memory) {
+  public StoneGolemAttackGoal(StoneGolemEntity entity, double speed, boolean memory) {
     this.golem = entity;
     this.speedModifier = speed;
     this.followingTargetEvenIfNotSeen = memory;
@@ -71,8 +71,6 @@ public class StoneGolemLaserGoal extends Goal {
       return false;
     } else if (!this.followingTargetEvenIfNotSeen) {
       return !this.golem.getNavigation().isDone();
-    } else if (!this.golem.isWithinRestriction(livingentity.blockPosition())) {
-      return false;
     } else {
       return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player) livingentity).isCreative();
     }
@@ -108,7 +106,7 @@ public class StoneGolemLaserGoal extends Goal {
 
     if (livingentity != null) {
       boolean flag = this.golem.hasLineOfSight(livingentity);
-      this.golem.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
+      this.golem.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
       meleeAttackTick(livingentity);
 
       if (!flag) {
@@ -172,6 +170,7 @@ public class StoneGolemLaserGoal extends Goal {
         f *= 2.0F;
       }
       this.golem.playSound(this.getLaserFireSound(), 3.0F, 1.0F);
+      livingentity.playSound(this.getLaserFireSound(), 3.0F, 1.0F);
       livingentity.hurt(DamageSource.indirectMagic(this.golem, this.golem), f);
       livingentity.hurt(DamageSource.mobAttack(this.golem), this.golem.getAttackDamage() / 2);
       livingentity.addDeltaMovement(vec3);
@@ -186,6 +185,7 @@ public class StoneGolemLaserGoal extends Goal {
       this.resetAttackCooldown();
       this.golem.swing(InteractionHand.MAIN_HAND);
       this.golem.doHurtTarget(livingEntity);
+      this.golem.strongKnockback(livingEntity);
     }
   }
 
@@ -202,6 +202,6 @@ public class StoneGolemLaserGoal extends Goal {
   }
 
   protected double getAttackReachSqr(LivingEntity p_25556_) {
-    return (double) (this.golem.getBbWidth() * 2.0F * this.golem.getBbWidth() * 2.0F + p_25556_.getBbWidth());
+    return (double) (this.golem.getBbWidth() * 1.5F * this.golem.getBbWidth() * 1.5F + p_25556_.getBbWidth());
   }
 }

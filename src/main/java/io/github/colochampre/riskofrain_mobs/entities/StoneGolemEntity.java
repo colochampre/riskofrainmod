@@ -1,7 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
-import io.github.colochampre.riskofrain_mobs.entities.goals.StoneGolemLaserGoal;
+import io.github.colochampre.riskofrain_mobs.entities.goals.StoneGolemAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -21,15 +21,12 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -45,7 +42,7 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 public class StoneGolemEntity extends Monster {
-  private static final ResourceLocation LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
+  private static final ResourceLocation STONE_GOLEM_LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(StoneGolemEntity.class, EntityDataSerializers.INT);
   private int attackTimer;
   public int clientSideAttackTime;
@@ -59,7 +56,7 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   protected void registerGoals() {
-    this.goalSelector.addGoal(4, new StoneGolemLaserGoal(this, 0.8D, false));
+    this.goalSelector.addGoal(4, new StoneGolemAttackGoal(this, 0.8D, true));
     this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.6D));
     this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
     this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -99,8 +96,8 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
-    this.playSound(this.getStepSound(), (p_147188_ + 2), 1.0F);
-    this.playSound(this.getStepSound(), (p_147188_ + 2), 1.2F);
+    this.playSound(this.getStepSound(), 3, 1.0F);
+    this.playSound(this.getStepSound(), 3, 1.2F);
     return false;
   }
 
@@ -135,7 +132,7 @@ public class StoneGolemEntity extends Monster {
     float f = this.getAttackDamage();
     boolean flag = entity.hurt(DamageSource.mobAttack(this), f);
     this.playSound(SoundInit.STONE_GOLEM_CLAP.get(), 3.0F, 1.0F);
-    this.strongKnockback(entity);
+    //this.strongKnockback(entity);
     return flag;
   }
 
@@ -290,7 +287,7 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   protected ResourceLocation getDefaultLootTable() {
-    return LOOT_TABLE;
+    return STONE_GOLEM_LOOT_TABLE;
   }
 
   @Override
@@ -306,6 +303,7 @@ public class StoneGolemEntity extends Monster {
   @Override
   public boolean isInvulnerableTo(DamageSource src) {
     return src == DamageSource.FREEZE ||
+            src == DamageSource.HOT_FLOOR ||
             src == DamageSource.IN_WALL ||
             src == DamageSource.IN_FIRE ||
             src == DamageSource.LAVA ||
@@ -336,8 +334,14 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Override
-  public boolean removeWhenFarAway(double p_21542_) {
-    return false;
+  public boolean removeWhenFarAway(double distance) {
+    Difficulty difficulty = this.level.getDifficulty();
+    if (difficulty == Difficulty.HARD) {
+      return false;
+    } else if (difficulty == Difficulty.NORMAL && !(distance > 16384.0D)) {
+      return false;
+    }
+    return true;
   }
 
   public void strongKnockback(Entity entity) {
@@ -348,8 +352,9 @@ public class StoneGolemEntity extends Monster {
   }
 
   static class StoneGolemNavigation extends GroundPathNavigation {
-    public StoneGolemNavigation(Mob p_33379_, Level p_33380_) {
-      super(p_33379_, p_33380_);
+
+    public StoneGolemNavigation(Mob mob, Level level) {
+      super(mob, level);
     }
 
     protected PathFinder createPathFinder(int p_33382_) {
@@ -359,8 +364,8 @@ public class StoneGolemEntity extends Monster {
   }
 
   static class StoneGolemNodeEvaluator extends WalkNodeEvaluator {
-    protected BlockPathTypes evaluateBlockPathType(BlockGetter p_33387_, boolean p_33388_, boolean p_33389_, BlockPos p_33390_, BlockPathTypes p_33391_) {
-      return p_33391_ == BlockPathTypes.LEAVES ? BlockPathTypes.OPEN : super.evaluateBlockPathType(p_33387_, p_33388_, p_33389_, p_33390_, p_33391_);
+    protected BlockPathTypes evaluateBlockPathType(BlockGetter block, boolean p_33388_, boolean p_33389_, BlockPos pos, BlockPathTypes pathTypes) {
+      return pathTypes == BlockPathTypes.LEAVES ? BlockPathTypes.OPEN : super.evaluateBlockPathType(block, p_33388_, p_33389_, pos, pathTypes);
     }
   }
 }
