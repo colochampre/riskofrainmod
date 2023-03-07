@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = RoRmod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModClientEvents {
   public static final ModelLayerLocation LEMURIAN_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "lemurian_entity"), "main");
+  public static final ModelLayerLocation STONE_GOLEM_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "stone_golem_entity"), "main");
 
   @SubscribeEvent
   public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -26,6 +27,6 @@ public class ModClientEvents {
   @SubscribeEvent
   public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions events) {
     events.registerLayerDefinition(LEMURIAN_LAYER, LemurianModel::createBodyLayer);
-    events.registerLayerDefinition(StoneGolemModel.LAYER_LOCATION, StoneGolemModel::createBodyLayer);
+    events.registerLayerDefinition(STONE_GOLEM_LAYER, StoneGolemModel::createBodyLayer);
   }
 }

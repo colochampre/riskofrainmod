@@ -11,9 +11,11 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class StoneGolemModel extends EntityModel<StoneGolemEntity> {
-  public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "stone_golem_entity"), "main");
+@OnlyIn(Dist.CLIENT)
+public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> {
   protected final ModelPart core;
   protected ModelPart torso_axis;
   protected ModelPart torso;

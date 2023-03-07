@@ -5,29 +5,38 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.StoneGolemModel;
+import io.github.colochampre.riskofrain_mobs.client.renderer.layers.StoneGolemEyeLayer;
 import io.github.colochampre.riskofrain_mobs.entities.StoneGolemEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolemModel> {
+@OnlyIn(Dist.CLIENT)
+public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolemModel<StoneGolemEntity>> {
   private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/stone_golem/stone_golem_default.png");
+  private static final ResourceLocation STONE_GOLEM_EYE = new ResourceLocation(RoRmod.MODID, "textures/entity/stone_golem/stone_golem_eye.png");
   private static final ResourceLocation BEAM_LOCATION = new ResourceLocation(RoRmod.MODID, "textures/entity/stone_golem/laser_beam.png");
   private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(BEAM_LOCATION);
 
   public StoneGolemRenderer(EntityRendererProvider.Context context) {
     this(context, StoneGolemModel.LAYER_LOCATION, 1.0F);
+    this.addLayer(new StoneGolemEyeLayer(this));
   }
 
   protected StoneGolemRenderer(EntityRendererProvider.Context context, ModelLayerLocation layerLocation, float shadow) {
@@ -58,18 +67,42 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
     return new Vec3(d0, d1, d2);
   }
 
-  public void render(StoneGolemEntity golem, float p_114830_, float p_114831_, PoseStack poseStack, MultiBufferSource bufferSource, int p_114834_) {
-    super.render(golem, p_114830_, p_114831_, poseStack, bufferSource, p_114834_);
-    LivingEntity livingentity = golem.getActiveAttackTarget();
+  public void render(StoneGolemEntity entity, float p_114830_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    super.render(entity, p_114830_, partialTicks, poseStack, bufferSource, packedLight);
+    renderEyeLayer(entity, partialTicks, poseStack, bufferSource, packedLight);
+    renderLaser(entity, partialTicks, poseStack, bufferSource);
+  }
+
+  private void renderEyeLayer(StoneGolemEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    long roundedTime = entity.level.getDayTime() % 24000;
+    boolean night = roundedTime >= 13000 && roundedTime <= 22000;
+    BlockPos ratPos = entity.blockPosition();
+    int i = entity.level.getBrightness(LightLayer.SKY, ratPos);
+    int j = entity.level.getBrightness(LightLayer.BLOCK, ratPos);
+    int brightness;
+    if (night) {
+      brightness = j;
+    } else {
+      brightness = Math.max(i, j);
+    }
+    if (brightness < 7) {
+      VertexConsumer eyesTexture = bufferSource.getBuffer(RenderType.eyes(STONE_GOLEM_EYE));
+      this.model.renderToBuffer(poseStack, eyesTexture, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+    }
+    this.model.prepareMobModel(entity, 0.0F, 0.0F, partialTicks);
+  }
+
+  private void renderLaser(StoneGolemEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource) {
+    LivingEntity livingentity = entity.getActiveAttackTarget();
     if (livingentity != null) {
-      float f = golem.getAttackAnimationScale(p_114831_);
-      float f1 = (float)golem.level.getGameTime() + p_114831_;
+      float f = entity.getAttackAnimationScale(partialTicks);
+      float f1 = (float)entity.level.getGameTime() + partialTicks;
       float f2 = f1 * 0.5F % 1.0F;
-      float f3 = golem.getEyeHeight();
+      float f3 = entity.getEyeHeight();
       poseStack.pushPose();
       poseStack.translate(0.0F, f3, 0.0F);
-      Vec3 vec3 = this.getPosition(livingentity, (double)livingentity.getBbHeight() * 0.5D, p_114831_);
-      Vec3 vec31 = this.getPosition(golem, (double)f3, p_114831_);
+      Vec3 vec3 = this.getPosition(livingentity, (double)livingentity.getBbHeight() * 0.5D, partialTicks);
+      Vec3 vec31 = this.getPosition(entity, (double)f3, partialTicks);
       Vec3 vec32 = vec3.subtract(vec31);
       float f4 = (float)(vec32.length() + 1.0D);
       vec32 = vec32.normalize();
@@ -113,7 +146,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
       vertex(vertexconsumer, matrix4f, matrix3f, f25, 0.0F, f26, j, k, l, 0.0F, f29);
       vertex(vertexconsumer, matrix4f, matrix3f, f25, f4, f26, j, k, l, 0.0F, f30);
       float f31 = 0.0F;
-      if (golem.tickCount % 2 == 0) {
+      if (entity.tickCount % 2 == 0) {
         f31 = 0.5F;
       }
       vertex(vertexconsumer, matrix4f, matrix3f, f11, f4, f12, j, k, l, 0.5F, f31 + 0.5F);
