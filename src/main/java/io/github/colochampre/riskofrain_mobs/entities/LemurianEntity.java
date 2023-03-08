@@ -2,11 +2,7 @@ package io.github.colochampre.riskofrain_mobs.entities;
 
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,6 +15,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -26,8 +23,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class LemurianEntity extends Monster {
   private int attackTimer;
+  private boolean selectingHand = true;
   private boolean rightHandSelected = true;
-  private int armSelected = 0;
 
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
@@ -45,6 +42,7 @@ public class LemurianEntity extends Monster {
     this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
     this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, WanderingTrader.class, true));
   }
 
   public static AttributeSupplier.Builder createAttributes() {
@@ -97,9 +95,10 @@ public class LemurianEntity extends Monster {
     return this.attackTimer;
   }
 
-  public int getChoice() {
-    this.armSelected = ++this.armSelected % 2;
-    return this.armSelected;
+  public boolean getIsRightHandSelected() {
+    //this.armSelected = ++this.armSelected % 2;
+    this.rightHandSelected = !this.rightHandSelected;
+    return this.rightHandSelected;
   }
 
   @Override
@@ -129,24 +128,15 @@ public class LemurianEntity extends Monster {
     this.playSound(this.getStepSound(), 0.15F, 1.0F);
   }
 
-  public boolean getSelectedArm() {
-    return this.rightHandSelected;
+  public boolean getIsSelectedHand() {
+    return this.selectingHand;
   }
 
   @Override
   protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
     return 1.62F;
   }
-  /*
-  // For eyes layer
-  public BlockPos getLightPosition() {
-    BlockPos pos = new BlockPos(this.position());
-    if (!level.getBlockState(pos).canOcclude()) {
-      return pos.above();
-    }
-    return pos;
-  }
-  */
+
   @Override
   public void handleEntityEvent(byte b) {
     if (b == 4) {
@@ -166,8 +156,8 @@ public class LemurianEntity extends Monster {
     return true;
   }
 
-  public void setRightArmSelected(boolean value) {
-    this.rightHandSelected = value;
+  public void setIsSelectingHand(boolean value) {
+    this.selectingHand = value;
   }
 
   public static boolean isMoving(LivingEntity entity) {

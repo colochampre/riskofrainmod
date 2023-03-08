@@ -61,7 +61,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
   protected ModelPart right_leg_3;
   protected ModelPart right_foot_axis;
   protected ModelPart right_foot;
-  private int rightHandSelected;
+  private boolean rightHandSelected;
 
   public LemurianModel(ModelPart root) {
     this.core = root.getChild("core");
@@ -175,18 +175,18 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
 
   @Override
   public void setupAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
-    setLookAnim(headYaw, headPitch);
-    setIdleAnim(entity, ageInTicks);
-    setWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
+    getLookAnim(headYaw, headPitch);
+    getIdleAnim(entity, ageInTicks);
+    getWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
   }
 
   @Override
   public void prepareMobModel(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
     int i = entity.getAttackTimer();
     if (i > 0) {
-      setAttackAnim(entity, i, ageInTicks);
+      getAttackAnim(entity, i, ageInTicks);
     } else {
-      entity.setRightArmSelected(true);
+      entity.setIsSelectingHand(true);
       this.left_arm_axis.xRot = -0.08726646F + Mth.cos(limbSwing * 0.75F) * 0.75F * limbSwingAmount;
       this.left_forearm_axis.xRot = -0.2617994F + Mth.cos(limbSwing * 0.75F) * 0.75F * limbSwingAmount;
       this.right_arm_axis.xRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.75F * limbSwingAmount;
@@ -202,14 +202,14 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     }
   }
   // field_f = xRot | field_g = yRot | field_h = zRot
-  private void setLookAnim(float headYaw, float headPitch) {
+  private void getLookAnim(float headYaw, float headPitch) {
     this.head.xRot = headPitch * 0.023271058F;
     this.head.yRot = headYaw * 0.017453292F / 2.0F;
     this.rib_cage.yRot = headYaw * 0.017453292F / 5.0F;
     this.stomach.yRot = headYaw * 0.017453292F / 5.0F;
   }
 
-  private void setIdleAnim(LemurianEntity entity, float ageInTicks) {
+  private void getIdleAnim(LemurianEntity entity, float ageInTicks) {
     this.low_mouth.xRot = Mth.cos(ageInTicks * 0.06F) * 0.09F;
     this.neck.xRot = Mth.cos(ageInTicks * 0.06F) * 0.06F;
     this.neck.yRot = Mth.cos(ageInTicks * 0.04F) * 0.06F;
@@ -230,7 +230,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     }
   }
 
-  private void setWalkAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+  private void getWalkAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
     this.rib_cage_axis.yRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.15F * limbSwingAmount;
     this.stomach_axis.yRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.3F * limbSwingAmount;
     this.left_arm_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
@@ -248,23 +248,26 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     this.tail_3_axis.zRot = Mth.cos(limbSwing * 0.5F) * 0.31F * limbSwingAmount;
   }
 
-  private void setAttackAnim(LemurianEntity entity, int i, float ageInTicks) {
-    if (entity.getSelectedArm()) {
-      this.rightHandSelected = entity.getChoice();
-      entity.setRightArmSelected(false);
+  private void getAttackAnim(LemurianEntity entity, int i, float ageInTicks) {
+    int random = RandomSource.create().nextIntBetweenInclusive(1, 3);
+    if (entity.getIsSelectedHand()) {
+      this.rightHandSelected = entity.getIsRightHandSelected();
+      entity.setIsSelectingHand(false);
     }
-    if (this.rightHandSelected == 0) { // right arm anims
-      //switch(RandomSource.create().nextIntBetweenInclusive(1, 3)) {
-      //case 1:
-      rightPunch(i, ageInTicks);
-      //break;
-      //case 2:
-      //break;
-      //case 3:
-      //break;
+    // right arm anims
+    if (this.rightHandSelected) {
+      //switch(random) {
+        //case 1:
+          rightPunch(i, ageInTicks);
+          //break;
+        //case 2:
+          //break;
+        //case 3:
+          //break;
       //}
-    } else { // left arm anims
-      //switch(RandomSource.create().nextIntBetweenInclusive(1, 3)) {
+    // left arm anims
+    } else {
+      //switch(random) {
       //case 1:
       leftPunch(i, ageInTicks);
       //break;

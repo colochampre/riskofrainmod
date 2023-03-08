@@ -7,6 +7,7 @@ import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.StoneGolemModel;
 import io.github.colochampre.riskofrain_mobs.client.renderer.layers.StoneGolemEyeLayer;
 import io.github.colochampre.riskofrain_mobs.entities.StoneGolemEntity;
+import io.github.colochampre.riskofrain_mobs.events.ModClientEvents;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -35,7 +36,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
   private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(BEAM_LOCATION);
 
   public StoneGolemRenderer(EntityRendererProvider.Context context) {
-    this(context, StoneGolemModel.LAYER_LOCATION, 1.0F);
+    this(context, ModClientEvents.STONE_GOLEM_LAYER, 1.0F);
     this.addLayer(new StoneGolemEyeLayer(this));
   }
 
@@ -137,7 +138,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
       PoseStack.Pose posestack$pose = poseStack.last();
       Matrix4f matrix4f = posestack$pose.pose();
       Matrix3f matrix3f = posestack$pose.normal();
-      vertex(vertexconsumer, matrix4f, matrix3f, f19, f4, f20, j, k, l, 0.4999F, f30); // just testing (original value = 0.4999)
+      vertex(vertexconsumer, matrix4f, matrix3f, f19, f4, f20, j, k, l, 0.4999F, f30);
       vertex(vertexconsumer, matrix4f, matrix3f, f19, 0.0F, f20, j, k, l, 0.4999F, f29);
       vertex(vertexconsumer, matrix4f, matrix3f, f21, 0.0F, f22, j, k, l, 0.0F, f29);
       vertex(vertexconsumer, matrix4f, matrix3f, f21, f4, f22, j, k, l, 0.0F, f30);
