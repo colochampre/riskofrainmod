@@ -26,8 +26,8 @@ public class StoneGolemAttackGoal extends Goal {
   private double pathedTargetZ;
   private int ticksUntilNextPathRecalculation;
   private int ticksUntilNextAttack;
-  private final int attackInterval = 20;
-  private static final long COOLDOWN_BETWEEN_CAN_USE_CHECKS = 20L;
+  //private final int attackInterval = 40;
+  //private static final long COOLDOWN_BETWEEN_CAN_USE_CHECKS = 40L;
   private int failedPathFindingPenalty = 0;
   private boolean canPenalize = false;
 
@@ -190,7 +190,7 @@ public class StoneGolemAttackGoal extends Goal {
   }
 
   protected void resetAttackCooldown() {
-    this.ticksUntilNextAttack = this.adjustedTickDelay(20);
+    this.ticksUntilNextAttack = this.adjustedTickDelay(40);
   }
 
   protected SoundEvent getLaserChargeSound() {

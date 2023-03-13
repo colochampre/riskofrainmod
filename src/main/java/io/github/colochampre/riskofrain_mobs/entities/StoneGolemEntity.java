@@ -127,12 +127,11 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public boolean doHurtTarget(Entity entity) {
-    this.attackTimer = 10;
+    this.attackTimer = 20;
     this.level.broadcastEntityEvent(this, (byte) 4);
     float f = this.getAttackDamage();
     boolean flag = entity.hurt(DamageSource.mobAttack(this), f);
     this.playSound(SoundInit.STONE_GOLEM_CLAP.get(), 3.0F, 1.0F);
-    //this.strongKnockback(entity);
     return flag;
   }
 
@@ -298,6 +297,16 @@ public class StoneGolemEntity extends Monster {
   @Override
   protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
     return 3.5F;
+  }
+
+  @Override
+  public void handleEntityEvent(byte b) {
+    if (b == 4) {
+      this.attackTimer = 20;
+      this.playSound(SoundInit.STONE_GOLEM_CLAP.get(), 3.0F, 1.0F);
+    } else {
+      super.handleEntityEvent(b);
+    }
   }
 
   @Override

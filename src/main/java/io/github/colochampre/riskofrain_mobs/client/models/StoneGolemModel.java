@@ -2,14 +2,11 @@ package io.github.colochampre.riskofrain_mobs.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.StoneGolemEntity;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -296,40 +293,17 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
 
   @Override
   public void setupAnim(StoneGolemEntity entity, float limbSwing, float limbSwingAmmount, float ageInTicks, float headYaw, float headPitch) {
-    setLookAnim(headYaw, headPitch);
-    setIdleAnim(entity, ageInTicks);
-    setWalkingAnim(entity, limbSwing, limbSwingAmmount);
-    setAttackAnim(entity, ageInTicks);
+    getLookAnim(headYaw, headPitch);
+    getIdleAnim(entity, ageInTicks);
+    getWalkingAnim(entity, limbSwing, limbSwingAmmount);
   }
 
-  private void setLookAnim(float headYaw, float headPitch) {
-    this.head.xRot = headPitch * 0.017453292F;
-    this.head.yRot = headYaw * 0.005817764F;
-    this.neck.yRot = headYaw * 0.005817764F;
-    this.torso.yRot = headYaw * 0.005817764F;
-  }
-
-  private void setIdleAnim(StoneGolemEntity entity, float ageInTicks) {
-    this.neck.xRot = Mth.cos(ageInTicks * 0.06F) * 0.06F;
-    this.torso.xRot = -Mth.cos(ageInTicks * 0.06F) * 0.06F;
-    this.left_shoulder.xRot = -Mth.cos(ageInTicks * 0.06F) * 0.03F;
-    this.left_shoulder.zRot = -0.5235988F + Mth.cos(ageInTicks * 0.06F) * 0.03F;
-    this.right_shoulder.xRot = Mth.cos(ageInTicks * 0.06F) * 0.03F;
-    this.right_shoulder.zRot = 0.7853982F + -Mth.cos(ageInTicks * 0.06F) * 0.03F;
-  }
-
-  // field_f = xRot | field_g = yRot | field_h = zRot
-  private void setWalkingAnim(StoneGolemEntity entity, float limbSwing, float limbSwingAmount) {
+  @Override
+  public void prepareMobModel(StoneGolemEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
     int i = entity.getAttackTimer();
-    this.torso_axis.yRot = Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.6F * limbSwingAmount;
-    this.left_shoulder_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
-    this.right_shoulder_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
-    this.hip_axis.yRot = Mth.cos(limbSwing * 0.5F) * 0.8F * limbSwingAmount;
-    this.left_leg_axis.xRot = 0.0F + Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.2F * limbSwingAmount;
-    this.left_leg_2_axis.xRot = 0.0F + -Mth.cos(limbSwing * 1.0F + 3.1415927F) * 0.6F * limbSwingAmount;
-    this.right_leg_axis.xRot = 0.0F + Mth.cos(limbSwing * 0.5F) * 1.2F * limbSwingAmount;
-    this.right_leg_2_axis.xRot = 0.0F + Mth.cos(limbSwing * 1.0F) * 0.6F * limbSwingAmount;
-    if (!(i > 0)) {
+    if (i > 0) {
+      getAttackAnim(entity, i, ageInTicks);
+    } else {
       this.left_shoulder_axis.xRot = Mth.cos(limbSwing * 0.5F) * 0.8F * limbSwingAmount;
       this.left_arm_1_axis.xRot = Mth.cos(limbSwing * 0.5F) * 0.8F * limbSwingAmount;
       this.left_forearm_axis.xRot = -Mth.cos(limbSwing * 0.75F) * 0.8F * limbSwingAmount;
@@ -351,28 +325,59 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
     }
   }
 
-  private void setAttackAnim(StoneGolemEntity entity, float ageInTicks) {
-    int i = entity.getAttackTimer();
-    if (i > 0) {
-      this.torso_axis.xRot = -(-0.1F + 0.1F * this.triangleWave((float) i - ageInTicks, 15.0F));
-      this.left_shoulder_axis.xRot = -0.75F + 0.75F * this.triangleWave((float) i - ageInTicks, 15.0F);
-      this.left_shoulder_axis.yRot = -(-0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 10.0F));
-      this.left_shoulder_axis.zRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 10.0F);
-      this.left_arm_1_axis.zRot = -(-0.5F + 0.5F * this.triangleWave((float) i - ageInTicks, 15.0F));
-      this.left_forearm_axis.xRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 15.0F);
-      this.left_forearm_axis.zRot = -(-0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 15.0F));
-      this.left_hand_1_axis.zRot = -0.5F + 0.5F * this.triangleWave((float) i - ageInTicks, 15.0F);
-      this.right_shoulder_axis.xRot = -0.75F + 0.75F * this.triangleWave((float) i - ageInTicks, 15.0F);
-      this.right_shoulder_axis.yRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 10.0F);
-      this.right_shoulder_axis.zRot = -(-0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 10.0F));
-      this.right_elbow_axis.zRot = -0.5F + 0.5F * this.triangleWave((float) i - ageInTicks, 15.0F);
-      this.right_forearm_axis.xRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 15.0F);
-      this.right_forearm_axis.zRot = -0.25F + 0.25F * this.triangleWave((float) i - ageInTicks, 15.0F);
-      this.right_hand_1_axis.zRot = -(-0.5F + 0.5F * this.triangleWave((float) i - ageInTicks, 15.0F));
-    }
+  private void getLookAnim(float headYaw, float headPitch) {
+    this.head.xRot = headPitch * 0.017453292F;
+    this.head.yRot = headYaw * 0.005817764F;
+    this.neck.yRot = headYaw * 0.005817764F;
+    this.torso.yRot = headYaw * 0.005817764F;
   }
 
-  private float triangleWave(float f1, float f2) {
-    return (Math.abs(f1 % f2 - f2 * 0.5F) - f2 * 0.25F) / (f2 * 0.25F);
+  private void getIdleAnim(StoneGolemEntity entity, float ageInTicks) {
+    this.neck.xRot = Mth.cos(ageInTicks * 0.06F) * 0.06F;
+    this.torso.xRot = -Mth.cos(ageInTicks * 0.06F) * 0.06F;
+    this.left_shoulder.xRot = -Mth.cos(ageInTicks * 0.06F) * 0.03F;
+    this.left_shoulder.zRot = -0.5235988F + Mth.cos(ageInTicks * 0.06F) * 0.03F;
+    this.right_shoulder.xRot = Mth.cos(ageInTicks * 0.06F) * 0.03F;
+    this.right_shoulder.zRot = 0.7853982F + -Mth.cos(ageInTicks * 0.06F) * 0.03F;
+  }
+
+  // field_f = xRot | field_g = yRot | field_h = zRot
+  private void getWalkingAnim(StoneGolemEntity entity, float limbSwing, float limbSwingAmount) {
+    this.torso_axis.yRot = Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.6F * limbSwingAmount;
+    this.left_shoulder_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
+    this.right_shoulder_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
+    this.hip_axis.yRot = Mth.cos(limbSwing * 0.5F) * 0.8F * limbSwingAmount;
+    this.left_leg_axis.xRot = 0.0F + Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.2F * limbSwingAmount;
+    this.left_leg_2_axis.xRot = 0.0F + -Mth.cos(limbSwing * 1.0F + 3.1415927F) * 0.6F * limbSwingAmount;
+    this.right_leg_axis.xRot = 0.0F + Mth.cos(limbSwing * 0.5F) * 1.2F * limbSwingAmount;
+    this.right_leg_2_axis.xRot = 0.0F + Mth.cos(limbSwing * 1.0F) * 0.6F * limbSwingAmount;
+  }
+
+  private void getAttackAnim(StoneGolemEntity entity, int i, float ageInTicks) {
+    if (i > 0) {
+      this.left_shoulder_axis.xRot = -(-0.45F + 0.45F * Mth.triangleWave((float) i - ageInTicks, 20.0F));
+      this.left_shoulder_axis.yRot = -(-0.75F + 0.45F * Mth.triangleWave((float) i - ageInTicks, 20.0F));
+      this.left_shoulder_axis.zRot = -0.45F + 0.45F * Mth.triangleWave((float) i - ageInTicks, 20.0F);
+      /*
+      this.torso_axis.xRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 15.0F));
+      this.left_shoulder_axis.xRot = -0.75F + 0.75F * Mth.triangleWave((float) i - ageInTicks, 15.0F);
+      this.left_shoulder_axis.yRot = -(-0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
+      this.left_shoulder_axis.zRot = -0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 10.0F);
+      this.left_arm_1_axis.zRot = -(-0.5F + 0.5F * Mth.triangleWave((float) i - ageInTicks, 15.0F));
+      this.left_forearm_axis.xRot = -0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 15.0F);
+      this.left_forearm_axis.zRot = -(-0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 15.0F));
+      this.left_hand_1_axis.zRot = -0.5F + 0.5F * Mth.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_shoulder_axis.xRot = -0.75F + 0.75F * Mth.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_shoulder_axis.yRot = -0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 10.0F);
+      this.right_shoulder_axis.zRot = -(-0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
+      this.right_elbow_axis.zRot = -0.5F + 0.5F * Mth.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_forearm_axis.xRot = -0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_forearm_axis.zRot = -0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 15.0F);
+      this.right_hand_1_axis.zRot = -(-0.5F + 0.5F * Mth.triangleWave((float) i - ageInTicks, 15.0F));
+      */
+    }
+    if (i > 0 && i < 14) {
+      this.left_forearm_axis.xRot = -0.90F + 0.90F * Mth.triangleWave((float) i - ageInTicks, 15.0F);
+    }
   }
 }

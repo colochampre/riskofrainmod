@@ -300,8 +300,4 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     this.stomach_axis.xRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
     this.stomach_axis.zRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 10.0F));
   }
-
-  /*private float triangleWave(float n1, float n2) {
-    return (Math.abs(n1 % n2 - n2 * 0.5F) - n2 * 0.25F) / (n2 * 0.25F);
-  }*/
 }
