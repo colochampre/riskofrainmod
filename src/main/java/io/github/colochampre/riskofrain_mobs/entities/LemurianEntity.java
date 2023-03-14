@@ -161,6 +161,6 @@ public class LemurianEntity extends Monster {
   }
 
   public static boolean isMoving(LivingEntity entity) {
-    return entity.getX() != entity.xOld || entity.getY() != entity.yOld;
+    return entity.getX() != entity.xOld || entity.getZ() != entity.zOld;
   }
 }

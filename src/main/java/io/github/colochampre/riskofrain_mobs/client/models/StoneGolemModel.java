@@ -356,7 +356,7 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
   private void getAttackAnim(StoneGolemEntity entity, int i, float ageInTicks) {
     if (i > 0) {
       this.left_shoulder_axis.xRot = -(-0.45F + 0.45F * Mth.triangleWave((float) i - ageInTicks, 20.0F));
-      this.left_shoulder_axis.yRot = -(-0.75F + 0.45F * Mth.triangleWave((float) i - ageInTicks, 20.0F));
+      this.left_shoulder_axis.yRot = -(-0.75F + 0.75F * Mth.triangleWave((float) i - ageInTicks, 20.0F));
       this.left_shoulder_axis.zRot = -0.45F + 0.45F * Mth.triangleWave((float) i - ageInTicks, 20.0F);
       /*
       this.torso_axis.xRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 15.0F));
@@ -377,7 +377,7 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
       */
     }
     if (i > 0 && i < 14) {
-      this.left_forearm_axis.xRot = -0.90F + 0.90F * Mth.triangleWave((float) i - ageInTicks, 15.0F);
+      this.left_forearm_axis.xRot = -0.90F + 0.90F * Mth.triangleWave((float) i - ageInTicks, 13.0F);
     }
   }
 }

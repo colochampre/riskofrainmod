@@ -11,6 +11,16 @@ public final class SoundInit {
 
   public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, RoRmod.MODID);
 
+  public static final RegistryObject<SoundEvent> COIN_PROC = registerSoundEvent("interactive.coin.proc");
+  public static final RegistryObject<SoundEvent> INSUFFICIENT_FOUNDS_PROC = registerSoundEvent("interactive.insufficient_founds.proc");
+
+
+  public static final RegistryObject<SoundEvent> DRONE_DEATH1 = registerSoundEvent("entity.drone.death1");
+  public static final RegistryObject<SoundEvent> DRONE_DEATH2 = registerSoundEvent("entity.drone.death2");
+  public static final RegistryObject<SoundEvent> DRONE_FLYING = registerSoundEvent("entity.drone.flying");
+  public static final RegistryObject<SoundEvent> DRONE_REPAIR = registerSoundEvent("entity.drone.repair");
+  public static final RegistryObject<SoundEvent> GUNNER_DRONE_SHOOT = registerSoundEvent("entity.gunner_drone.shoot");
+
   public static final RegistryObject<SoundEvent> LEMURIAN_AMBIENT = registerSoundEvent("entity.lemurian.ambient");
   public static final RegistryObject<SoundEvent> LEMURIAN_ATTACK = registerSoundEvent("entity.lemurian.attack");
   public static final RegistryObject<SoundEvent> LEMURIAN_DEATH = registerSoundEvent("entity.lemurian.death");
