@@ -1,11 +1,16 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
 import com.google.common.collect.Sets;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -28,6 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
 import java.util.Set;
 
 public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
@@ -38,7 +44,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   private float rollAmount;
   private float rollAmountO;
   private int flyingSound;
-  private int goldCount;
+  private int goldCount = this.setGoldCount();
   private int underWaterTicks;
 
   public AbstractFlyingDroneEntity(EntityType<? extends AbstractFlyingDroneEntity> type, Level level) {
@@ -115,7 +121,6 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   @Override
   public InteractionResult mobInteract(Player player, InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
-    int gold = this.getGoldCount();
     // Taming with gold
     if (!this.isTame() && TAME_ITEMS.contains(itemstack.getItem())) {
       if (!player.getAbilities().instabuild) {
@@ -124,8 +129,10 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
       if (!this.isSilent()) {
         this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.COIN_PROC.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
       }
+      goldCount--;
+      RoRmod.LOGGER.info(goldCount);
       if (!this.level.isClientSide) {
-        gold--;
+        ;
         if (this.random.nextInt(10) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
           this.tame(player);
           this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.6F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
@@ -183,6 +190,10 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   }
 
   public int getGoldCount() {
+    return goldCount;
+  }
+
+  private int setGoldCount() {
     Difficulty difficulty = this.level.getDifficulty();
     if (difficulty == Difficulty.HARD) {
       goldCount = 27;

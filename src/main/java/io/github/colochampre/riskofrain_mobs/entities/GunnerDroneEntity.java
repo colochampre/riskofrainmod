@@ -1,9 +1,8 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.level.Level;
@@ -20,6 +19,15 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
     */
+  }
+
+  public static AttributeSupplier.Builder createAttributes() {
+    return Mob.createMobAttributes()
+            .add(Attributes.ATTACK_DAMAGE, 1.0D)
+            .add(Attributes.FLYING_SPEED, 0.8D)
+            .add(Attributes.FOLLOW_RANGE, 20.0D)
+            .add(Attributes.MAX_HEALTH, 20.0D)
+            .add(Attributes.MOVEMENT_SPEED, 0.4D);
   }
 
   @Override
