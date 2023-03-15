@@ -118,6 +118,10 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     return flyingpathnavigation;
   }
 
+  protected int decreaseAirSupply(int air) {
+    return air;
+  }
+
   @Override
   public InteractionResult mobInteract(Player player, InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
