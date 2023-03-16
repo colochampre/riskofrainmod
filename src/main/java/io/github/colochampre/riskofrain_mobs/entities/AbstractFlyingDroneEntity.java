@@ -10,6 +10,7 @@ import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
@@ -29,6 +30,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
@@ -38,6 +40,7 @@ import java.util.Set;
 
 public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
   private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
+  private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
   private final FloatGoal floatGoal = new FloatGoal(this);
   private final FollowOwnerGoal followOwnerGoal = new FollowOwnerGoal(this, 1.0D, 6.0F, 4.0F, true);
   private final WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
@@ -49,7 +52,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
 
   public AbstractFlyingDroneEntity(EntityType<? extends AbstractFlyingDroneEntity> type, Level level) {
     super(type, level);
-    this.moveControl = new FlyingMoveControl(this, 16, false);
+    this.moveControl = new FlyingMoveControl(this, 16, true);
     this.setPathfindingMalus(BlockPathTypes.DAMAGE_CACTUS, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
@@ -58,10 +61,10 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
 
   @Override
   public void aiStep() {
-    if (this.isTame()) {
-      this.goalSelector.addGoal(0, this.floatGoal);
+    if (this.isTame() && !this.isInSittingPose()) {
       this.goalSelector.addGoal(3, this.followOwnerGoal);
       this.goalSelector.addGoal(4, this.randomFlyingGoal);
+      this.goalSelector.addGoal(9, this.floatGoal);
     }
     super.aiStep();
   }
@@ -87,7 +90,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
       }
     }
     Vec3 vec3 = this.getDeltaMovement();
-    if (this.isOrderedToSit() && vec3.y < 0.0D) {
+    if (this.isInSittingPose() && !this.isOnGround()) {
       this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F - vec3.y), 0.0D));
     }
     super.tick();
@@ -118,6 +121,10 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     return flyingpathnavigation;
   }
 
+  public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+    return level.getBlockState(pos).isAir() ? 10.0F : 0.0F;
+  }
+
   protected int decreaseAirSupply(int air) {
     return air;
   }
@@ -125,46 +132,60 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   @Override
   public InteractionResult mobInteract(Player player, InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
-    // Taming with gold
-    if (!this.isTame() && TAME_ITEMS.contains(itemstack.getItem())) {
-      if (!player.getAbilities().instabuild) {
-        itemstack.shrink(1);
-      }
-      if (!this.isSilent()) {
-        this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.COIN_PROC.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-      }
-      goldCount--;
-      RoRmod.LOGGER.info(goldCount);
-      if (!this.level.isClientSide) {
-        ;
-        if (this.random.nextInt(10) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
-          this.tame(player);
-          this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.6F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-          this.level.broadcastEntityEvent(this, (byte) 7);
-        } else {
-          this.level.broadcastEntityEvent(this, (byte) 6);
+    if (this.isTame()) {
+      // Repair
+      if (this.getHealth() < this.getMaxHealth()) {
+        if (REPAIR_ITEMS.contains(itemstack.getItem())) {
+          if (!player.getAbilities().instabuild) {
+            itemstack.shrink(1);
+          }
+          this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundEvents.IRON_GOLEM_REPAIR, this.getSoundSource(), 0.2F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+          if (itemstack.getItem().equals(Items.IRON_INGOT)) {
+            this.heal(18.0F);
+          } else if (itemstack.getItem().equals(Items.RAW_IRON)) {
+            this.heal(12.0F);
+          } else {
+            this.heal(2.0F);
+          }
+          return InteractionResult.SUCCESS;
         }
       }
-      return InteractionResult.SUCCESS;
-      // Taming with no gold
-    } else if (!this.isTame() && !TAME_ITEMS.contains(itemstack.getItem())) {
-      this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.INSUFFICIENT_FOUNDS_PROC.get(), this.getSoundSource(), 0.5F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-      return InteractionResult.SUCCESS;
       // Set sitting
-    } else if (this.isTame() && this.isOwnedBy(player)) {
-
-      this.setOrderedToSit(!this.isOrderedToSit());
-      this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.2F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-
-      return InteractionResult.SUCCESS;
-      // Repair
-    } else if (this.isTame() && this.getHealth() < this.getMaxHealth()) {
-      if (this.isRepairItem(itemstack)) {
+      if (this.isOwnedBy(player)) { // !dyeItem
+        this.setOrderedToSit(!this.isOrderedToSit());
+        this.navigation.stop();
+        this.setTarget((LivingEntity) null);
+        this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.2F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+        return InteractionResult.SUCCESS;
+      }
+      // No gold
+    } else if (!this.isTame()) {
+      if (!TAME_ITEMS.contains(itemstack.getItem())) {
+        this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.INSUFFICIENT_FOUNDS_PROC.get(), this.getSoundSource(), 0.5F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+        return InteractionResult.SUCCESS;
+        // Taming
+      } else if (TAME_ITEMS.contains(itemstack.getItem())) {
         if (!player.getAbilities().instabuild) {
           itemstack.shrink(1);
         }
-        this.heal(2.0F);
-        this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.2F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+        this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.COIN_PROC.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+        if (itemstack.getItem().equals(Items.GOLD_INGOT)) {
+          goldCount -= 9;
+        } else if (itemstack.getItem().equals(Items.RAW_GOLD)) {
+          goldCount -= 5;
+        } else {
+          goldCount--;
+        }
+        RoRmod.LOGGER.info("goldCount = " + goldCount);
+        if (!this.level.isClientSide) {
+          if (this.goldCount <= 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+            this.tame(player);
+            this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.6F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+            this.level.broadcastEntityEvent(this, (byte) 7);
+          } else {
+            this.level.broadcastEntityEvent(this, (byte) 6);
+          }
+        }
         return InteractionResult.SUCCESS;
       }
     }
@@ -236,11 +257,6 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     } else {
       return false;
     }
-  }
-
-  public boolean isRepairItem(ItemStack itemStack) {
-    Item item = itemStack.getItem();
-    return (item.equals(Items.IRON_NUGGET) || item.equals(Items.RAW_IRON));
   }
 
   @Override
