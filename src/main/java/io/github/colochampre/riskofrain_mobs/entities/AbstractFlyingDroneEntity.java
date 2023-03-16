@@ -19,9 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
@@ -43,6 +41,8 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
   private final FloatGoal floatGoal = new FloatGoal(this);
   private final FollowOwnerGoal followOwnerGoal = new FollowOwnerGoal(this, 1.0D, 6.0F, 4.0F, true);
+  private final LookAtPlayerGoal lookAtPlayerGoal = new LookAtPlayerGoal(this, Player.class, 8.0F);
+  private final RandomLookAroundGoal lookAroundGoal = new RandomLookAroundGoal(this);
   private final WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
   private float rollAmount;
   private float rollAmountO;
@@ -64,6 +64,8 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     if (this.isTame() && !this.isInSittingPose()) {
       this.goalSelector.addGoal(3, this.followOwnerGoal);
       this.goalSelector.addGoal(4, this.randomFlyingGoal);
+      this.goalSelector.addGoal(5, this.lookAtPlayerGoal);
+      this.goalSelector.addGoal(5, this.lookAroundGoal);
       this.goalSelector.addGoal(9, this.floatGoal);
     }
     super.aiStep();
@@ -91,7 +93,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     }
     Vec3 vec3 = this.getDeltaMovement();
     if (this.isInSittingPose() && !this.isOnGround()) {
-      this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F - vec3.y), 0.0D));
+      this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F), 0.0D));
     }
     super.tick();
     this.updateRollAmount();
@@ -114,17 +116,21 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   }
 
   protected PathNavigation createNavigation(Level level) {
-    FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level);
+    FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
+      public boolean isStableDestination(BlockPos pos) {
+        return !this.level.getBlockState(pos.below()).isAir();
+      }
+    };
     flyingpathnavigation.setCanOpenDoors(false);
     flyingpathnavigation.setCanFloat(false);
     flyingpathnavigation.setCanPassDoors(true);
     return flyingpathnavigation;
   }
-
+  /*
   public float getWalkTargetValue(BlockPos pos, LevelReader level) {
     return level.getBlockState(pos).isAir() ? 10.0F : 0.0F;
   }
-
+  */
   protected int decreaseAirSupply(int air) {
     return air;
   }

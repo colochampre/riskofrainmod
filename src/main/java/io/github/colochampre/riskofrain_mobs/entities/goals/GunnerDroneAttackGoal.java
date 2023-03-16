@@ -56,56 +56,56 @@ public class GunnerDroneAttackGoal extends Goal {
     --this.attackTime;
     LivingEntity livingentity = this.drone.getTarget();
     if (livingentity != null) {
-      double d0 = this.drone.distanceToSqr(livingentity);
       boolean flag = this.drone.getSensing().hasLineOfSight(livingentity);
-      //Vec3 vec3a = this.drone.getLookAngle();
-      Vec3 vec3b = this.drone.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.1D).reverse();
+      double d0 = this.drone.distanceToSqr(livingentity);
       double d1 = livingentity.getX() - this.drone.getX();
       double d2 = livingentity.getY(0.75D) - this.drone.getY(0.75D);
       double d3 = livingentity.getZ() - this.drone.getZ();
+      Vec3 vec3b = this.drone.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.1D).reverse();
 
       if (!flag) {
-        this.drone.getNavigation().moveTo(livingentity, 0.8D);
-      }
-      // Elevate drone above target
-      if (livingentity.getEyeY() > this.drone.getEyeY()) {
-        Vec3 vec3c = this.drone.getDeltaMovement();
-        this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(0.0D, ((double) 0.1F - vec3b.y) * (double) 0.02F, 0.0D));
-      }
-      if (d0 < (double) this.maxAttackDistance && flag) {
+        this.drone.getMoveControl().setWantedPosition(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 0.8D);
+      } else {
         this.drone.getLookControl().setLookAt(livingentity, 30.0F, 90.0F);
-        // Keep distance with target
-        if (d0 < (double) this.maxAttackDistance * 0.4 && flag) {
-          this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(vec3b.x, 0.0D, vec3b.z));
+        // Elevate drone above target
+        if (livingentity.getEyeY() > this.drone.getEyeY()) {
+          Vec3 vec3c = this.drone.getDeltaMovement();
+          this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(0.0D, ((double) 0.1F - vec3c.y) * (double) 0.01F, 0.0D));
         }
-        // Get closer to target
-        if (d0 > (double) this.maxAttackDistance * 0.75 && flag) {
-          this.drone.getNavigation().moveTo(livingentity, 0.8D);
-        }
-
-        if (this.attackTime <= 0) {
-          ++this.attackStep;
-          if (this.attackStep == 1) {
-            this.attackTime = 30;
-          } else if (this.attackStep <= 5) {
-            this.attackTime = 4;
-          } else  {
-            this.attackTime = 30;
-            this.attackStep = 0;
-            this.drone.setTarget((LivingEntity) null);
+        if (d0 < (double) this.maxAttackDistance && flag) {
+          // Keep distance with target
+          if (d0 < (double) this.maxAttackDistance * 0.5) {
+            this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(vec3b.x, 0.0D, vec3b.z));
           }
-          if (this.attackStep > 1) {
-            double d4 = Math.sqrt(Math.sqrt(d0)) * 0.5D;
-            if (!this.drone.isSilent()) {
-              this.drone.playSound(this.getDroneShootSound(), 0.4F, 1.0F);
-            }
-            for (int i = 0; i < 1; ++i) {
-              Arrow projectile = new Arrow(this.drone.level, this.drone);
-              projectile.shoot(d1, d2, d3, 3.0F, 1.0F);
-              this.drone.level.addFreshEntity(projectile);
-            }
+          // Get closer to target
+          if (d0 > (double) this.maxAttackDistance * 0.75) {
+            this.drone.getMoveControl().setWantedPosition(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 0.8D);
           }
-          this.drone.getLookControl().setLookAt(livingentity, 30.0F, 90.0F);
+          // Shoot target
+          if (this.attackTime <= 0) {
+            ++this.attackStep;
+            if (this.attackStep == 1) {
+              this.attackTime = 30;
+            } else if (this.attackStep <= 5) {
+              this.attackTime = 4;
+            } else {
+              this.attackTime = 30;
+              this.attackStep = 0;
+              this.drone.setTarget((LivingEntity) null);
+            }
+            if (this.attackStep > 1) {
+              double d4 = Math.sqrt(Math.sqrt(d0)) * 0.5D;
+              if (!this.drone.isSilent()) {
+                this.drone.playSound(this.getDroneShootSound(), 0.4F, 1.0F);
+              }
+              for (int i = 0; i < 1; ++i) {
+                Arrow projectile = new Arrow(this.drone.level, this.drone);
+                projectile.shoot(d1, d2, d3, 3.0F, 1.0F);
+                this.drone.level.addFreshEntity(projectile);
+              }
+            }
+            this.drone.getLookControl().setLookAt(livingentity, 30.0F, 90.0F);
+          }
         }
       }
       super.tick();
