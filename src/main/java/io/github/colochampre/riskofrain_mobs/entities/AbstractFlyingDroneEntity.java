@@ -5,13 +5,9 @@ import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentContents;
-import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -24,16 +20,15 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
 import java.util.Set;
 
 public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
@@ -41,8 +36,6 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
   private final FloatGoal floatGoal = new FloatGoal(this);
   private final FollowOwnerGoal followOwnerGoal = new FollowOwnerGoal(this, 1.0D, 6.0F, 4.0F, true);
-  private final LookAtPlayerGoal lookAtPlayerGoal = new LookAtPlayerGoal(this, Player.class, 8.0F);
-  private final RandomLookAroundGoal lookAroundGoal = new RandomLookAroundGoal(this);
   private final WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
   private float rollAmount;
   private float rollAmountO;
@@ -53,66 +46,17 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   public AbstractFlyingDroneEntity(EntityType<? extends AbstractFlyingDroneEntity> type, Level level) {
     super(type, level);
     this.moveControl = new FlyingMoveControl(this, 16, true);
+    this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.DAMAGE_CACTUS, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
+    this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+    this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
   }
 
   @Override
-  public void aiStep() {
-    if (this.isTame() && !this.isInSittingPose()) {
-      this.goalSelector.addGoal(3, this.followOwnerGoal);
-      this.goalSelector.addGoal(4, this.randomFlyingGoal);
-      this.goalSelector.addGoal(5, this.lookAtPlayerGoal);
-      this.goalSelector.addGoal(5, this.lookAroundGoal);
-      this.goalSelector.addGoal(9, this.floatGoal);
-    }
-    super.aiStep();
-  }
-
-  @Override
-  protected void customServerAiStep() {
-    if (this.isInWaterOrBubble()) {
-      ++this.underWaterTicks;
-    } else {
-      this.underWaterTicks = 0;
-    }
-    if (this.underWaterTicks > 20) {
-      this.hurt(DamageSource.DROWN, 1.0F);
-    }
-  }
-
-  @Override
-  public void tick() {
-    flyingTick();
-    if (this.isLowHealth()) {
-      for (int i = 0; i < 2; ++i) {
-        this.level.addParticle(ParticleTypes.SMOKE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
-      }
-    }
-    Vec3 vec3 = this.getDeltaMovement();
-    if (this.isInSittingPose() && !this.isOnGround()) {
-      this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F), 0.0D));
-    }
-    super.tick();
-    this.updateRollAmount();
-  }
-
-  private void flyingTick() {
-    if (!this.isTame() || this.onGround || this.isInSittingPose() || this.isOrderedToSit()) {
-      flyingSound = 0;
-    } else {
-      ++flyingSound;
-    }
-    if (flyingSound == 1 || flyingSound == 31) {
-      this.playSound(this.getFlyingSound(), 0.05F, 1.0F);
-      flyingSound = 1;
-    }
-  }
-
-  public boolean causeFallDamage(float p_149683_, float p_149684_, DamageSource source) {
-    return false;
+  protected void registerGoals() {
+    this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
   }
 
   protected PathNavigation createNavigation(Level level) {
@@ -126,11 +70,71 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     flyingpathnavigation.setCanPassDoors(true);
     return flyingpathnavigation;
   }
-  /*
-  public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-    return level.getBlockState(pos).isAir() ? 10.0F : 0.0F;
+
+  @Override
+  public void aiStep() {
+    if (this.isTame()) {
+      this.goalSelector.addGoal(3, this.followOwnerGoal);
+      this.goalSelector.addGoal(4, this.randomFlyingGoal);
+      this.goalSelector.addGoal(9, this.floatGoal);
+    }
+    this.sitLanding();
+    super.aiStep();
   }
-  */
+
+  @Override
+  public void tick() {
+    this.doFlyingSound();
+    this.smokeIfLowHealth();
+    this.waterDamage();
+    this.updateRollAmount();
+    super.tick();
+  }
+
+  private void doFlyingSound() {
+    if (!this.isTame() || this.onGround || this.isInSittingPose() || this.isOrderedToSit()) {
+      flyingSound = 0;
+    } else {
+      ++flyingSound;
+    }
+    if (flyingSound == 1 || flyingSound == 31) {
+      this.playSound(this.getFlyingSound(), 0.05F, 1.0F);
+      flyingSound = 1;
+    }
+  }
+
+  private void sitLanding() {
+    Vec3 vec3 = this.getDeltaMovement();
+    if (this.isTame() && this.isOrderedToSit()) {
+      this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F - vec3.y), 0.0D));
+      //this.setDeltaMovement(this.getDeltaMovement().subtract(0.0D, ((double)0.1F - vec3.y) * (double)0.1F, 0.0D));
+      this.hasImpulse = true;
+    }
+  }
+
+  private void smokeIfLowHealth() {
+    if (this.isLowHealth()) {
+      for (int i = 0; i < 2; ++i) {
+        this.level.addParticle(ParticleTypes.SMOKE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+      }
+    }
+  }
+
+  private void waterDamage() {
+    if (this.isInWaterOrBubble()) {
+      ++this.underWaterTicks;
+    } else {
+      this.underWaterTicks = 0;
+    }
+    if (this.underWaterTicks > 20) {
+      this.hurt(DamageSource.DROWN, 1.0F);
+    }
+  }
+
+  public boolean causeFallDamage(float p_149683_, float p_149684_, DamageSource source) {
+    return false;
+  }
+
   protected int decreaseAirSupply(int air) {
     return air;
   }
@@ -188,6 +192,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
             this.tame(player);
             this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.6F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
             this.level.broadcastEntityEvent(this, (byte) 7);
+            RoRmod.LOGGER.info("Drone tamed = " + this.isTame());
           } else {
             this.level.broadcastEntityEvent(this, (byte) 6);
           }
@@ -244,6 +249,23 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
       this.rollAmount = Math.min(1.0F, this.rollAmount + 0.2F);
     } else {
       this.rollAmount = Math.max(0.0F, this.rollAmount - 0.24F);
+    }
+  }
+
+  @Override
+  public boolean hurt(DamageSource source, float damage) {
+    if (this.isInvulnerableTo(source)) {
+      return false;
+    } else {
+      Entity entity = source.getEntity();
+      if (!this.level.isClientSide) {
+        this.setOrderedToSit(false);
+      }
+
+      if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
+        damage = (damage + 1.0F) / 2.0F;
+      }
+      return super.hurt(source, damage);
     }
   }
 
