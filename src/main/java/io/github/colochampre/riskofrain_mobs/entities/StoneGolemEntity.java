@@ -23,9 +23,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
@@ -44,6 +46,7 @@ import org.jetbrains.annotations.Nullable;
 public class StoneGolemEntity extends Monster {
   private static final ResourceLocation STONE_GOLEM_LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(StoneGolemEntity.class, EntityDataSerializers.INT);
+  private final HurtByTargetGoal hurtByTargetGoal = new HurtByTargetGoal(this);
   private int attackTimer;
   public int clientSideAttackTime;
   private LivingEntity clientSideCachedAttackTarget;
@@ -61,7 +64,8 @@ public class StoneGolemEntity extends Monster {
     this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
     this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, WanderingTrader.class, true));
+    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, WanderingTrader.class, true));
   }
 
   public static AttributeSupplier.Builder createAttributes() {
@@ -77,6 +81,10 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public void aiStep() {
+    LivingEntity target = this.getTarget();
+    if (target == null) {
+      this.goalSelector.addGoal(3, this.hurtByTargetGoal);
+    }
     if (this.attackTimer > 0) {
       --this.attackTimer;
     }
@@ -127,7 +135,7 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public boolean doHurtTarget(Entity entity) {
-    this.attackTimer = 20;
+    this.attackTimer = 15;
     this.level.broadcastEntityEvent(this, (byte) 4);
     float f = this.getAttackDamage();
     boolean flag = entity.hurt(DamageSource.mobAttack(this), f);
@@ -302,7 +310,7 @@ public class StoneGolemEntity extends Monster {
   @Override
   public void handleEntityEvent(byte b) {
     if (b == 4) {
-      this.attackTimer = 20;
+      this.attackTimer = 15;
       this.playSound(SoundInit.STONE_GOLEM_CLAP.get(), 3.0F, 1.0F);
     } else {
       super.handleEntityEvent(b);

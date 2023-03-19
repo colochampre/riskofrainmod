@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
@@ -30,9 +31,11 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
 
   @Override
   protected void registerGoals() {
+    this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
     this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
     this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (entity) -> {
+    this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+    this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (entity) -> {
       return entity instanceof Enemy && !(entity instanceof Creeper);
     }));
   }
@@ -41,8 +44,8 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     return Mob.createMobAttributes()
             .add(Attributes.ARMOR, 2.0D)
             .add(Attributes.ATTACK_DAMAGE, 1.0D)
-            .add(Attributes.FLYING_SPEED, 0.8D)
-            .add(Attributes.FOLLOW_RANGE, 20.0D)
+            .add(Attributes.FLYING_SPEED, 1.0D) //
+            .add(Attributes.FOLLOW_RANGE, 16.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.4D);
   }
@@ -74,7 +77,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   public Vec3 getLeashOffset() {
-    return new Vec3(0.0D, (double)(0.6F * this.getEyeHeight()), (double)(this.getBbWidth() * 0.4F));
+    return new Vec3(0.0D, (double) (0.6F * this.getEyeHeight()), (double) (this.getBbWidth() * 0.4F));
   }
 
   @Override

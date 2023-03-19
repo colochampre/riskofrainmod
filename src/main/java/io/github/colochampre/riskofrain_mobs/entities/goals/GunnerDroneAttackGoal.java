@@ -61,7 +61,8 @@ public class GunnerDroneAttackGoal extends Goal {
       double d1 = livingentity.getX() - this.drone.getX();
       double d2 = livingentity.getY(0.75D) - this.drone.getY(0.75D);
       double d3 = livingentity.getZ() - this.drone.getZ();
-      Vec3 vec3b = this.drone.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.1D).reverse();
+      Vec3 vec3a = this.drone.getDeltaMovement();
+      Vec3 vec3b = this.drone.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.05D).reverse();
 
       if (!flag) {
         this.drone.getMoveControl().setWantedPosition(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 0.8D);
@@ -69,16 +70,17 @@ public class GunnerDroneAttackGoal extends Goal {
         this.drone.getLookControl().setLookAt(livingentity, 30.0F, 90.0F);
         // Elevate drone above target
         if (livingentity.getEyeY() > this.drone.getEyeY()) {
-          Vec3 vec3c = this.drone.getDeltaMovement();
-          this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(0.0D, ((double) 0.1F - vec3c.y) * (double) 0.01F, 0.0D));
+          this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(0.0D, ((double) 0.2F - vec3a.y) * (double) 0.2F, 0.0D));
+          this.drone.hasImpulse = true;
         }
+        // Keep distance with target
         if (d0 < (double) this.maxAttackDistance && flag) {
-          // Keep distance with target
           if (d0 < (double) this.maxAttackDistance * 0.5) {
-            this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(vec3b.x, 0.0D, vec3b.z));
+            this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(vec3b.x/2, 0.0D, vec3b.z/2));
+            this.drone.hasImpulse = true;
           }
           // Get closer to target
-          if (d0 > (double) this.maxAttackDistance * 0.75) {
+          if (d0 > (double) this.maxAttackDistance * 0.75 && !(d0 < (double) this.maxAttackDistance * 0.5)) {
             this.drone.getMoveControl().setWantedPosition(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 0.8D);
           }
           // Shoot target

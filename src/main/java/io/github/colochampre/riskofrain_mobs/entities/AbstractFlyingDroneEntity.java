@@ -3,6 +3,7 @@ package io.github.colochampre.riskofrain_mobs.entities;
 import com.google.common.collect.Sets;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
+import io.github.colochampre.riskofrain_mobs.entities.goals.DroneFollowOwnerGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
@@ -35,7 +37,8 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
   private final FloatGoal floatGoal = new FloatGoal(this);
-  private final FollowOwnerGoal followOwnerGoal = new FollowOwnerGoal(this, 1.0D, 6.0F, 4.0F, true);
+  private final DroneFollowOwnerGoal followOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, true);
+  private final RandomLookAroundGoal randomLookAroundGoal = new RandomLookAroundGoal(this);
   private final WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
   private float rollAmount;
   private float rollAmountO;
@@ -54,11 +57,6 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
   }
 
-  @Override
-  protected void registerGoals() {
-    this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-  }
-
   protected PathNavigation createNavigation(Level level) {
     FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
       public boolean isStableDestination(BlockPos pos) {
@@ -71,14 +69,19 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     return flyingpathnavigation;
   }
 
+  public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+    return level.getBlockState(pos).isAir() ? 30.0F : 0.0F;
+  }
+
   @Override
   public void aiStep() {
     if (this.isTame()) {
       this.goalSelector.addGoal(3, this.followOwnerGoal);
       this.goalSelector.addGoal(4, this.randomFlyingGoal);
-      this.goalSelector.addGoal(9, this.floatGoal);
+      this.goalSelector.addGoal(5, this.randomLookAroundGoal);
+      this.goalSelector.addGoal(6, this.floatGoal);
     }
-    this.sitLanding();
+    this.landIfSitting();
     super.aiStep();
   }
 
@@ -103,11 +106,10 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     }
   }
 
-  private void sitLanding() {
+  private void landIfSitting() {
     Vec3 vec3 = this.getDeltaMovement();
     if (this.isTame() && this.isOrderedToSit()) {
       this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F - vec3.y), 0.0D));
-      //this.setDeltaMovement(this.getDeltaMovement().subtract(0.0D, ((double)0.1F - vec3.y) * (double)0.1F, 0.0D));
       this.hasImpulse = true;
     }
   }
