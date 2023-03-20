@@ -38,7 +38,6 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
   private final FloatGoal floatGoal = new FloatGoal(this);
   private final DroneFollowOwnerGoal followOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, true);
-  private final RandomLookAroundGoal randomLookAroundGoal = new RandomLookAroundGoal(this);
   private final WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
   private float rollAmount;
   private float rollAmountO;
@@ -70,7 +69,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   }
 
   public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-    return level.getBlockState(pos).isAir() ? 30.0F : 0.0F;
+    return level.getBlockState(pos).isAir() ? 20.0F : 0.0F;
   }
 
   @Override
@@ -78,7 +77,6 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     if (this.isTame()) {
       this.goalSelector.addGoal(3, this.followOwnerGoal);
       this.goalSelector.addGoal(4, this.randomFlyingGoal);
-      this.goalSelector.addGoal(5, this.randomLookAroundGoal);
       this.goalSelector.addGoal(6, this.floatGoal);
     }
     this.landIfSitting();
