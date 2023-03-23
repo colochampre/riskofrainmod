@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 public class LemurianEntity extends Monster {
   private int attackTimer;
@@ -29,6 +30,8 @@ public class LemurianEntity extends Monster {
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
     this.xpReward = 12;
+    this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, -1.0F);
+    this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, -1.0F);
   }
 
   @Override

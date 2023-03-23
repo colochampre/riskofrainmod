@@ -26,9 +26,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -158,6 +156,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   @Override
   public InteractionResult mobInteract(Player player, InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
+    Item item = itemstack.getItem();
     if (this.isTame()) {
       // Repair
       if (this.getHealth() < this.getMaxHealth()) {
@@ -177,7 +176,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
         }
       }
       // Set sitting
-      if (this.isOwnedBy(player)) { // !dyeItem
+      if (!(item instanceof DyeItem) && this.isOwnedBy(player)) {
         this.setOrderedToSit(!this.isOrderedToSit());
         this.navigation.stop();
         this.setTarget((LivingEntity) null);

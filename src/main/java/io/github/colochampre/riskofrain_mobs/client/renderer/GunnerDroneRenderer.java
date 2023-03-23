@@ -2,6 +2,7 @@ package io.github.colochampre.riskofrain_mobs.client.renderer;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.GunnerDroneModel;
+import io.github.colochampre.riskofrain_mobs.client.renderer.layers.GunnerDroneBodyLayer;
 import io.github.colochampre.riskofrain_mobs.client.renderer.layers.GunnerDroneEyeLayer;
 import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.events.ModClientEvents;
@@ -18,6 +19,7 @@ public class GunnerDroneRenderer extends MobRenderer<GunnerDroneEntity, GunnerDr
 
   public GunnerDroneRenderer(EntityRendererProvider.Context context) {
     super(context, new GunnerDroneModel<>(context.bakeLayer(ModClientEvents.GUNNER_DRONE_LAYER)), 0.3F);
+    this.addLayer(new GunnerDroneBodyLayer(this));
     this.addLayer(new GunnerDroneEyeLayer(this));
   }
 
