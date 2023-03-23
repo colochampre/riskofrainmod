@@ -196,7 +196,6 @@ public class StoneGolemEntity extends Monster {
   @Override
   public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
     this.playSound(this.getSpawnSound(), 4.0F, 1.0F);
-
     return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
   }
 

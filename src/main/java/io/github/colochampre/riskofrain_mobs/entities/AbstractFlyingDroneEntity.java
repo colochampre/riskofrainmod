@@ -4,13 +4,17 @@ import com.google.common.collect.Sets;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.entities.goals.DroneFollowOwnerGoal;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -27,10 +31,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Set;
 
 public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
@@ -42,8 +49,8 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   private float rollAmount;
   private float rollAmountO;
   private int flyingSound;
-  private int goldCount = this.setGoldCount();
   private int underWaterTicks;
+  private int goldCount = this.setGoldCount();
 
   public AbstractFlyingDroneEntity(EntityType<? extends AbstractFlyingDroneEntity> type, Level level) {
     super(type, level);
@@ -140,6 +147,15 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   }
 
   @Override
+  public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+    String price = String.valueOf(this.goldCount);
+    Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
+    this.setCustomName(component);
+    this.setCustomNameVisible(true);
+    return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
+  }
+
+  @Override
   public InteractionResult mobInteract(Player player, InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
     if (this.isTame()) {
@@ -186,13 +202,17 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
         } else {
           goldCount--;
         }
-        RoRmod.LOGGER.info("goldCount = " + goldCount);
+        String price = String.valueOf(this.goldCount);
+        Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
+        this.setCustomName(component);
+        this.setCustomNameVisible(true);
         if (!this.level.isClientSide) {
           if (this.goldCount <= 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
             this.tame(player);
             this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.6F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
             this.level.broadcastEntityEvent(this, (byte) 7);
-            RoRmod.LOGGER.info("Drone tamed = " + this.isTame());
+            this.setCustomName(null);
+            this.setCustomNameVisible(false);
           } else {
             this.level.broadcastEntityEvent(this, (byte) 6);
           }
@@ -250,6 +270,11 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     } else {
       this.rollAmount = Math.max(0.0F, this.rollAmount - 0.24F);
     }
+  }
+
+  @Override
+  public boolean canBeLeashed(Player player) {
+    return (this.isTame() && !this.isInSittingPose());
   }
 
   @Override

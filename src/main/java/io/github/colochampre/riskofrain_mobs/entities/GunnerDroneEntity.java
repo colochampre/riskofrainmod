@@ -77,7 +77,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   public Vec3 getLeashOffset() {
-    return new Vec3(0.0D, (double) (0.6F * this.getEyeHeight()), (double) (this.getBbWidth() * 0.4F));
+    return new Vec3(0.0D, (double) (0.6F * this.getEyeHeight()), (double) (this.getBbWidth() * 0.2F));
   }
 
   @Override
