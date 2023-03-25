@@ -30,6 +30,7 @@ public class RoRmod {
     if (event.getTab() == CreativeModeTabs.SPAWN_EGGS)  {
       event.accept(ItemInit.LEMURIAN_SPAWN_EGG);
       event.accept(ItemInit.STONE_GOLEM_SPAWN_EGG);
+      event.accept(ItemInit.GUNNER_DRONE_SPAWN_EGG);
     }
   }
 }

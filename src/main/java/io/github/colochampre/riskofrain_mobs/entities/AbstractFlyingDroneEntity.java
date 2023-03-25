@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
+public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
   private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
   private final FloatGoal floatGoal = new FloatGoal(this);
@@ -183,10 +183,12 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
         this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.2F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         return InteractionResult.SUCCESS;
       }
-      // No gold
+      // Not gold
     } else if (!this.isTame()) {
       if (!TAME_ITEMS.contains(itemstack.getItem())) {
+        Component notGold = Component.translatable("message.riskofrain_mobs.not_gold").withStyle(ChatFormatting.YELLOW);
         this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.INSUFFICIENT_FOUNDS_PROC.get(), this.getSoundSource(), 0.5F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+        player.sendSystemMessage(notGold);
         return InteractionResult.SUCCESS;
         // Taming
       } else if (TAME_ITEMS.contains(itemstack.getItem())) {
@@ -197,7 +199,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
         if (itemstack.getItem().equals(Items.GOLD_INGOT)) {
           goldCount -= 9;
         } else if (itemstack.getItem().equals(Items.RAW_GOLD)) {
-          goldCount -= 5;
+          goldCount -= 6;
         } else {
           goldCount--;
         }
@@ -243,17 +245,17 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
 
   protected void playStepSound(BlockPos pos, BlockState blockIn) {
   }
-
+  /*
   public int getGoldCount() {
     return goldCount;
   }
-
+  */
   private int setGoldCount() {
     Difficulty difficulty = this.level.getDifficulty();
     if (difficulty == Difficulty.HARD) {
-      goldCount = 27;
+      goldCount = 54;
     } else {
-      goldCount = 18;
+      goldCount = 36;
     }
     return goldCount;
   }

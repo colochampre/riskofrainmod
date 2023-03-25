@@ -12,15 +12,16 @@ import net.minecraft.world.entity.animal.Wolf;
 
 public class GunnerDroneBodyLayer extends RenderLayer<GunnerDroneEntity, GunnerDroneModel<GunnerDroneEntity>> {
   private static final ResourceLocation GUNNER_DRONE_BODY_COLOR = new ResourceLocation(RoRmod.MODID, "textures/entity/gunner_drone/gunner_drone_color.png");
+
   public GunnerDroneBodyLayer(RenderLayerParent<GunnerDroneEntity, GunnerDroneModel<GunnerDroneEntity>> layer) {
     super(layer);
   }
 
   @Override
-  public void render(PoseStack p_117720_, MultiBufferSource p_117721_, int p_117722_, GunnerDroneEntity p_117723_, float p_117724_, float p_117725_, float p_117726_, float p_117727_, float p_117728_, float p_117729_) {
-    if (p_117723_.isTame() && !p_117723_.isInvisible()) {
-      float[] afloat = p_117723_.getBodyColor().getTextureDiffuseColors();
-      renderColoredCutoutModel(this.getParentModel(), GUNNER_DRONE_BODY_COLOR, p_117720_, p_117721_, p_117722_, p_117723_, afloat[0], afloat[1], afloat[2]);
+  public void render(PoseStack poseStack, MultiBufferSource bufferSource, int p_117722_, GunnerDroneEntity drone, float p_117724_, float p_117725_, float p_117726_, float p_117727_, float p_117728_, float p_117729_) {
+    if (drone.isTame() && !drone.isInvisible() && !(drone.getBodyColor().getId() == 3)) {
+      float[] afloat = drone.getBodyColor().getTextureDiffuseColors();
+      renderColoredCutoutModel(this.getParentModel(), GUNNER_DRONE_BODY_COLOR, poseStack, bufferSource, p_117722_, drone, afloat[0], afloat[1], afloat[2]);
     }
   }
 }

@@ -1,4 +1,10 @@
 {
+  "entity.riskofrain_mobs.gunner_drone": "Gunner Drone",
+  "entity.riskofrain_mobs.lemurian":	 "Lemurian",
+  "entity.riskofrain_mobs.stone_golem":  "Stone Golem",
+
   "item.riskofrain_mobs.lemurian_spawn_egg": "Lemurian Spawn Egg",
-  "item.riskofrain_mobs.stone_golem_spawn_egg": "Stone Golem Spawn Egg"
+  "item.riskofrain_mobs.stone_golem_spawn_egg": "Stone Golem Spawn Egg",
+
+  "message.riskofrain_mobs.not_gold": "NOT GOLD"
 }

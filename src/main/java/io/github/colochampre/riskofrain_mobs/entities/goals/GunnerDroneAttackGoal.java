@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities.goals;
 
+import io.github.colochampre.riskofrain_mobs.entities.BulletEntity;
 import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.sounds.SoundEvent;
@@ -58,9 +59,7 @@ public class GunnerDroneAttackGoal extends Goal {
     if (livingentity != null) {
       boolean flag = this.drone.getSensing().hasLineOfSight(livingentity);
       double d0 = this.drone.distanceToSqr(livingentity);
-      double d1 = livingentity.getX() - this.drone.getX();
-      double d2 = livingentity.getY(0.75D) - this.drone.getY(0.75D);
-      double d3 = livingentity.getZ() - this.drone.getZ();
+
       Vec3 vec3a = this.drone.getDeltaMovement();
       Vec3 vec3b = this.drone.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.05D).reverse();
 
@@ -73,9 +72,9 @@ public class GunnerDroneAttackGoal extends Goal {
           this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(0.0D, ((double) 0.2F - vec3a.y) * (double) 0.2F, 0.0D));
           this.drone.hasImpulse = true;
         }
-        // Keep distance with target
         if (d0 < (double) this.maxAttackDistance && flag) {
-          if (d0 < (double) this.maxAttackDistance * 0.5) {
+          // Keep distance with target
+          if (d0 < (double) this.maxAttackDistance * 0.3) {
             this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(vec3b.x/2, 0.0D, vec3b.z/2));
             this.drone.hasImpulse = true;
           }
@@ -85,6 +84,7 @@ public class GunnerDroneAttackGoal extends Goal {
           }
           // Shoot target
           if (this.attackTime <= 0) {
+
             ++this.attackStep;
             if (this.attackStep == 1) {
               this.attackTime = 30;
@@ -96,14 +96,11 @@ public class GunnerDroneAttackGoal extends Goal {
               this.drone.setTarget((LivingEntity) null);
             }
             if (this.attackStep > 1) {
-              double d4 = Math.sqrt(Math.sqrt(d0)) * 0.5D;
               if (!this.drone.isSilent()) {
                 this.drone.playSound(this.getDroneShootSound(), 0.4F, 1.0F);
               }
               for (int i = 0; i < 1; ++i) {
-                Arrow projectile = new Arrow(this.drone.level, this.drone);
-                projectile.shoot(d1, d2, d3, 3.0F, 1.0F);
-                this.drone.level.addFreshEntity(projectile);
+                this.drone.performRangedAttack(livingentity, this.maxAttackDistance);
               }
             }
             this.drone.getLookControl().setLookAt(livingentity, 30.0F, 90.0F);

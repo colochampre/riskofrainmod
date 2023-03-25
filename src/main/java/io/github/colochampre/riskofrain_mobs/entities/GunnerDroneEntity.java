@@ -1,11 +1,13 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
+import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerDroneAttackGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,9 +20,12 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -28,6 +33,7 @@ import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -126,8 +132,8 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     this.entityData.set(DATA_BODY_COLOR, color.getId());
   }
 
-  public static boolean canSpawn(EntityType<GunnerDroneEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-    return checkAnimalSpawnRules(entityType, level, spawnType, pos, random);
+  public static boolean checkDroneSpawnRules(EntityType<GunnerDroneEntity> drone, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource randomSource) {
+    return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
   }
 
   @Override
@@ -140,6 +146,35 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   @Override
-  public void performRangedAttack(LivingEntity p_33317_, float distanceFactor) {
+  public void performRangedAttack(LivingEntity livingentity, float distanceFactor) {
+    BulletEntity projectile = new BulletEntity(this.level, this);
+    double d0 = livingentity.getEyeY() - (double) 1.1F;
+    double d1 = livingentity.getX() - this.getX();
+    double d2 = d0 - projectile.getY();
+    //double d2 = livingentity.getEyeY() - this.drone.getY(0.75D);
+    double d3 = livingentity.getZ() - this.getZ();
+    double d4 = Math.sqrt(Math.sqrt(d0)) * 0.2D;
+    projectile.shoot(d1, d2 + d4, d3, 4.0F, 1.0F);
+    this.level.addFreshEntity(projectile);
+  }
+
+  @Override
+  public boolean wantsToAttack(LivingEntity livingentity, LivingEntity owner) {
+    if (!(livingentity instanceof Creeper)) {
+      if (livingentity instanceof Wolf) {
+        Wolf wolf = (Wolf)livingentity;
+        return !wolf.isTame() || wolf.getOwner() != owner;
+      } else if (livingentity instanceof Player && owner instanceof Player && !((Player)owner).canHarmPlayer((Player)livingentity)) {
+        return false;
+      } else if (livingentity instanceof AbstractHorse && ((AbstractHorse)livingentity).isTamed()) {
+        return false;
+      } else if (livingentity instanceof AbstractFlyingDroneEntity && ((AbstractFlyingDroneEntity)livingentity).isTame()) {
+        return false;
+      } else {
+        return !(livingentity instanceof TamableAnimal) || !((TamableAnimal)livingentity).isTame();
+      }
+    } else {
+      return false;
+    }
   }
 }
