@@ -188,7 +188,9 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
       if (!TAME_ITEMS.contains(itemstack.getItem())) {
         Component notGold = Component.translatable("message.riskofrain_mobs.not_gold").withStyle(ChatFormatting.YELLOW);
         this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.INSUFFICIENT_FOUNDS_PROC.get(), this.getSoundSource(), 0.5F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-        player.sendSystemMessage(notGold);
+        if (!this.level.isClientSide) {
+          player.sendSystemMessage(notGold);
+        }
         return InteractionResult.SUCCESS;
         // Taming
       } else if (TAME_ITEMS.contains(itemstack.getItem())) {
@@ -245,6 +247,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
 
   protected void playStepSound(BlockPos pos, BlockState blockIn) {
   }
+
   /*
   public int getGoldCount() {
     return goldCount;
