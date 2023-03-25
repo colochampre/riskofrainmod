@@ -113,6 +113,10 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     if (this.isTame() && this.isOrderedToSit()) {
       this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F - vec3.y), 0.0D));
       this.hasImpulse = true;
+    } else {
+      if (this.onGround) {
+        this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) 0.1F + vec3.y), 0.0D));
+      }
     }
   }
 
@@ -137,6 +141,9 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
 
   public boolean causeFallDamage(float p_149683_, float p_149684_, DamageSource source) {
     return false;
+  }
+
+  protected void checkFallDamage(double p_218316_, boolean p_218317_, BlockState state, BlockPos pos) {
   }
 
   protected int decreaseAirSupply(int air) {
