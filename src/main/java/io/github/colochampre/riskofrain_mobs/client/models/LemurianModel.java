@@ -201,6 +201,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
       this.stomach_axis.zRot = 0.0F;
     }
   }
+
   // field_f = xRot | field_g = yRot | field_h = zRot
   private void getLookAnim(float headYaw, float headPitch) {
     this.head.xRot = headPitch * 0.023271058F;
@@ -257,15 +258,15 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     // right arm anims
     if (this.rightHandSelected) {
       //switch(random) {
-        //case 1:
-          rightPunch(i, ageInTicks);
-          //break;
-        //case 2:
-          //break;
-        //case 3:
-          //break;
+      //case 1:
+      rightPunch(i, ageInTicks);
+      //break;
+      //case 2:
+      //break;
+      //case 3:
+      //break;
       //}
-    // left arm anims
+      // left arm anims
     } else {
       //switch(random) {
       //case 1:

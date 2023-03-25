@@ -37,25 +37,4 @@ public class LemurianRenderer extends MobRenderer<LemurianEntity, LemurianModel<
   public ResourceLocation getTextureLocation(LemurianEntity entity) {
     return LemurianRenderer.DEFAULT_TEXTURE;
   }
-  
-  @Override
-  public void render(LemurianEntity entity, float p_114209_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-    long roundedTime = entity.level.getDayTime() % 24000;
-    boolean night = roundedTime >= 13000 && roundedTime <= 22000;
-    BlockPos ratPos = entity.blockPosition();
-    int i = entity.level.getBrightness(LightLayer.SKY, ratPos);
-    int j = entity.level.getBrightness(LightLayer.BLOCK, ratPos);
-    int brightness;
-    if (night) {
-      brightness = j;
-    } else {
-      brightness = Math.max(i, j);
-    }
-    if (brightness < 7) {
-      VertexConsumer eyesTexture = bufferSource.getBuffer(RenderType.eyes(LEMURIAN_EYES));
-      this.model.renderToBuffer(poseStack, eyesTexture, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-    }
-    this.model.prepareMobModel(entity, 0.0F, 0.0F, partialTicks);
-    super.render(entity, p_114209_, partialTicks, poseStack, bufferSource, packedLight);
-  }
 }

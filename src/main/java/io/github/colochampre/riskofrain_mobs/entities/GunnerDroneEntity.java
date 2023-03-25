@@ -1,6 +1,5 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerDroneAttackGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,18 +13,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
-import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -35,8 +31,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
 public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements RangedAttackMob {
@@ -63,10 +57,10 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     return Mob.createMobAttributes()
             .add(Attributes.ARMOR, 2.0D)
             .add(Attributes.ATTACK_DAMAGE, 1.0D)
-            .add(Attributes.FLYING_SPEED, 1.0D) //
-            .add(Attributes.FOLLOW_RANGE, 16.0D)
+            .add(Attributes.FLYING_SPEED, 1.0D)
+            .add(Attributes.FOLLOW_RANGE, 20.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
-            .add(Attributes.MOVEMENT_SPEED, 0.4D);
+            .add(Attributes.MOVEMENT_SPEED, 0.0D);
   }
 
   public float getWalkTargetValue(BlockPos pos, LevelReader level) {
@@ -137,7 +131,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   @Override
-  protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
+  protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
     return 0.055F;
   }
 
@@ -151,9 +145,8 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     double d0 = livingentity.getEyeY() - (double) 1.1F;
     double d1 = livingentity.getX() - this.getX();
     double d2 = d0 - projectile.getY();
-    //double d2 = livingentity.getEyeY() - this.drone.getY(0.75D);
     double d3 = livingentity.getZ() - this.getZ();
-    double d4 = Math.sqrt(Math.sqrt(d0)) * 0.2D;
+    double d4 = Math.sqrt(Math.sqrt(d0)) * 0.25D;
     projectile.shoot(d1, d2 + d4, d3, 4.0F, 1.0F);
     this.level.addFreshEntity(projectile);
   }
@@ -162,16 +155,16 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   public boolean wantsToAttack(LivingEntity livingentity, LivingEntity owner) {
     if (!(livingentity instanceof Creeper)) {
       if (livingentity instanceof Wolf) {
-        Wolf wolf = (Wolf)livingentity;
+        Wolf wolf = (Wolf) livingentity;
         return !wolf.isTame() || wolf.getOwner() != owner;
-      } else if (livingentity instanceof Player && owner instanceof Player && !((Player)owner).canHarmPlayer((Player)livingentity)) {
+      } else if (livingentity instanceof Player && owner instanceof Player && !((Player) owner).canHarmPlayer((Player) livingentity)) {
         return false;
-      } else if (livingentity instanceof AbstractHorse && ((AbstractHorse)livingentity).isTamed()) {
+      } else if (livingentity instanceof AbstractHorse && ((AbstractHorse) livingentity).isTamed()) {
         return false;
-      } else if (livingentity instanceof AbstractFlyingDroneEntity && ((AbstractFlyingDroneEntity)livingentity).isTame()) {
+      } else if (livingentity instanceof AbstractFlyingDroneEntity && ((AbstractFlyingDroneEntity) livingentity).isTame()) {
         return false;
       } else {
-        return !(livingentity instanceof TamableAnimal) || !((TamableAnimal)livingentity).isTame();
+        return !(livingentity instanceof TamableAnimal) || !((TamableAnimal) livingentity).isTame();
       }
     } else {
       return false;

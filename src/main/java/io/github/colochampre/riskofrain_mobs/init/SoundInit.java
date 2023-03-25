@@ -11,6 +11,7 @@ public final class SoundInit {
 
   public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, RoRmod.MODID);
 
+  public static final RegistryObject<SoundEvent> CHAT_MESSAGE = registerSoundEvent("interactive.chat_message");
   public static final RegistryObject<SoundEvent> COIN_PROC = registerSoundEvent("interactive.coin.proc");
   public static final RegistryObject<SoundEvent> INSUFFICIENT_FOUNDS_PROC = registerSoundEvent("interactive.insufficient_founds.proc");
 

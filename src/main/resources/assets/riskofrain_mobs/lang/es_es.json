@@ -3,8 +3,9 @@
   "entity.riskofrain_mobs.lemurian":	 "Lemuriano",
   "entity.riskofrain_mobs.stone_golem":  "Golem de piedra",
 
+  "item.riskofrain_mobs.gunner_drone_spawn_egg": "Generar dron artillero",
   "item.riskofrain_mobs.lemurian_spawn_egg": "Generar lemurian",
   "item.riskofrain_mobs.stone_golem_spawn_egg": "Generar golem de piedra",
 
-  "message.riskofrain_mobs.not_gold": "NO ES ORO"
+  "message.riskofrain_mobs.not_gold": "NO ES ORO!"
 }

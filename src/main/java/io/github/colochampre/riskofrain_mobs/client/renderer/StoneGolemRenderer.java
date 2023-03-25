@@ -70,68 +70,48 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
 
   public void render(StoneGolemEntity entity, float p_114830_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
     super.render(entity, p_114830_, partialTicks, poseStack, bufferSource, packedLight);
-    renderEyeLayer(entity, partialTicks, poseStack, bufferSource, packedLight);
     renderLaser(entity, partialTicks, poseStack, bufferSource);
-  }
-
-  private void renderEyeLayer(StoneGolemEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-    long roundedTime = entity.level.getDayTime() % 24000;
-    boolean night = roundedTime >= 13000 && roundedTime <= 22000;
-    BlockPos ratPos = entity.blockPosition();
-    int i = entity.level.getBrightness(LightLayer.SKY, ratPos);
-    int j = entity.level.getBrightness(LightLayer.BLOCK, ratPos);
-    int brightness;
-    if (night) {
-      brightness = j;
-    } else {
-      brightness = Math.max(i, j);
-    }
-    if (brightness < 7) {
-      VertexConsumer eyesTexture = bufferSource.getBuffer(RenderType.eyes(STONE_GOLEM_EYE));
-      this.model.renderToBuffer(poseStack, eyesTexture, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-    }
-    this.model.prepareMobModel(entity, 0.0F, 0.0F, partialTicks);
   }
 
   private void renderLaser(StoneGolemEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource) {
     LivingEntity livingentity = entity.getActiveAttackTarget();
     if (livingentity != null) {
       float f = entity.getAttackAnimationScale(partialTicks);
-      float f1 = (float)entity.level.getGameTime() + partialTicks;
+      float f1 = (float) entity.level.getGameTime() + partialTicks;
       float f2 = f1 * 0.5F % 1.0F;
       float f3 = entity.getEyeHeight();
       poseStack.pushPose();
       poseStack.translate(0.0F, f3, 0.0F);
-      Vec3 vec3 = this.getPosition(livingentity, (double)livingentity.getBbHeight() * 0.5D, partialTicks);
-      Vec3 vec31 = this.getPosition(entity, (double)f3, partialTicks);
+      Vec3 vec3 = this.getPosition(livingentity, (double) livingentity.getBbHeight() * 0.5D, partialTicks);
+      Vec3 vec31 = this.getPosition(entity, (double) f3, partialTicks);
       Vec3 vec32 = vec3.subtract(vec31);
-      float f4 = (float)(vec32.length() + 1.0D);
+      float f4 = (float) (vec32.length() + 1.0D);
       vec32 = vec32.normalize();
-      float f5 = (float)Math.acos(vec32.y);
-      float f6 = (float)Math.atan2(vec32.z, vec32.x);
-      poseStack.mulPose(Axis.YP.rotationDegrees((((float)Math.PI / 2F) - f6) * (180F / (float)Math.PI)));
-      poseStack.mulPose(Axis.XP.rotationDegrees(f5 * (180F / (float)Math.PI)));
+      float f5 = (float) Math.acos(vec32.y);
+      float f6 = (float) Math.atan2(vec32.z, vec32.x);
+      poseStack.mulPose(Axis.YP.rotationDegrees((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI)));
+      poseStack.mulPose(Axis.XP.rotationDegrees(f5 * (180F / (float) Math.PI)));
       float f7 = f1 * 0.05F * -1.5F;
       float f8 = f * f;
-      int j = 64 + (int)(f8 * 191.0F);
-      int k = 32 + (int)(f8 * 191.0F);
-      int l = 128 - (int)(f8 * 64.0F);
+      int j = 64 + (int) (f8 * 191.0F);
+      int k = 32 + (int) (f8 * 191.0F);
+      int l = 128 - (int) (f8 * 64.0F);
       float f11 = Mth.cos(f7 + 2.3561945F) * 0.282F;
       float f12 = Mth.sin(f7 + 2.3561945F) * 0.282F;
-      float f13 = Mth.cos(f7 + ((float)Math.PI / 4F)) * 0.282F;
-      float f14 = Mth.sin(f7 + ((float)Math.PI / 4F)) * 0.282F;
+      float f13 = Mth.cos(f7 + ((float) Math.PI / 4F)) * 0.282F;
+      float f14 = Mth.sin(f7 + ((float) Math.PI / 4F)) * 0.282F;
       float f15 = Mth.cos(f7 + 3.926991F) * 0.282F;
       float f16 = Mth.sin(f7 + 3.926991F) * 0.282F;
       float f17 = Mth.cos(f7 + 5.4977875F) * 0.282F;
       float f18 = Mth.sin(f7 + 5.4977875F) * 0.282F;
-      float f19 = Mth.cos(f7 + (float)Math.PI) * 0.2F;
-      float f20 = Mth.sin(f7 + (float)Math.PI) * 0.2F;
+      float f19 = Mth.cos(f7 + (float) Math.PI) * 0.2F;
+      float f20 = Mth.sin(f7 + (float) Math.PI) * 0.2F;
       float f21 = Mth.cos(f7 + 0.0F) * 0.2F;
       float f22 = Mth.sin(f7 + 0.0F) * 0.2F;
-      float f23 = Mth.cos(f7 + ((float)Math.PI / 2F)) * 0.2F;
-      float f24 = Mth.sin(f7 + ((float)Math.PI / 2F)) * 0.2F;
-      float f25 = Mth.cos(f7 + ((float)Math.PI * 1.5F)) * 0.2F;
-      float f26 = Mth.sin(f7 + ((float)Math.PI * 1.5F)) * 0.2F;
+      float f23 = Mth.cos(f7 + ((float) Math.PI / 2F)) * 0.2F;
+      float f24 = Mth.sin(f7 + ((float) Math.PI / 2F)) * 0.2F;
+      float f25 = Mth.cos(f7 + ((float) Math.PI * 1.5F)) * 0.2F;
+      float f26 = Mth.sin(f7 + ((float) Math.PI * 1.5F)) * 0.2F;
       float f29 = -1.0F + f2;
       float f30 = f4 * 2.5F + f29;
       VertexConsumer vertexconsumer = bufferSource.getBuffer(BEAM_RENDER_TYPE);

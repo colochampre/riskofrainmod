@@ -27,7 +27,7 @@ public class RoRmod {
   }
 
   private void addItemsToTabs(CreativeModeTabEvent.BuildContents event) {
-    if (event.getTab() == CreativeModeTabs.SPAWN_EGGS)  {
+    if (event.getTab() == CreativeModeTabs.SPAWN_EGGS) {
       event.accept(ItemInit.LEMURIAN_SPAWN_EGG);
       event.accept(ItemInit.STONE_GOLEM_SPAWN_EGG);
       event.accept(ItemInit.GUNNER_DRONE_SPAWN_EGG);

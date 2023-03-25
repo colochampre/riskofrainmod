@@ -1,7 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
 import com.google.common.collect.Sets;
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.entities.goals.DroneFollowOwnerGoal;
 import net.minecraft.ChatFormatting;
@@ -35,7 +34,6 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Set;
 
 public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
@@ -74,7 +72,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-    return level.getBlockState(pos).isAir() ? 20.0F : 0.0F;
+    return level.getBlockState(pos).isAir() ? 10.0F : 0.0F;
   }
 
   @Override
@@ -118,7 +116,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   private void smokeIfLowHealth() {
-    if (this.isLowHealth()) {
+    if (this.isLowHealth() && this.isTame()) {
       for (int i = 0; i < 2; ++i) {
         this.level.addParticle(ParticleTypes.SMOKE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
       }
@@ -183,12 +181,13 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
         this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.2F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         return InteractionResult.SUCCESS;
       }
-      // Not gold
     } else if (!this.isTame()) {
+      // Not gold
       if (!TAME_ITEMS.contains(itemstack.getItem())) {
         Component notGold = Component.translatable("message.riskofrain_mobs.not_gold").withStyle(ChatFormatting.YELLOW);
         this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.INSUFFICIENT_FOUNDS_PROC.get(), this.getSoundSource(), 0.5F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         if (!this.level.isClientSide) {
+          this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.CHAT_MESSAGE.get(), this.getSoundSource(), 1.0F, 1.0F);
           player.sendSystemMessage(notGold);
         }
         return InteractionResult.SUCCESS;
@@ -228,7 +227,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
 
   @Override
   public void die(DamageSource source) {
-    this.playSound(this.getShutDownSound(), 0.6F, 1.0F);
+    this.playSound(this.getShutDownSound(), 1.0F, 1.0F);
     super.die(source);
   }
 

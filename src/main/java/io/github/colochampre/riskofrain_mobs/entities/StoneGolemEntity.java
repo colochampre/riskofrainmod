@@ -220,6 +220,14 @@ public class StoneGolemEntity extends Monster {
     }
   }
 
+  public void setActiveAttackTarget(int p_32818_) {
+    this.entityData.set(DATA_ID_ATTACK_TARGET, p_32818_);
+  }
+
+  public boolean hasActiveAttackTarget() {
+    return this.entityData.get(DATA_ID_ATTACK_TARGET) != 0;
+  }
+
   public float getAttackAnimationScale(float scale) {
     return ((float) this.clientSideAttackTime + scale) / (float) this.getAttackDuration();
   }
@@ -234,14 +242,6 @@ public class StoneGolemEntity extends Monster {
 
   public int getAttackDuration() {
     return 75;
-  }
-
-  public void setActiveAttackTarget(int p_32818_) {
-    this.entityData.set(DATA_ID_ATTACK_TARGET, p_32818_);
-  }
-
-  public boolean hasActiveAttackTarget() {
-    return this.entityData.get(DATA_ID_ATTACK_TARGET) != 0;
   }
 
   public int getAttackTimer() {

@@ -1,14 +1,11 @@
 package io.github.colochampre.riskofrain_mobs.entities.goals;
 
-import io.github.colochampre.riskofrain_mobs.entities.BulletEntity;
 import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -59,10 +56,8 @@ public class GunnerDroneAttackGoal extends Goal {
     if (livingentity != null) {
       boolean flag = this.drone.getSensing().hasLineOfSight(livingentity);
       double d0 = this.drone.distanceToSqr(livingentity);
-
       Vec3 vec3a = this.drone.getDeltaMovement();
       Vec3 vec3b = this.drone.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.05D).reverse();
-
       if (!flag) {
         this.drone.getMoveControl().setWantedPosition(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 0.8D);
       } else {
@@ -75,7 +70,7 @@ public class GunnerDroneAttackGoal extends Goal {
         if (d0 < (double) this.maxAttackDistance && flag) {
           // Keep distance with target
           if (d0 < (double) this.maxAttackDistance * 0.3) {
-            this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(vec3b.x/2, 0.0D, vec3b.z/2));
+            this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(vec3b.x / 2, 0.0D, vec3b.z / 2));
             this.drone.hasImpulse = true;
           }
           // Get closer to target
@@ -97,7 +92,7 @@ public class GunnerDroneAttackGoal extends Goal {
             }
             if (this.attackStep > 1) {
               if (!this.drone.isSilent()) {
-                this.drone.playSound(this.getDroneShootSound(), 0.4F, 1.0F);
+                this.drone.playSound(this.getDroneShootSound(), 1.5F, 1.0F);
               }
               for (int i = 0; i < 1; ++i) {
                 this.drone.performRangedAttack(livingentity, this.maxAttackDistance);
