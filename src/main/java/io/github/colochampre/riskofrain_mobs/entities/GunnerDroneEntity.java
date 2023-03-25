@@ -58,7 +58,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
             .add(Attributes.ARMOR, 2.0D)
             .add(Attributes.ATTACK_DAMAGE, 1.0D)
             .add(Attributes.FLYING_SPEED, 1.0D)
-            .add(Attributes.FOLLOW_RANGE, 20.0D)
+            .add(Attributes.FOLLOW_RANGE, 16.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.0D);
   }
