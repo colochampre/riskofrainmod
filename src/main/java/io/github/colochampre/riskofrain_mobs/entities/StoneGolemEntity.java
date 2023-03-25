@@ -55,6 +55,7 @@ public class StoneGolemEntity extends Monster {
     super(type, level);
     this.maxUpStep = 1.0F;
     this.xpReward = 24;
+    this.setPathfindingMalus(BlockPathTypes.LEAVES, 0.0F);
   }
 
   @Override
@@ -93,11 +94,11 @@ public class StoneGolemEntity extends Monster {
     doLaserParticleEffects();
     super.aiStep();
   }
-
+  /*
   protected PathNavigation createNavigation(Level level) {
     return new StoneGolemEntity.StoneGolemNavigation(this, level);
   }
-
+  */
   public static boolean canSpawn(EntityType<StoneGolemEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
     return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
   }
@@ -138,7 +139,7 @@ public class StoneGolemEntity extends Monster {
     this.attackTimer = 15;
     this.level.broadcastEntityEvent(this, (byte) 4);
     float f = this.getAttackDamage();
-    boolean flag = entity.hurt(DamageSource.mobAttack(this), f);
+    boolean flag = entity.hurt(this.damageSources().mobAttack(this), f);
     this.playSound(SoundInit.STONE_GOLEM_CLAP.get(), 3.0F, 1.0F);
     return flag;
   }
@@ -318,12 +319,12 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public boolean isInvulnerableTo(DamageSource src) {
-    return src == DamageSource.FREEZE ||
-            src == DamageSource.HOT_FLOOR ||
-            src == DamageSource.IN_WALL ||
-            src == DamageSource.IN_FIRE ||
-            src == DamageSource.LAVA ||
-            src == DamageSource.ON_FIRE ||
+    return src == this.damageSources().freeze() ||
+            src == this.damageSources().hotFloor() ||
+            src == this.damageSources().inWall() ||
+            src == this.damageSources().inFire() ||
+            src == this.damageSources().lava() ||
+            src == this.damageSources().onFire() ||
             super.isInvulnerableTo(src);
   }
 
@@ -366,7 +367,7 @@ public class StoneGolemEntity extends Monster {
     double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
     entity.push(d0 / d2 * 4.0D, 0.2D, d1 / d2 * 4.0D);
   }
-
+  /*
   static class StoneGolemNavigation extends GroundPathNavigation {
 
     public StoneGolemNavigation(Mob mob, Level level) {
@@ -384,4 +385,5 @@ public class StoneGolemEntity extends Monster {
       return pathTypes == BlockPathTypes.LEAVES ? BlockPathTypes.OPEN : super.evaluateBlockPathType(block, p_33388_, p_33389_, pos, pathTypes);
     }
   }
+  */
 }

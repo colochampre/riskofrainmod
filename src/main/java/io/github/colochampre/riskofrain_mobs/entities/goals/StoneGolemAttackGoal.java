@@ -171,8 +171,8 @@ public class StoneGolemAttackGoal extends Goal {
       }
       this.golem.playSound(this.getLaserFireSound(), 3.0F, 1.0F);
       livingentity.playSound(this.getLaserFireSound(), 3.0F, 1.0F);
-      livingentity.hurt(DamageSource.indirectMagic(this.golem, this.golem), f);
-      livingentity.hurt(DamageSource.mobAttack(this.golem), this.golem.getAttackDamage() / 2);
+      livingentity.hurt(golem.damageSources().indirectMagic(this.golem, this.golem), f);
+      livingentity.hurt(golem.damageSources().mobAttack(this.golem), this.golem.getAttackDamage() / 2);
       livingentity.addDeltaMovement(vec3);
       this.golem.setTarget((LivingEntity) null);
       this.laserCooldown = 85;

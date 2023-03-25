@@ -16,7 +16,9 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
@@ -52,7 +54,6 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     super(type, level);
     this.moveControl = new FlyingMoveControl(this, 16, true);
     this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DAMAGE_CACTUS, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
@@ -72,7 +73,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-    return level.getBlockState(pos).isAir() ? 10.0F : 0.0F;
+    return level.getBlockState(pos).isAir() ? 20.0F : 0.0F;
   }
 
   @Override
@@ -130,7 +131,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
       this.underWaterTicks = 0;
     }
     if (this.underWaterTicks > 20) {
-      this.hurt(DamageSource.DROWN, 1.0F);
+      this.hurt(this.damageSources().drown(), 1.0F);
     }
   }
 

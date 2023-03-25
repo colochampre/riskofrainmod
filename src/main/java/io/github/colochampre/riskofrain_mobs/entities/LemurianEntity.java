@@ -81,7 +81,7 @@ public class LemurianEntity extends Monster {
     this.attackTimer = 10;
     this.level.broadcastEntityEvent(this, (byte) 4);
     float f = this.getAttackDamage();
-    boolean flag = entity.hurt(DamageSource.mobAttack(this), f);
+    boolean flag = entity.hurt(this.damageSources().mobAttack(this), f);
     this.playSound(SoundInit.LEMURIAN_ATTACK.get(), 1.0F, 1.0F);
     return flag;
   }
