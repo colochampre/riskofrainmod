@@ -1,0 +1,23 @@
+{
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"weight": 1.0,
+					"name": "riskofrainmod:infusion"
+				},
+				{
+					"type": "minecraft:item",
+					"weight": 1.0,
+					"name": "riskofrainmod:rose_buckler"
+				},
+				{
+					"type": "minecraft:empty",
+					"weight": 2.0
+				}
+			]
+		}
+	]
+}

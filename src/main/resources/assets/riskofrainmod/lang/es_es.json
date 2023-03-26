@@ -1,0 +1,90 @@
+// MOTD color codes	Color name/description
+//
+// \u00A74	"dark_red"
+// \u00A7c	"red"
+// \u00A76	"gold"
+// \u00A7e	"yellow"
+// \u00A72	"dark_green"
+// \u00A7a	"green"
+// \u00A7b	"aqua"
+// \u00A73	"dark_aqua"
+// \u00A71	"dark_blue"
+// \u00A79	"blue"
+// \u00A7d	"light_purple"
+// \u00A75	"dark_purple"
+// \u00A7f	"white"
+// \u00A77	"gray"
+// \u00A78	"dark_gray"
+// \u00A70	"black"
+// \u00A7r	"reset" Reset color to default
+// \u00A7l	Bold
+// \u00A7o	Italic
+// \u00A7n	Underline
+// \u00A7m	Strike
+
+{
+	// Entity Types
+	"entity.riskofrainmod.gunner_drone":			"Dron artillero",
+	"entity.riskofrainmod.lemurian":				"Lemuriano",
+	"entity.riskofrainmod.stone_golem":				"Golem de piedra",
+
+	// Item Group
+	"itemGroup.riskofrain_group":					"Risk of Rain",
+
+	// Items
+	"item.riskofrainmod.bustling_fungus": "Hongo agitado",
+	"item.riskofrainmod.chest": "Cofre comun",
+	"item.riskofrainmod.crowbar": "Palanca",
+	"item.riskofrainmod.goat_hoof": "Pezuña de cabra de Paul",
+	"item.riskofrainmod.lens_makers_glasses": "Gafas del creador de lentes",
+	"item.riskofrainmod.soldiers_syringe": "Jeringuilla del soldado",
+	"item.riskofrainmod.topaz_brooch": "Broche de topacio",
+	"item.riskofrainmod.tougher_times": "Tiempos mas dificiles",
+	"item.riskofrainmod.infusion": "\u00A7aInfusion",
+	"item.riskofrainmod.rose_buckler": "\u00A7aBroquel de la rosa",
+	"item.riskofrainmod.ukulele": "\u00A7aUkelele",
+	
+	// Item tooltips
+	"item.riskofrainmod.bustling_fungus.tooltip1": "Al permanecer quieto por 2 segundos:",
+	"item.riskofrainmod.bustling_fungus.tooltip2": "cura por medio corazon cada 2.5 segundos",
+	"item.riskofrainmod.bustling_fungus.tooltip3": "Cada 4 stacks: se divide la cadencia",
+	
+	"item.riskofrainmod.crowbar.tooltip1": "Al golpear:",
+	"item.riskofrainmod.crowbar.tooltip2": "Hace 150% (+50% por stack) de daño",
+	"item.riskofrainmod.crowbar.tooltip3": "a enemigos con mas de 90% de vida",
+	
+	"item.riskofrainmod.goat_hoof.tooltip1": "Incrementa la velocidad de movimiento en 20%",
+	"item.riskofrainmod.goat_hoof.tooltip2": "Cada 4 stacks: +20% velocidad de movimiento",
+	
+	"item.riskofrainmod.gunner_drone_spawn_egg.tooltip1": "\u00A76Pepitas de oro para comprar",
+	"item.riskofrainmod.gunner_drone_spawn_egg.tooltip2": "Pepitas de hierro para reparar",
+	
+	"item.riskofrainmod.lens_makers_glasses.tooltip1": "Al golpear:",
+	"item.riskofrainmod.lens_makers_glasses.tooltip2": "6.25% (+6.25% por stack) chance de hacer doble daño",
+	"item.riskofrainmod.lens_makers_glasses.tooltip3": "hasta un maximo de 100%",
+	
+	"item.riskofrainmod.soldiers_syringe.tooltip1": "Incrementa la velocidad de ataque y de minado",
+	"item.riskofrainmod.soldiers_syringe.tooltip2": "Cada 4 stacks: +10% velocidad de ataque y +20% velocidad para minar",
+	
+	"item.riskofrainmod.topaz_brooch.tooltip1": "Al matar:",
+	"item.riskofrainmod.topaz_brooch.tooltip2": "Gana una barrera temporal de 2 corazones",
+	"item.riskofrainmod.topaz_brooch.tooltip3": "Cada 4 stacks: +2 corazones",
+	
+	"item.riskofrainmod.tougher_times.tooltip1": "Al ser golpeado:",
+	"item.riskofrainmod.tougher_times.tooltip2": "3.75% (+3.75% por stack) chance de bloquear ataques",
+	"item.riskofrainmod.tougher_times.tooltip3": "hasta un maximo de 60%",
+	
+	"item.riskofrainmod.infusion.tooltip1": "Al usar:",
+	"item.riskofrainmod.infusion.tooltip2": "Incrementa la vida maxima en 1 corazon",
+	
+	"item.riskofrainmod.rose_buckler.tooltip1": "Incrementa la resistencia al esprintar:",
+	"item.riskofrainmod.rose_buckler.tooltip2": "Cada 4 stacks: +20% resistencia",
+	"item.riskofrainmod.rose_buckler.tooltip3": "hasta un maximo de 80%",
+	
+	"item.riskofrainmod.ukulele.tooltip1": "...y su musica era electrica",
+	
+	// Spawn Eggs
+	"item.riskofrainmod.gunner_drone_spawn_egg": "Generar Dron artillero",
+	"item.riskofrainmod.lemurian_spawn_egg": "Generar Lemuriano",
+	"item.riskofrainmod.stone_golem_spawn_egg": "Generar Golem de piedra"
+}

@@ -1,0 +1,89 @@
+// MOTD color codes	Color name/description
+//
+// \u00A74	"dark_red"
+// \u00A7c	"red"
+// \u00A76	"gold"
+// \u00A7e	"yellow"
+// \u00A72	"dark_green"
+// \u00A7a	"green"
+// \u00A7b	"aqua"
+// \u00A73	"dark_aqua"
+// \u00A71	"dark_blue"
+// \u00A79	"blue"
+// \u00A7d	"light_purple"
+// \u00A75	"dark_purple"
+// \u00A7f	"white"
+// \u00A77	"gray"
+// \u00A78	"dark_gray"
+// \u00A70	"black"
+// \u00A7r	"reset" Reset color to default
+// \u00A7l	Bold
+// \u00A7o	Italic
+// \u00A7n	Underline
+// \u00A7m	Strike
+//									Translation by	Qsefthuopq
+{
+	// Entity Types
+	"entity.riskofrainmod.gunner_drone":			"炮塔无人机",
+	"entity.riskofrainmod.lemurian":				"月光石"
+	"entity.riskofrainmod.stone_golem":				"石魔像"
+
+	// Item Group
+	"itemGroup.riskofrain_group":					"雨中冒险",
+
+	// Items
+	"item.riskofrainmod.bustling_fungus":	 "茂盛真菌",
+	"item.riskofrainmod.chest":				 "普通箱子",
+	"item.riskofrainmod.crowbar":			 "撬棍",
+	"item.riskofrainmod.goat_hoof":			 "山羊蹄子",
+	"item.riskofrainmod.lens_makers_glasses": "透镜制作者的眼镜",
+	"item.riskofrainmod.soldiers_syringe":	 "士兵注射器",
+	"item.riskofrainmod.topaz_brooch":		 "黄晶胸针",
+	"item.riskofrainmod.infusion":			 "\u00A7a输液",
+	"item.riskofrainmod.rose_buckler":		 "\u00A7a玫瑰圆盾",
+	"item.riskofrainmod.ukulele":			 "\u00A7a尤克里里",
+	
+	// Item tooltips
+	"item.riskofrainmod.bustling_fungus.tooltip1":	  "站立不动2秒后：",
+	"item.riskofrainmod.bustling_fungus.tooltip2":	  "每2.5秒恢复半颗心的生命值",
+	"item.riskofrainmod.bustling_fungus.tooltip3":	  "每堆叠4个：延迟减半",
+	
+	"item.riskofrainmod.crowbar.tooltip1":			  "击中目标时：",
+	"item.riskofrainmod.crowbar.tooltip2":			  "对血量大于90%的敌人",
+	"item.riskofrainmod.crowbar.tooltip3":			  "造成150%（每个堆叠额外增加50%）的伤害",
+	
+	"item.riskofrainmod.goat_hoof.tooltip1":			  "增加20%的移速",
+	"item.riskofrainmod.goat_hoof.tooltip2":			  "每4个堆叠：+20%移速",
+	
+	"item.riskofrainmod.gunner_drone_spawn_egg.tooltip1": "\u00A76Gold nuggets to purchase",
+	"item.riskofrainmod.gunner_drone_spawn_egg.tooltip2": "Iron nuggets to repair",
+	
+	"item.riskofrainmod.lens_makers_glasses.tooltip1": "击中目标时：",
+	"item.riskofrainmod.lens_makers_glasses.tooltip2": "有6.25%（每个堆叠额外增加6.25%）的几率造成双倍伤害",
+	"item.riskofrainmod.lens_makers_glasses.tooltip3": "上限为100%",
+	
+	"item.riskofrainmod.soldiers_syringe.tooltip1": 	  "增加攻击速度和挖掘速度",
+	"item.riskofrainmod.soldiers_syringe.tooltip2": 	  "每4个堆叠：+10%攻击速度和+20%挖掘速度",
+	
+	"item.riskofrainmod.topaz_brooch.tooltip1":		  "击杀时：",
+	"item.riskofrainmod.topaz_brooch.tooltip2":		  "获得2颗心的暂时护盾",
+	"item.riskofrainmod.topaz_brooch.tooltip3":		  "每4个堆叠：+2颗心",
+	
+	"item.riskofrainmod.tougher_times.tooltip1":		  "受伤时：",
+	"item.riskofrainmod.tougher_times.tooltip2":		  "有3.75%（每个堆叠增加+3.75%）的几率格挡受到的伤害",
+	"item.riskofrainmod.tougher_times.tooltip3":		  "上限为60%",
+	
+	"item.riskofrainmod.infusion.tooltip1":		  "使用时：",
+	"item.riskofrainmod.infusion.tooltip2":		  "增加1颗心的生命值上限",
+	
+	"item.riskofrainmod.rose_buckler.tooltip1":	  "奔跑时提升抗性：",
+	"item.riskofrainmod.rose_buckler.tooltip2":	  "每4个堆叠：+20%抗性",
+	"item.riskofrainmod.rose_buckler.tooltip3":	  "上限为80%",
+	
+	"item.riskofrainmod.ukulele.tooltip1":			  "……他的音乐带电。",
+	
+	// Spawn Eggs
+	"item.riskofrainmod.gunner_drone_spawn_egg":	"Gunner Drone Spawn Egg",
+	"item.riskofrainmod.lemurian_spawn_egg":		"月光石刷怪蛋",
+	"item.riskofrainmod.stone_golem_spawn_egg":		"石傀儡刷怪蛋"
+}
