@@ -20,4 +20,14 @@ public class ModCreativeModeTabs {
             builder -> builder.icon(() -> new ItemStack(ItemInit.COMMON_CHEST.get()))
                     .title(Component.translatable("creativemodetab.riskofrain_tab")));
   }
+
+  public static void addItemsToTabs(CreativeModeTabEvent.BuildContents event) {
+    if (event.getTab() == ModCreativeModeTabs.RISKOFRAIN_TAB) {
+      event.accept(ItemInit.CROWBAR);
+      event.accept(ItemInit.LENS_MAKERS_GLASSES);
+      event.accept(ItemInit.TOPAZ_BROOCH);
+      event.accept(ItemInit.TOUGHER_TIMES);
+      event.accept(ItemInit.INFUSION);
+    }
+  }
 }

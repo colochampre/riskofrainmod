@@ -17,15 +17,9 @@ public class RoRitems {
 
   public RoRitems() {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-    bus.addListener(this::addItemsToTabs);
+    bus.addListener(ModCreativeModeTabs::addItemsToTabs);
 
     SoundInit.SOUNDS.register(bus);
     ItemInit.ITEMS.register(bus);
-  }
-
-  private void addItemsToTabs(CreativeModeTabEvent.BuildContents event) {
-    if (event.getTab() == ModCreativeModeTabs.RISKOFRAIN_TAB) {
-      event.accept(ItemInit.TOUGHER_TIMES);
-    }
   }
 }
