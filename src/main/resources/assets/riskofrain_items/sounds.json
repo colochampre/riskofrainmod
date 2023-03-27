@@ -1,0 +1,182 @@
+{
+  "interactive.chat_message": {
+    "category": "entity",
+    "subtitle": "Chat message",
+    "sounds": [
+      {
+        "name": "riskofrain_items:interactive/chat_message_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:interactive/chat_message_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:interactive/chat_message_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:interactive/chat_message_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:interactive/chat_message_05",
+        "stream": true
+      }
+    ]
+  },
+  "interactive.coin.proc": {
+    "category": "item",
+    "subtitle": "Coin",
+    "sounds": [
+      {
+        "name": "riskofrain_items:interactive/coin_proc_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:interactive/coin_proc_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:interactive/coin_proc_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:interactive/coin_proc_04",
+        "stream": true
+      }
+    ]
+  },
+  "interactive.insufficient_founds.proc": {
+    "category": "entity",
+    "subtitle": "Insufficient founds",
+    "sounds": [
+      {
+        "name": "riskofrain_items:interactive/insufficient_founds_01",
+        "stream": true
+      }
+    ]
+  },
+  "item.bustling_fungus.proc_1": {
+    "category": "item",
+    "subtitle": "Bustling Fungus proc",
+    "sounds": [
+      {
+        "name": "riskofrain_items:item/bustling_fungus/bustling_fungus_proc_01",
+        "stream": true
+      }
+    ]
+  },
+  "item.bustling_fungus.proc_2": {
+    "category": "item",
+    "subtitle": "Bustling Fungus proc",
+    "sounds": [
+      {
+        "name": "riskofrain_items:item/bustling_fungus/bustling_fungus_proc_02",
+        "stream": true
+      }
+    ]
+  },
+  "item.crowbar.proc": {
+    "category": "item",
+    "subtitle": "Crowbar proc",
+    "sounds": [
+      {
+        "name": "riskofrain_items:item/crowbar/crowbar_proc_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/crowbar/crowbar_proc_02",
+        "stream": true
+      }
+    ]
+  },
+  "item.infusion.proc": {
+    "category": "item",
+    "subtitle": "Infusion proc",
+    "sounds": [
+      {
+        "name": "riskofrain_items:item/infusion/infusion_proc_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/infusion/infusion_proc_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/infusion/infusion_proc_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/infusion/infusion_proc_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/infusion/infusion_proc_05",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/infusion/infusion_proc_06",
+        "stream": true
+      }
+    ]
+  },
+  "item.lens_crit.proc": {
+    "category": "item",
+    "subtitle": "Lens crit proc",
+    "sounds": [
+      {
+        "name": "riskofrain_items:item/lens_makers_glasses/lens_crit_proc_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/lens_makers_glasses/lens_crit_proc_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/lens_makers_glasses/lens_crit_proc_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/lens_makers_glasses/lens_crit_proc_04",
+        "stream": true
+      }
+    ]
+  },
+  "item.rose_buckler.proc": {
+    "category": "item",
+    "subtitle": "Rose Buckler proc",
+    "sounds": [
+      {
+        "name": "riskofrain_items:item/rose_buckler/rose_buckler_proc_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/rose_buckler/rose_buckler_proc_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/rose_buckler/rose_buckler_proc_03",
+        "stream": true
+      }
+    ]
+  },
+  "item.tougher_times.proc": {
+    "category": "item",
+    "subtitle": "Tougher Times proc",
+    "sounds": [
+      {
+        "name": "riskofrain_items:item/tougher_times/tougher_times_proc_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/tougher_times/tougher_times_proc_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/tougher_times/tougher_times_proc_03",
+        "stream": true
+      }
+    ]
+  }
+}

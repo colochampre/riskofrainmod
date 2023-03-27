@@ -1,0 +1,16 @@
+package io.github.colochampre.riskofrain_items.items;
+
+import io.github.colochampre.riskofrain_items.init.SoundInit;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.Item;
+
+public class TougherTimesItem extends Item {
+
+  public TougherTimesItem(Properties props) {
+    super(props);
+  }
+
+  public static SoundEvent getProcSound() {
+    return SoundInit.TOUGHER_TIMES_PROC.get();
+  }
+}
