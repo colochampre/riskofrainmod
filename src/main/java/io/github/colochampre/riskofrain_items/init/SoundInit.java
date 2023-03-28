@@ -10,6 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class SoundInit {
   public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, RoRitems.MODID);
 
+  public static final RegistryObject<SoundEvent> COIN_PROC = registerSoundEvent("interactive.coin.proc");
   public static final RegistryObject<SoundEvent> CROWBAR_PROC = registerSoundEvent("item.crowbar.proc");
   public static final RegistryObject<SoundEvent> INFUSION_PROC = registerSoundEvent("item.infusion.proc");
   public static final RegistryObject<SoundEvent> LENS_CRIT_PROC = registerSoundEvent("item.lens_crit.proc");

@@ -10,8 +10,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,6 +22,17 @@ public class ModCommonEvents {
 
   @Mod.EventBusSubscriber(modid = RoRitems.MODID)
   public static class ForgeEvents {
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void coinPickupSound(EntityItemPickupEvent event) {
+      Player player = event.getEntity();
+      ItemStack itemStack = event.getItem().getItem();
+      Item item = itemStack.getItem();
+      if (item == Items.GOLD_NUGGET || item == Items.RAW_GOLD || item == Items.GOLD_INGOT) {
+        Level level = player.getLevel();
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.COIN_PROC.get(), SoundSource.PLAYERS, 0.4F, 1.0F);
+      }
+    }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void tougherTimesProc(LivingDamageEvent event) {
