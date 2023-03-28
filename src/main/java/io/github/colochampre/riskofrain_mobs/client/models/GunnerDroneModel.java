@@ -142,7 +142,7 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
     this.gun_pitch_axis.xRot = headPitch * ((float) Mth.PI / 180F);
     this.gun_yaw.yRot = netHeadYaw * ((float) Mth.PI / 180F);
 
-    if (entity.isTame() && entity.isFlying() && !entity.isInSittingPose()) {
+    if (entity.isTame() && entity.isFlying()) {
       float f1 = ageInTicks * (float) Mth.PI * 0.3F;
       this.eye.y = (Mth.cos(ageInTicks * 0.18F) * 0.9F);
       this.propeller_rod.yRot = f1;

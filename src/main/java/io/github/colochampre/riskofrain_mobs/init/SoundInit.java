@@ -14,7 +14,7 @@ public final class SoundInit {
   public static final RegistryObject<SoundEvent> CHAT_MESSAGE = registerSoundEvent("interactive.chat_message");
   public static final RegistryObject<SoundEvent> COIN_PROC = registerSoundEvent("interactive.coin.proc");
   public static final RegistryObject<SoundEvent> INSUFFICIENT_FOUNDS_PROC = registerSoundEvent("interactive.insufficient_founds.proc");
-
+  public static final RegistryObject<SoundEvent> PLAYER_DEATH = registerSoundEvent("entity.player_death.proc");
 
   public static final RegistryObject<SoundEvent> DRONE_DEATH1 = registerSoundEvent("entity.drone.death1");
   public static final RegistryObject<SoundEvent> DRONE_DEATH2 = registerSoundEvent("entity.drone.death2");
