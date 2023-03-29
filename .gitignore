@@ -18,6 +18,7 @@ build
 .gradle
 
 # other
+changelog.txt
 desktop.ini
 eclipse
 run
