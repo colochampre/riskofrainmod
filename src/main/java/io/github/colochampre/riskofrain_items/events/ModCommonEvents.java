@@ -3,9 +3,13 @@ package io.github.colochampre.riskofrain_items.events;
 import io.github.colochampre.riskofrain_items.RoRitems;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import io.github.colochampre.riskofrain_items.init.SoundInit;
+import io.github.colochampre.riskofrain_items.items.InfusionItem;
 import io.github.colochampre.riskofrain_items.items.TougherTimesItem;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -14,6 +18,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,6 +36,23 @@ public class ModCommonEvents {
       if (item == Items.GOLD_NUGGET || item == Items.RAW_GOLD || item == Items.GOLD_INGOT) {
         Level level = player.getLevel();
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.COIN_PROC.get(), SoundSource.PLAYERS, 0.4F, 1.0F);
+      }
+    }
+
+    @SubscribeEvent
+    public static void infusionProc(PlayerInteractEvent.RightClickItem event) {
+      Player player = event.getEntity();
+      Level level = event.getLevel();
+      if (!player.isCreative()) {
+        if (!level.isClientSide()) {
+          if (event.getItemStack().getItem().equals(ItemInit.INFUSION.get())) {
+            if (!player.getAbilities().instabuild) {
+              event.getItemStack().shrink(1);
+            }
+            player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier("Infusion hp increase", 2.0, AttributeModifier.Operation.ADDITION));
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), InfusionItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F);
+          }
+        }
       }
     }
 
