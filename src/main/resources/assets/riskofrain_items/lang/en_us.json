@@ -24,9 +24,17 @@
   "item.riskofrain_items.goat_hoof.tooltip_1": "Increases movement speed by 20%",
   "item.riskofrain_items.goat_hoof.tooltip_2": "Every 4 stacks: +20% movement speed",
 
+  "item.riskofrain_items.infusion.tooltip_1": "On use:",
+  "item.riskofrain_items.infusion.tooltip_2": "Increase max health by 0.5",
+  "item.riskofrain_items.infusion.tooltip_3": "up to a maximum of 10 hearts (+10 por stack)",
+
   "item.riskofrain_items.lens_makers_glasses.tooltip_1": "On hit:",
   "item.riskofrain_items.lens_makers_glasses.tooltip_2": "6.25% (+6.25% per stack) chance to deal double damage",
   "item.riskofrain_items.lens_makers_glasses.tooltip_3": "up to a maximum of 100%",
+
+  "item.riskofrain_items.rose_buckler.tooltip_1": "Incrementa la resistencia al esprintar:",
+  "item.riskofrain_items.rose_buckler.tooltip_2": "Cada 4 stacks: +20% resistencia",
+  "item.riskofrain_items.rose_buckler.tooltip_3": "hasta un maximo de 80%",
 
   "item.riskofrain_items.soldiers_syringe.tooltip_1": "Increases attack and mining speed",
   "item.riskofrain_items.soldiers_syringe.tooltip_2": "Every 4 stacks: +10% attack speed and +20% mining speed",
@@ -39,12 +47,5 @@
   "item.riskofrain_items.tougher_times.tooltip_2": "3.75% (+3.75% per stack) chance to block incoming damage",
   "item.riskofrain_items.tougher_times.tooltip_3": "up to a maximum of 60%",
 
-  "item.riskofrain_items.infusion.tooltip_1": "On use:",
-  "item.riskofrain_items.infusion.tooltip_2": "Increase max health by 1 heart",
-
-  "item.riskofrain_items.rose_buckler.tooltip_1": "Increases resistance when sprinting:",
-  "item.riskofrain_items.rose_buckler.tooltip_2": "Every 4 stacks: +20% resistance",
-  "item.riskofrain_items.rose_buckler.tooltip_3": "up to a maximum of 80%",
-
-  "item.riskofrain_items.ukulele.tooltip_1": "...and his music was electric."
+  "item.riskofrain_items.ukulele.tooltip_1": "...y su musica era electrica"
 }
