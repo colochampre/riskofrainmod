@@ -11,7 +11,6 @@ public class ItemInit {
 
   public static final RegistryObject<Item> COMMON_CHEST = ITEMS.register("common_chest",
           () -> new Item(new Item.Properties()));
-
   public static final RegistryObject<Item> CROWBAR = ITEMS.register("crowbar",
           () -> new Item(new Item.Properties()));
   public static final RegistryObject<Item> INFUSION = ITEMS.register("infusion",

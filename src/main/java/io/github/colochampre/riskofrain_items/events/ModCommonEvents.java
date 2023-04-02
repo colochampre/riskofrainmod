@@ -109,6 +109,41 @@ public class ModCommonEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void lensMakersGlassesProc(LivingDamageEvent event) {
+      if (event.getSource().getEntity() instanceof Player player) {
+        int total = 0;
+        boolean found = false;
+        ItemStack stack;
+        Inventory inv = player.getInventory();
+        for (int i = 0; i <= 35; ++i) {
+          stack = inv.getItem(i);
+          if (inv.getItem(i).getItem().equals(ItemInit.LENS_MAKERS_GLASSES.get())) {
+            total += stack.getCount();
+            found = true;
+          }
+        }
+        if (!found) {
+          return;
+        }
+        boolean proc = false;
+        double chance = 1.5625D * (double) total - 1.0D;
+        int random = RandomSource.create().nextInt(99);
+        if (random <= chance) {
+          proc = true;
+        }
+        if (!proc) {
+          return;
+        }
+        Level level = player.getLevel();
+        float damage = event.getAmount();
+        float critDamage = damage * 2.0F;
+        RoRitems.LOGGER.info("chance = " + chance + " damage = " + critDamage);
+        event.setAmount(critDamage);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.LENS_CRIT_PROC.get(), SoundSource.PLAYERS, 0.3F, 1.0F);
+      }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void smartShopperProc(LivingDeathEvent event) {
       if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof Enemy) {
         int total = 0;
@@ -128,10 +163,10 @@ public class ModCommonEvents {
         LivingEntity livingentity = event.getEntity();
         Level level = player.getLevel();
         if (!level.isClientSide()) {
-          ItemStack drop = new ItemStack(Items.GOLD_NUGGET, livingentity.getExperienceReward());
-          ItemEntity itemEntity = new ItemEntity(level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), drop);
+          ItemStack itemDrop = new ItemStack(Items.GOLD_NUGGET, livingentity.getExperienceReward());
+          ItemEntity itemEntity = new ItemEntity(level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), itemDrop);
           boolean proc = false;
-          double chance = (4 * (double) total) > 100 ? 100 : (4 * (double) total);
+          double chance = 4 * (double) total;
           int random = RandomSource.create().nextInt(99);
           if (random <= chance) {
             proc = true;
