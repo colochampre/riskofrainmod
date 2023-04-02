@@ -25,6 +25,7 @@ public class ModCreativeModeTabs {
     if (event.getTab() == ModCreativeModeTabs.RISKOFRAIN_TAB) {
       event.accept(ItemInit.CROWBAR);
       event.accept(ItemInit.LENS_MAKERS_GLASSES);
+      event.accept(ItemInit.SMART_SHOPPER);
       event.accept(ItemInit.TOPAZ_BROOCH);
       event.accept(ItemInit.TOUGHER_TIMES);
       event.accept(ItemInit.INFUSION);

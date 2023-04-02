@@ -18,6 +18,8 @@ public class ItemInit {
           () -> new Item(new Item.Properties()));
   public static final RegistryObject<Item> LENS_MAKERS_GLASSES = ITEMS.register("lens_makers_glasses",
           () -> new Item(new Item.Properties()));
+  public static final RegistryObject<Item> SMART_SHOPPER = ITEMS.register("smart_shopper",
+          () -> new Item(new Item.Properties()));
   public static final RegistryObject<Item> TOPAZ_BROOCH = ITEMS.register("topaz_brooch",
           () -> new Item(new Item.Properties()));
   public static final RegistryObject<Item> TOUGHER_TIMES = ITEMS.register("tougher_times",
