@@ -27,7 +27,8 @@ public class InfusionItem extends Item {
   @Override
   public void appendHoverText(ItemStack itemstack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
     super.appendHoverText(itemstack, level, components, flag);
-    components.add(Component.translatable("item.riskofrain_items.infusion.tooltip_1").append(INFUSION_TOOLTIP_2));
+    components.add(INFUSION_TOOLTIP_1);
+    components.add(INFUSION_TOOLTIP_2);
   }
 
   public static SoundEvent getProcSound() {

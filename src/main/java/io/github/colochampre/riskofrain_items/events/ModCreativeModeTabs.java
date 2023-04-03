@@ -28,6 +28,7 @@ public class ModCreativeModeTabs {
       event.accept(ItemInit.TOPAZ_BROOCH);
       event.accept(ItemInit.TOUGHER_TIMES);
       event.accept(ItemInit.INFUSION);
+      //event.accept(ItemInit.ROSE_BUCKLER);
       event.accept(ItemInit.SMART_SHOPPER);
     }
   }

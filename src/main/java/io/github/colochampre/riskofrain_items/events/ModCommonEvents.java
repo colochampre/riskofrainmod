@@ -8,6 +8,8 @@ import io.github.colochampre.riskofrain_items.items.InfusionItem;
 import io.github.colochampre.riskofrain_items.items.TougherTimesItem;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,11 +36,13 @@ public class ModCommonEvents {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void coinPickupSound(EntityItemPickupEvent event) {
       Player player = event.getEntity();
+      Level level = player.getLevel();
       ItemStack itemStack = event.getItem().getItem();
       Item item = itemStack.getItem();
-      if (item == Items.GOLD_NUGGET || item == Items.RAW_GOLD || item == Items.GOLD_INGOT) {
-        Level level = player.getLevel();
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.COIN_PROC.get(), SoundSource.PLAYERS, 0.4F, 1.0F);
+      if (!level.isClientSide()) {
+        if (item == Items.GOLD_NUGGET || item == Items.RAW_GOLD || item == Items.GOLD_INGOT) {
+          level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.COIN_PROC.get(), SoundSource.PLAYERS, 0.4F, 1.0F);
+        }
       }
     }
 
@@ -59,23 +63,25 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        boolean canProc = false;
-        LivingEntity livingentity = event.getEntity();
-        float currentHp = livingentity.getHealth();
-        float maxHp = livingentity.getMaxHealth();
-        if ((double) currentHp >= (double) maxHp * 0.9D) {
-          canProc = true;
-        }
-        if (!canProc) {
-          return;
-        }
         Level level = player.getLevel();
-        float damage = event.getAmount();
-        double damageMultiplier = 1.0D + 0.5D * (double) total;
-        double procVolume = damageMultiplier / 10 > 10 ? 10 : damageMultiplier / 10;
-        float crowbarDamage = damage * (float) damageMultiplier;
-        event.setAmount(crowbarDamage);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), CrowbarItem.getProcSound(), SoundSource.PLAYERS, (float) procVolume, 1.0F);
+        if (!level.isClientSide()) {
+          boolean canProc = false;
+          LivingEntity livingentity = event.getEntity();
+          float currentHp = livingentity.getHealth();
+          float maxHp = livingentity.getMaxHealth();
+          if ((double) currentHp >= (double) maxHp * 0.9D) {
+            canProc = true;
+          }
+          if (!canProc) {
+            return;
+          }
+          float damage = event.getAmount();
+          double damageMultiplier = 1.0D + 0.5D * (double) total;
+          double procVolume = damageMultiplier / 10 > 10 ? 10 : damageMultiplier / 10;
+          float crowbarDamage = damage * (float) damageMultiplier;
+          event.setAmount(crowbarDamage);
+          level.playSound(null, player.getX(), player.getY(), player.getZ(), CrowbarItem.getProcSound(), SoundSource.PLAYERS, (float) procVolume, 1.0F);
+        }
       }
     }
 
@@ -125,21 +131,22 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        boolean proc = false;
-        double chance = 1.5625D * (double) total - 1.0D;
-        int random = RandomSource.create().nextInt(99);
-        if (random <= chance) {
-          proc = true;
-        }
-        if (!proc) {
-          return;
-        }
         Level level = player.getLevel();
-        float damage = event.getAmount();
-        float critDamage = damage * 2.0F;
-        RoRitems.LOGGER.info("chance = " + chance + " damage = " + critDamage);
-        event.setAmount(critDamage);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.LENS_CRIT_PROC.get(), SoundSource.PLAYERS, 0.3F, 1.0F);
+        if (!level.isClientSide()) {
+          boolean proc = false;
+          double chance = 1.5625D * (double) total - 1.0D;
+          int random = RandomSource.create().nextInt(99);
+          if (random <= chance) {
+            proc = true;
+          }
+          if (!proc) {
+            return;
+          }
+          float damage = event.getAmount();
+          float critDamage = damage * 2.0F;
+          event.setAmount(critDamage);
+          level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.LENS_CRIT_PROC.get(), SoundSource.PLAYERS, 0.3F, 1.0F);
+        }
       }
     }
 
@@ -181,6 +188,34 @@ public class ModCommonEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void topazBroochProc(LivingDeathEvent event) {
+      if (event.getSource().getEntity() instanceof Player player) {
+        int total = 0;
+        boolean found = false;
+        ItemStack stack;
+        Inventory inv = player.getInventory();
+        for (int i = 0; i <= 35; ++i) {
+          stack = inv.getItem(i);
+          if (inv.getItem(i).getItem().equals(ItemInit.TOPAZ_BROOCH.get())) {
+            total += stack.getCount();
+            found = true;
+          }
+        }
+        if (!found) {
+          return;
+        }
+        Level level = player.getLevel();
+        if (!level.isClientSide()) {
+          if (total * 4 <= player.getMaxHealth()) {
+            player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 160, total - 1, true, false));
+          } else {
+            player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 160, (int) player.getMaxHealth() / 4 - 1, true, false));
+          }
+        }
+      }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void tougherTimesProc(LivingDamageEvent event) {
       if (event.getEntity() instanceof Player player) {
         int total = 0;
@@ -200,15 +235,17 @@ public class ModCommonEvents {
         boolean proc = false;
         double chance = (1.0D - 1.0D / (1.0D + 0.15D * (double) total) - 0.01D) * 100.0D;
         int random = RandomSource.create().nextInt(99);
-        Level level = player.getLevel();
         if (random <= chance) {
           proc = true;
         }
         if (!proc) {
           return;
         }
-        event.setAmount(0);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), TougherTimesItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F);
+        Level level = player.getLevel();
+        if (!level.isClientSide()) {
+          event.setAmount(0);
+          level.playSound(null, player.getX(), player.getY(), player.getZ(), TougherTimesItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F);
+        }
       }
     }
   }
