@@ -1,9 +1,7 @@
 package io.github.colochampre.riskofrain_items.items;
 
 import io.github.colochampre.riskofrain_items.init.SoundInit;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -15,20 +13,16 @@ import java.util.List;
 
 public class InfusionItem extends Item {
 
-  public static final Component INFUSION_TOOLTIP_1 = Component.translatable("item.riskofrain_items.infusion.tooltip_1")
-          .withStyle(ChatFormatting.WHITE).withStyle(Style.EMPTY.withItalic(true));
-  public static final Component INFUSION_TOOLTIP_2 = Component.translatable("item.riskofrain_items.infusion.tooltip_2")
-          .withStyle(ChatFormatting.GREEN).withStyle(Style.EMPTY.withBold(true));
-
-  public InfusionItem(Item.Properties props) {
+  public InfusionItem(Properties props) {
     super(props);
   }
 
   @Override
-  public void appendHoverText(ItemStack itemstack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-    super.appendHoverText(itemstack, level, components, flag);
-    components.add(INFUSION_TOOLTIP_1);
-    components.add(INFUSION_TOOLTIP_2);
+  public void appendHoverText(ItemStack itemstack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+    tooltip.add(Component.translatable("item.riskofrain_items.infusion.tooltip_1"));
+    tooltip.add(Component.translatable("item.riskofrain_items.infusion.tooltip_2"));
+    tooltip.add(Component.translatable("item.riskofrain_items.infusion.tooltip_3"));
+    super.appendHoverText(itemstack, level, tooltip, flag);
   }
 
   public static SoundEvent getProcSound() {

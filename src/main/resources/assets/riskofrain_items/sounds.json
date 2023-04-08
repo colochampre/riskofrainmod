@@ -91,6 +91,40 @@
       }
     ]
   },
+  "item.gold_gun.proc": {
+    "category": "item",
+    "subtitle": "Gold gun proc",
+    "sounds": [
+      {
+        "name": "riskofrain_items:item/gold_gun/goldgat_fire_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/gold_gun/goldgat_fire_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/gold_gun/goldgat_fire_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/gold_gun/goldgat_fire_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/gold_gun/goldgat_fire_05",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/gold_gun/goldgat_fire_06",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/gold_gun/goldgat_fire_07",
+        "stream": true
+      }
+    ]
+  },
   "item.infusion.proc": {
     "category": "item",
     "subtitle": "Infusion proc",
@@ -139,6 +173,23 @@
       },
       {
         "name": "riskofrain_items:item/lens_makers_glasses/lens_crit_proc_04",
+        "stream": true
+      }
+    ]
+  },
+  "item.repulsion_armor_plate.proc": {
+    "subtitle": "Repulsion armor plate proc",
+    "sounds": [
+      {
+        "name": "riskofrain_items:item/repulsion_armor_plate/repulsion_armor_proc_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/repulsion_armor_plate/repulsion_armor_proc_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_items:item/repulsion_armor_plate/repulsion_armor_proc_03",
         "stream": true
       }
     ]

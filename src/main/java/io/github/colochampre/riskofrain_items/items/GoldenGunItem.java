@@ -11,21 +11,22 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LensMakersGlassesItem extends Item {
+public class GoldenGunItem extends Item {
 
-  public LensMakersGlassesItem(Properties props) {
+  public GoldenGunItem(Properties props) {
     super(props);
   }
 
   @Override
   public void appendHoverText(ItemStack itemstack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable("item.riskofrain_items.lens_makers_glasses.tooltip_1"));
-    tooltip.add(Component.translatable("item.riskofrain_items.lens_makers_glasses.tooltip_2"));
-    tooltip.add(Component.translatable("item.riskofrain_items.lens_makers_glasses.tooltip_3"));
+    tooltip.add(Component.translatable("item.riskofrain_items.golden_gun.tooltip_1"));
+    tooltip.add(Component.translatable("item.riskofrain_items.golden_gun.tooltip_2"));
+    tooltip.add(Component.translatable("item.riskofrain_items.golden_gun.tooltip_3"));
+    tooltip.add(Component.translatable("item.riskofrain_items.golden_gun.tooltip_4"));
     super.appendHoverText(itemstack, level, tooltip, flag);
   }
 
   public static SoundEvent getProcSound() {
-    return SoundInit.LENS_CRIT_PROC.get();
+    return SoundInit.GOLD_GUN_PROC.get();
   }
 }

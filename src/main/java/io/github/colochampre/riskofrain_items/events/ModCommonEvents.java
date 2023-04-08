@@ -1,12 +1,12 @@
 package io.github.colochampre.riskofrain_items.events;
 
+import com.google.common.collect.Sets;
 import io.github.colochampre.riskofrain_items.RoRitems;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import io.github.colochampre.riskofrain_items.init.SoundInit;
-import io.github.colochampre.riskofrain_items.items.CrowbarItem;
-import io.github.colochampre.riskofrain_items.items.InfusionItem;
-import io.github.colochampre.riskofrain_items.items.TougherTimesItem;
+import io.github.colochampre.riskofrain_items.items.*;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -28,10 +28,13 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Set;
+
 public class ModCommonEvents {
 
   @Mod.EventBusSubscriber(modid = RoRitems.MODID)
   public static class ForgeEvents {
+    private static final Set<Item> GOLD_TYPE = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void coinPickupSound(EntityItemPickupEvent event) {
@@ -69,18 +72,60 @@ public class ModCommonEvents {
           LivingEntity livingentity = event.getEntity();
           float currentHp = livingentity.getHealth();
           float maxHp = livingentity.getMaxHealth();
-          if ((double) currentHp >= (double) maxHp * 0.9D) {
+          if ((double) currentHp >= (double) maxHp * 0.8D) {
             canProc = true;
           }
           if (!canProc) {
             return;
           }
           float damage = event.getAmount();
-          double damageMultiplier = 1.0D + 0.5D * (double) total;
+          double damageMultiplier = 1.2D + 0.3D * (double) total;
           double procVolume = damageMultiplier / 10 > 10 ? 10 : damageMultiplier / 10;
           float crowbarDamage = damage * (float) damageMultiplier;
           event.setAmount(crowbarDamage);
           level.playSound(null, player.getX(), player.getY(), player.getZ(), CrowbarItem.getProcSound(), SoundSource.PLAYERS, (float) procVolume, 1.0F);
+        }
+      }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void goldenGunProc(LivingDamageEvent event) {
+      if (event.getSource().getEntity() instanceof Player player) {
+        int total = 0;
+        int gold = 0;
+        boolean found = false;
+        ItemStack stack;
+        Inventory inv = player.getInventory();
+        for (int i = 0; i <= 35; ++i) {
+          stack = inv.getItem(i);
+          if (inv.getItem(i).getItem().equals(ItemInit.GOLDEN_GUN.get())) {
+            total += stack.getCount();
+            found = true;
+          }
+          if (GOLD_TYPE.contains(inv.getItem(i).getItem())) {
+            if (stack.getItem().equals(Items.GOLD_INGOT)) {
+              gold += stack.getCount() * 9;
+            } else if (stack.getItem().equals(Items.RAW_GOLD)) {
+              gold += stack.getCount() * 6;
+            } else {
+              gold += stack.getCount();
+            }
+          }
+          if (gold == 0) {
+            found = false;
+          }
+        }
+        if (!found) {
+          return;
+        }
+        Level level = player.getLevel();
+        if (!level.isClientSide()) {
+          float damage = event.getAmount();
+          double neededGoldForMaxAmplifier = total > 9 ? 9 : (2304 / Math.pow(2, total)) * 2;
+          double damageAmplifier = gold > neededGoldForMaxAmplifier ? 40.0D : Mth.floor(gold * 40 / neededGoldForMaxAmplifier);
+          float goldenGunDamage = damage * ((float) damageAmplifier / 100 + 1);
+          event.setAmount(goldenGunDamage);
+          level.playSound(null, player.getX(), player.getY(), player.getZ(), GoldenGunItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F);
         }
       }
     }
@@ -145,7 +190,34 @@ public class ModCommonEvents {
           float damage = event.getAmount();
           float critDamage = damage * 2.0F;
           event.setAmount(critDamage);
-          level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.LENS_CRIT_PROC.get(), SoundSource.PLAYERS, 0.3F, 1.0F);
+          level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.LENS_CRIT_PROC.get(), SoundSource.PLAYERS, 0.4F, 1.0F);
+        }
+      }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void repulsionArmorPlateProc(LivingDamageEvent event) {
+      if (event.getEntity() instanceof Player player) {
+        int total = 0;
+        boolean found = false;
+        ItemStack stack;
+        Inventory inv = player.getInventory();
+        for (int i = 0; i <= 35; ++i) {
+          stack = inv.getItem(i);
+          if (inv.getItem(i).getItem().equals(ItemInit.REPULSION_ARMOR_PLATE.get())) {
+            total += stack.getCount();
+            found = true;
+          }
+        }
+        if (!found) {
+          return;
+        }
+        Level level = player.getLevel();
+        if (!level.isClientSide()) {
+          float damage = event.getAmount();
+          float reducedDamage = damage - total < 1 ? 1 : damage - total;
+          event.setAmount(reducedDamage);
+          level.playSound(null, player.getX(), player.getY(), player.getZ(), RepulsionArmorPlateItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F + (RandomSource.create().nextFloat() - RandomSource.create().nextFloat()) * 0.2F);
         }
       }
     }
@@ -170,8 +242,8 @@ public class ModCommonEvents {
         LivingEntity livingentity = event.getEntity();
         Level level = player.getLevel();
         if (!level.isClientSide()) {
-          ItemStack itemDrop = new ItemStack(Items.GOLD_NUGGET, livingentity.getExperienceReward());
-          ItemEntity itemEntity = new ItemEntity(level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), itemDrop);
+          ItemStack goldItem = new ItemStack(Items.GOLD_NUGGET, livingentity.getExperienceReward());
+          ItemEntity goldItemEntity = new ItemEntity(level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), goldItem);
           boolean proc = false;
           double chance = 4 * (double) total;
           int random = RandomSource.create().nextInt(99);
@@ -181,8 +253,8 @@ public class ModCommonEvents {
           if (!proc) {
             return;
           }
-          level.addFreshEntity(itemEntity);
-          level.playSound(null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), SoundInit.COIN_PROC.get(), SoundSource.PLAYERS, 0.3F, 1.0F);
+          level.addFreshEntity(goldItemEntity);
+          level.playSound(null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), SoundInit.COIN_PROC.get(), SoundSource.PLAYERS, 0.4F, 1.0F);
         }
       }
     }
@@ -232,17 +304,17 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        boolean proc = false;
-        double chance = (1.0D - 1.0D / (1.0D + 0.15D * (double) total) - 0.01D) * 100.0D;
-        int random = RandomSource.create().nextInt(99);
-        if (random <= chance) {
-          proc = true;
-        }
-        if (!proc) {
-          return;
-        }
         Level level = player.getLevel();
         if (!level.isClientSide()) {
+          boolean proc = false;
+          double chance = (1.0D - 1.0D / (1.0D + 0.15D * (double) total) - 0.01D) * 100.0D;
+          int random = RandomSource.create().nextInt(99);
+          if (random <= chance) {
+            proc = true;
+          }
+          if (!proc) {
+            return;
+          }
           event.setAmount(0);
           level.playSound(null, player.getX(), player.getY(), player.getZ(), TougherTimesItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F);
         }

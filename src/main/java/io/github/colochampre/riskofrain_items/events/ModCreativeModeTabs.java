@@ -23,10 +23,13 @@ public class ModCreativeModeTabs {
 
   public static void addItemsToTabs(CreativeModeTabEvent.BuildContents event) {
     if (event.getTab() == ModCreativeModeTabs.RISKOFRAIN_TAB) {
+      event.accept(ItemInit.BUSTLING_FUNGUS);
       event.accept(ItemInit.CROWBAR);
       event.accept(ItemInit.LENS_MAKERS_GLASSES);
+      event.accept(ItemInit.REPULSION_ARMOR_PLATE);
       event.accept(ItemInit.TOPAZ_BROOCH);
       event.accept(ItemInit.TOUGHER_TIMES);
+      event.accept(ItemInit.GOLDEN_GUN);
       event.accept(ItemInit.INFUSION);
       //event.accept(ItemInit.ROSE_BUCKLER);
       event.accept(ItemInit.SMART_SHOPPER);
