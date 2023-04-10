@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "riskofrain_items:item/rose_buckler"
+  }
+}
