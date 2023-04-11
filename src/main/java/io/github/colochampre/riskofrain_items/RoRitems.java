@@ -2,6 +2,7 @@ package io.github.colochampre.riskofrain_items;
 
 import com.mojang.logging.LogUtils;
 import io.github.colochampre.riskofrain_items.events.ModCreativeModeTabs;
+import io.github.colochampre.riskofrain_items.init.BlockEntityInit;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import io.github.colochampre.riskofrain_items.init.SoundInit;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -21,5 +22,6 @@ public class RoRitems {
 
     SoundInit.SOUNDS.register(bus);
     ItemInit.ITEMS.register(bus);
+    BlockEntityInit.BLOCK_ENTITIES.register(bus);
   }
 }
