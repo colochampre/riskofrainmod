@@ -5,7 +5,6 @@ import io.github.colochampre.riskofrain_items.events.ModCreativeModeTabs;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import io.github.colochampre.riskofrain_items.init.PaintingInit;
 import io.github.colochampre.riskofrain_items.init.SoundInit;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
