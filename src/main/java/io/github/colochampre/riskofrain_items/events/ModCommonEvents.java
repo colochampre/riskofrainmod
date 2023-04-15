@@ -223,6 +223,32 @@ public class ModCommonEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void roseBucklerProc(LivingDamageEvent event) {
+      if (event.getEntity() instanceof Player player) {
+        int total = 0;
+        boolean found = false;
+        ItemStack stack;
+        Inventory inv = player.getInventory();
+        for (int i = 0; i <= 35; ++i) {
+          stack = inv.getItem(i);
+          if (inv.getItem(i).getItem().equals(ItemInit.ROSE_BUCKLER.get())) {
+            total += stack.getCount();
+            found = true;
+          }
+        }
+        if (!found) {
+          return;
+        }
+        Level level = player.getLevel();
+        if (!level.isClientSide()) {
+          if (player.isSprinting()) {
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), RoseBucklerItem.getProcSound(), SoundSource.PLAYERS, Math.min(0.4F * total, 8.0F), 1.0F + (RandomSource.create().nextFloat() - RandomSource.create().nextFloat()) * 0.2F);
+          }
+        }
+      }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void smartShopperProc(LivingDeathEvent event) {
       if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof Enemy) {
         int total = 0;

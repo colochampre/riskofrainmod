@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SmartShopperItem extends Item {
 
-  public SmartShopperItem(Item.Properties props) {
+  public SmartShopperItem(Properties props) {
     super(props);
   }
 

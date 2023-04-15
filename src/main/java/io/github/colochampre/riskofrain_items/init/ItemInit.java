@@ -24,6 +24,8 @@ public class ItemInit {
           () -> new LensMakersGlassesItem(new Item.Properties()));
   public static final RegistryObject<Item> REPULSION_ARMOR_PLATE = ITEMS.register("repulsion_armor_plate",
           () -> new RepulsionArmorPlateItem(new Item.Properties()));
+  public static final RegistryObject<Item> ROSE_BUCKLER = ITEMS.register("rose_buckler",
+          () -> new RoseBucklerItem (new Item.Properties()));
   public static final RegistryObject<Item> SMART_SHOPPER = ITEMS.register("smart_shopper",
           () -> new SmartShopperItem(new Item.Properties()));
   public static final RegistryObject<Item> TOPAZ_BROOCH = ITEMS.register("topaz_brooch",

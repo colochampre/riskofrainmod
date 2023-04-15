@@ -196,7 +196,7 @@
   },
   "item.rose_buckler.proc": {
     "category": "item",
-    "subtitle": "Rose Buckler proc",
+    "subtitle": "Rose buckler proc",
     "sounds": [
       {
         "name": "riskofrain_items:item/rose_buckler/rose_buckler_proc_01",

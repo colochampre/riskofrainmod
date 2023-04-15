@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RepulsionArmorPlateItem extends Item {
 
-  public RepulsionArmorPlateItem(Item.Properties props) {
+  public RepulsionArmorPlateItem(Properties props) {
     super(props);
   }
 
