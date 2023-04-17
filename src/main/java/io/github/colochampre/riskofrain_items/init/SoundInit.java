@@ -27,7 +27,7 @@ public class SoundInit {
   public static final RegistryObject<SoundEvent> REPULSION_ARMOR_PLATE_PROC =
           registerSoundEvent("item.repulsion_armor_plate.proc");
   public static final RegistryObject<SoundEvent> ROSE_BUCKLER_PROC =
-          registerSoundEvent("item.repulsion_armor_plate.proc");
+          registerSoundEvent("item.rose_buckler.proc");
   public static final RegistryObject<SoundEvent> TOUGHER_TIMES_PROC =
           registerSoundEvent("item.tougher_times.proc");
 

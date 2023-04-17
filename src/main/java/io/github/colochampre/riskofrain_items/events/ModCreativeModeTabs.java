@@ -17,7 +17,7 @@ public class ModCreativeModeTabs {
   @SubscribeEvent
   public static void registerCreativeModeTabs(CreativeModeTabEvent.Register event) {
     RISKOFRAIN_TAB = event.registerCreativeModeTab(new ResourceLocation(RoRitems.MODID, "riskofrain_tab"),
-            builder -> builder.icon(() -> new ItemStack(ItemInit.COMMON_CHEST.get()))
+            builder -> builder.icon(() -> new ItemStack(ItemInit.SMALL_CHEST.get()))
                     .title(Component.translatable("creativemodetab.riskofrain_tab")));
   }
 

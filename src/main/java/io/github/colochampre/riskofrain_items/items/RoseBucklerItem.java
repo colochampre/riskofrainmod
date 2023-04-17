@@ -26,7 +26,6 @@ public class RoseBucklerItem extends Item {
     tooltip.add(Component.translatable("item.riskofrain_items.rose_buckler.tooltip_3"));
     super.appendHoverText(itemstack, level, tooltip, flag);
   }
-
   @Override
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
     int amount = stack.getCount();

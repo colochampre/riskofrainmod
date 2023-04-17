@@ -21,6 +21,7 @@ public class RoRitems {
 
     SoundInit.SOUNDS.register(bus);
     ItemInit.ITEMS.register(bus);
+    //BlockInit.BLOCKS.register(bus);
     PaintingInit.PAINTING_VARIANTS.register(bus);
   }
 }

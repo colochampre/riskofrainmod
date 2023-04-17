@@ -10,8 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ItemInit {
   public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, RoRitems.MODID);
 
-  public static final RegistryObject<Item> COMMON_CHEST = ITEMS.register("common_chest",
-          () -> new Item(new Item.Properties()));
+  public static final RegistryObject<Item> SMALL_CHEST = ITEMS.register("small_chest", () -> new Item(new Item.Properties()));
   public static final RegistryObject<Item> BUSTLING_FUNGUS = ITEMS.register("bustling_fungus",
           () -> new BustlingFungusItem(new Item.Properties()));
   public static final RegistryObject<Item> CROWBAR = ITEMS.register("crowbar",
