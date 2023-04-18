@@ -4,7 +4,6 @@
   "container.riskofrain_items.common_chest": "Common Chest",
 
   "item.riskofrain_items.bustling_fungus": "Bustling Fungus",
-  "item.riskofrain_items.small_chest": "Small Chest",
   "item.riskofrain_items.crowbar": "Crowbar",
   "item.riskofrain_items.goat_hoof": "Goat Hoof",
   "item.riskofrain_items.golden_gun": "§aGolden Gun",
@@ -12,6 +11,7 @@
   "item.riskofrain_items.lens_makers_glasses": "Lens Maker's Glasses",
   "item.riskofrain_items.repulsion_armor_plate": "Repulsion Armor Plate",
   "item.riskofrain_items.rose_buckler": "§aRose Buckler",
+  "item.riskofrain_items.small_chest": "Small Chest",
   "item.riskofrain_items.smart_shopper": "§aSmart Shopper",
   "item.riskofrain_items.soldiers_syringe": "Soldier's Syringe",
   "item.riskofrain_items.topaz_brooch": "Topaz Brooch",

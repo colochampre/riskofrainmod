@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "riskofrain_items:item/small_chest"
+    "layer0": "riskofrain_items:block/small_chest"
   }
 }
