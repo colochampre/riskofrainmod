@@ -2,6 +2,7 @@ package io.github.colochampre.riskofrain_items;
 
 import com.mojang.logging.LogUtils;
 import io.github.colochampre.riskofrain_items.events.ModCreativeModeTabs;
+import io.github.colochampre.riskofrain_items.init.BlockInit;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import io.github.colochampre.riskofrain_items.init.PaintingInit;
 import io.github.colochampre.riskofrain_items.init.SoundInit;
@@ -19,9 +20,9 @@ public class RoRitems {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(ModCreativeModeTabs::addItemsToTabs);
 
-    SoundInit.SOUNDS.register(bus);
     ItemInit.ITEMS.register(bus);
-    //BlockInit.BLOCKS.register(bus);
+    BlockInit.BLOCKS.register(bus);
     PaintingInit.PAINTING_VARIANTS.register(bus);
+    SoundInit.SOUNDS.register(bus);
   }
 }

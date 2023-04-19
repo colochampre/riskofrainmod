@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_items.events;
 
 import io.github.colochampre.riskofrain_items.RoRitems;
+import io.github.colochampre.riskofrain_items.init.BlockInit;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -31,8 +32,9 @@ public class ModCreativeModeTabs {
       event.accept(ItemInit.TOUGHER_TIMES);
       event.accept(ItemInit.GOLDEN_GUN);
       event.accept(ItemInit.INFUSION);
-      //event.accept(ItemInit.ROSE_BUCKLER);
+      event.accept(ItemInit.ROSE_BUCKLER);
       event.accept(ItemInit.SMART_SHOPPER);
+      event.accept(BlockInit.SMALL_CHEST);
     }
   }
 }

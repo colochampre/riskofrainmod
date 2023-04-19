@@ -22,7 +22,13 @@ public class SmallChestBlock extends HorizontalDirectionalBlock {
     super(props);
   }
 
-  private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);
+  private static final VoxelShape SHAPE =
+          Block.box(0, 0, 2, 16, 12, 14);
+
+  @Override
+  public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+    return SHAPE;
+  }
 
   @Nullable
   @Override
