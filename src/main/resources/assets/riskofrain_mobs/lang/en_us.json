@@ -1,7 +1,7 @@
 {
-  "entity.riskofrain_mobs.gunner_drone": "Gunner Drone",
-  "entity.riskofrain_mobs.lemurian":	 "Lemurian",
-  "entity.riskofrain_mobs.stone_golem":  "Stone Golem",
+  "entity.riskofrain_mobs.gunner_drone_entity": "Gunner Drone",
+  "entity.riskofrain_mobs.lemurian_entity":	 "Lemurian",
+  "entity.riskofrain_mobs.stone_golem_entity":  "Stone Golem",
 
   "item.riskofrain_mobs.gunner_drone_spawn_egg": "Gunner Drone Spawn Egg",
   "item.riskofrain_mobs.lemurian_spawn_egg": "Lemurian Spawn Egg",

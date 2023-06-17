@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.Wolf;
 
 public class GunnerDroneBodyLayer extends RenderLayer<GunnerDroneEntity, GunnerDroneModel<GunnerDroneEntity>> {
   private static final ResourceLocation GUNNER_DRONE_BODY_COLOR = new ResourceLocation(RoRmod.MODID, "textures/entity/gunner_drone/gunner_drone_color.png");

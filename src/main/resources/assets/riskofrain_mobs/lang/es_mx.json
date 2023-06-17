@@ -1,7 +1,7 @@
 {
-  "entity.riskofrain_mobs.gunner_drone": "Dron astillero",
-  "entity.riskofrain_mobs.lemurian":	 "Lemuriano",
-  "entity.riskofrain_mobs.stone_golem":  "Golem de piedra",
+  "entity.riskofrain_mobs.gunner_drone_entity": "Dron astillero",
+  "entity.riskofrain_mobs.lemurian_entity":	 "Lemuriano",
+  "entity.riskofrain_mobs.stone_golem_entity":  "Golem de piedra",
 
   "item.riskofrain_mobs.gunner_drone_spawn_egg": "Generar dron artillero",
   "item.riskofrain_mobs.lemurian_spawn_egg": "Generar lemurian",
