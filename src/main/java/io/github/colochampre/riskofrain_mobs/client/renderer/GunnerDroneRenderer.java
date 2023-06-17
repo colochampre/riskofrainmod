@@ -7,7 +7,6 @@ import io.github.colochampre.riskofrain_mobs.client.renderer.layers.GunnerDroneE
 import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.events.ModClientEvents;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

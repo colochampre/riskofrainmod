@@ -8,7 +8,6 @@ import io.github.colochampre.riskofrain_mobs.entities.StoneGolemEntity;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.player.Player;

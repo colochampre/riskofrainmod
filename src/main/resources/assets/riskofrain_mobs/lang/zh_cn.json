@@ -1,7 +1,7 @@
 {
-  "entity.riskofrain_mobs.gunner_drone": "炮塔无人机",
-  "entity.riskofrain_mobs.lemurian":	 "月光石",
-  "entity.riskofrain_mobs.stone_golem":  "石魔像",
+  "entity.riskofrain_mobs.gunner_drone_entity": "炮塔无人机",
+  "entity.riskofrain_mobs.lemurian_entity":	 "月光石",
+  "entity.riskofrain_mobs.stone_golem_entity":  "石魔像",
 
   "item.riskofrain_mobs.gunner_drone_spawn_egg": "Gunner Drone Spawn Egg",
   "item.riskofrain_mobs.lemurian_spawn_egg": "月光石刷怪蛋",
