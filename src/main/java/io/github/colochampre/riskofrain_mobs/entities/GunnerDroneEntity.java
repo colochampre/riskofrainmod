@@ -141,14 +141,14 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
 
   @Override
   public void performRangedAttack(LivingEntity livingentity, float distanceFactor) {
-    BulletEntity projectile = new BulletEntity(this.level, this);
+    BulletEntity projectile = new BulletEntity(this.level(), this);
     double d0 = livingentity.getEyeY() - (double) 1.1F;
     double d1 = livingentity.getX() - this.getX();
     double d2 = d0 - projectile.getY();
     double d3 = livingentity.getZ() - this.getZ();
     double d4 = Math.sqrt(Math.sqrt(d0)) * 0.25D;
     projectile.shoot(d1, d2 + d4, d3, 4.0F, 1.0F);
-    this.level.addFreshEntity(projectile);
+    this.level().addFreshEntity(projectile);
   }
 
   @Override

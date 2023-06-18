@@ -90,8 +90,8 @@ public class StoneGolemEntity extends Monster {
     super.aiStep();
   }
   /*
-  protected PathNavigation createNavigation(Level level) {
-    return new StoneGolemEntity.StoneGolemNavigation(this, level);
+  protected PathNavigation createNavigation(Level() level()) {
+    return new StoneGolemEntity.StoneGolemNavigation(this, level());
   }
   */
   public static boolean canSpawn(EntityType<StoneGolemEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -115,15 +115,15 @@ public class StoneGolemEntity extends Monster {
   }
 
   private void destroyLeavesBlocks() {
-    if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+    if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
       boolean flag = false;
       AABB aabb = this.getBoundingBox().inflate(0.2D);
 
       for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
-        BlockState blockstate = this.level.getBlockState(blockpos);
+        BlockState blockstate = this.level().getBlockState(blockpos);
         Block block = blockstate.getBlock();
         if (block instanceof LeavesBlock) {
-          flag = this.level.destroyBlock(blockpos, true, this) || flag;
+          flag = this.level().destroyBlock(blockpos, true, this) || flag;
         }
       }
     }
@@ -132,7 +132,7 @@ public class StoneGolemEntity extends Monster {
   @Override
   public boolean doHurtTarget(Entity entity) {
     this.attackTimer = 15;
-    this.level.broadcastEntityEvent(this, (byte) 4);
+    this.level().broadcastEntityEvent(this, (byte) 4);
     float f = this.getAttackDamage();
     boolean flag = entity.hurt(this.damageSources().mobAttack(this), f);
     this.playSound(SoundInit.STONE_GOLEM_CLAP.get(), 3.0F, 1.0F);
@@ -145,16 +145,16 @@ public class StoneGolemEntity extends Monster {
       int j = Mth.floor(this.getY() - (double) 0.2F);
       int k = Mth.floor(this.getZ());
       BlockPos pos = new BlockPos(i, j, k);
-      BlockState blockstate = this.level.getBlockState(pos);
+      BlockState blockstate = this.level().getBlockState(pos);
       if (!blockstate.isAir()) {
-        this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate).setPos(pos), this.getX() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), this.getY() + 0.1D, this.getZ() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), 4.0D * ((double) this.random.nextFloat() - 0.5D), 0.5D, ((double) this.random.nextFloat() - 0.5D) * 4.0D);
+        this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate).setPos(pos), this.getX() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), this.getY() + 0.1D, this.getZ() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), 4.0D * ((double) this.random.nextFloat() - 0.5D), 0.5D, ((double) this.random.nextFloat() - 0.5D) * 4.0D);
       }
     }
   }
 
   private void doLaserParticleEffects() {
     if (this.isAlive()) {
-      if (this.level.isClientSide) {
+      if (this.level().isClientSide) {
 
         if (this.hasActiveAttackTarget()) {
           if (this.clientSideAttackTime < this.getAttackDuration()) {
@@ -177,7 +177,7 @@ public class StoneGolemEntity extends Monster {
 
             while (d4 < d3) {
               d4 += 1.8D - d5 + this.random.nextDouble() * (1.7D - d5);
-              this.level.addParticle(ParticleTypes.SMOKE, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
+              this.level().addParticle(ParticleTypes.SMOKE, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
             }
           }
         }
@@ -199,11 +199,11 @@ public class StoneGolemEntity extends Monster {
   public LivingEntity getActiveAttackTarget() {
     if (!this.hasActiveAttackTarget()) {
       return null;
-    } else if (this.level.isClientSide) {
+    } else if (this.level().isClientSide) {
       if (this.clientSideCachedAttackTarget != null) {
         return this.clientSideCachedAttackTarget;
       } else {
-        Entity entity = this.level.getEntity(this.entityData.get(DATA_ID_ATTACK_TARGET));
+        Entity entity = this.level().getEntity(this.entityData.get(DATA_ID_ATTACK_TARGET));
         if (entity instanceof LivingEntity) {
           this.clientSideCachedAttackTarget = (LivingEntity) entity;
           return this.clientSideCachedAttackTarget;
@@ -230,7 +230,7 @@ public class StoneGolemEntity extends Monster {
 
   public float getAttackDamage() {
     float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-    if (this.level.getDifficulty() == Difficulty.HARD) {
+    if (this.level().getDifficulty() == Difficulty.HARD) {
       f *= 1.5F;
     }
     return f;
@@ -347,7 +347,7 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public boolean removeWhenFarAway(double distance) {
-    Difficulty difficulty = this.level.getDifficulty();
+    Difficulty difficulty = this.level().getDifficulty();
     if (difficulty == Difficulty.HARD) {
       return false;
     } else if (difficulty == Difficulty.NORMAL && !(distance > 16384.0D)) {
@@ -365,8 +365,8 @@ public class StoneGolemEntity extends Monster {
   /*
   static class StoneGolemNavigation extends GroundPathNavigation {
 
-    public StoneGolemNavigation(Mob mob, Level level) {
-      super(mob, level);
+    public StoneGolemNavigation(Mob mob, Level level()) {
+      super(mob, level());
     }
 
     protected PathFinder createPathFinder(int p_33382_) {

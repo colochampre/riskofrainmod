@@ -4,7 +4,7 @@ import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.ItemInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -26,8 +26,8 @@ public class RoRmod {
     EntityInit.ENTITY_TYPES.register(bus);
   }
 
-  private void addItemsToTabs(CreativeModeTabEvent.BuildContents event) {
-    if (event.getTab() == CreativeModeTabs.SPAWN_EGGS) {
+  private void addItemsToTabs(BuildCreativeModeTabContentsEvent event) {
+    if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
       event.accept(ItemInit.LEMURIAN_SPAWN_EGG);
       event.accept(ItemInit.STONE_GOLEM_SPAWN_EGG);
       event.accept(ItemInit.GUNNER_DRONE_SPAWN_EGG);

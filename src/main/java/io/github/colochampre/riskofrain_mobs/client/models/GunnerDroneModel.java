@@ -146,7 +146,7 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
       float f1 = ageInTicks * (float) Mth.PI * -0.3F;
       this.eye.y = (Mth.cos(ageInTicks * 0.18F) * 0.9F);
       this.propeller_rod.yRot = f1;
-    } else if (entity.isOnGround()) {
+    } else if (entity.onGround()) {
       this.eye.y = 0;
       this.propeller_rod.yRot = 0.7853981633974483F;
     }
@@ -155,7 +155,7 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
       this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.2617993877991494F, this.bodyPitch);
       this.core.xRot = ModelUtils.rotlerpRad(this.core.zRot, -0.2617993877991494F, this.bodyPitch);
       this.core.y = (float) 23.5;
-    } else if (entity.isOnGround() && entity.isTame()) {
+    } else if (entity.onGround() && entity.isTame()) {
       this.core.y = 18.75F;
     } else {
       this.core.y = 15.0F;

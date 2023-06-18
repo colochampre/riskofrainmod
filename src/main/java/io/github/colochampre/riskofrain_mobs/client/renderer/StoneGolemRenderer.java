@@ -73,7 +73,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
     LivingEntity livingentity = entity.getActiveAttackTarget();
     if (livingentity != null) {
       float f = entity.getAttackAnimationScale(partialTicks);
-      float f1 = (float) entity.level.getGameTime() + partialTicks;
+      float f1 = (float) entity.level().getGameTime() + partialTicks;
       float f2 = f1 * 0.5F % 1.0F;
       float f3 = entity.getEyeHeight();
       poseStack.pushPose();

@@ -79,7 +79,7 @@ public class LemurianEntity extends Monster {
   @Override
   public boolean doHurtTarget(Entity entity) {
     this.attackTimer = 10;
-    this.level.broadcastEntityEvent(this, (byte) 4);
+    this.level().broadcastEntityEvent(this, (byte) 4);
     float f = this.getAttackDamage();
     boolean flag = entity.hurt(this.damageSources().mobAttack(this), f);
     this.playSound(SoundInit.LEMURIAN_ATTACK.get(), 1.0F, 1.0F);
@@ -88,7 +88,7 @@ public class LemurianEntity extends Monster {
 
   public float getAttackDamage() {
     float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-    if (this.level.getDifficulty() == Difficulty.HARD) {
+    if (this.level().getDifficulty() == Difficulty.HARD) {
       f *= 2.0F;
     }
     return f;
@@ -152,7 +152,7 @@ public class LemurianEntity extends Monster {
 
   @Override
   public boolean removeWhenFarAway(double distance) {
-    Difficulty difficulty = this.level.getDifficulty();
+    Difficulty difficulty = this.level().getDifficulty();
     if ((difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD) && !(distance > 16384.0D)) {
       return false;
     }

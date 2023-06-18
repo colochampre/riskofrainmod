@@ -28,7 +28,7 @@ public class ModCommonEvents {
     @SubscribeEvent
     public static void playerDeathSound(LivingDeathEvent event) {
       if (event.getEntity() instanceof Player player) {
-        Level level = player.getLevel();
+        Level level = player.level();
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.PLAYER_DEATH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
       }
     }

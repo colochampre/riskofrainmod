@@ -158,14 +158,14 @@ public class StoneGolemAttackGoal extends Goal {
     if (this.laserAttackTick == 0) {
       this.golem.setActiveAttackTarget(livingentity.getId());
       if (!this.golem.isSilent()) {
-        this.golem.level.broadcastEntityEvent(this.golem, (byte) 21);
+        this.golem.level().broadcastEntityEvent(this.golem, (byte) 21);
         this.golem.playSound(this.getLaserChargeSound(), 2.0F, 1.0F);
       }
     } else if (this.laserAttackTick >= this.golem.getAttackDuration()) {
       float f = 2.0F;
       Vec3 vec3 = this.golem.getLookAngle().multiply(1.0D, 1.0D, 1.0D).normalize().scale(3.0);
 
-      if (this.golem.level.getDifficulty() == Difficulty.HARD) {
+      if (this.golem.level().getDifficulty() == Difficulty.HARD) {
         f *= 2.0F;
       }
       this.golem.playSound(this.getLaserFireSound(), 3.0F, 1.0F);

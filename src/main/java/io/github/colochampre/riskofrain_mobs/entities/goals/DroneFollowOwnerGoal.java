@@ -29,7 +29,7 @@ public class DroneFollowOwnerGoal extends Goal {
 
   public DroneFollowOwnerGoal(TamableAnimal drone, double speed, float start, float stop, boolean flies) {
     this.tamable = drone;
-    this.level = drone.level;
+    this.level = drone.level();
     this.speedModifier = speed;
     this.navigation = drone.getNavigation();
     this.startDistance = start;
