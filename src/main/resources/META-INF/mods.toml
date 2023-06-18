@@ -4,7 +4,7 @@ license="MIT"
 
 [[mods]] #mandatory
 modId="riskofrain_mobs"
-version="1.0"
+version="1.1"
 displayName="Risk of Rain Mobs"
 logoFile="logo.png"
 credits="Thanks everyone who supports the effort and HOPOO GAMES for providing us with such a universe."
