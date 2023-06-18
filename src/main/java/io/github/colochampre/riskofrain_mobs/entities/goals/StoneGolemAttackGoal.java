@@ -119,7 +119,7 @@ public class StoneGolemAttackGoal extends Goal {
   }
 
   private void meleeAttackTick(LivingEntity livingentity) {
-    double d0 = this.golem.getPerceivedTargetDistanceSquareForMeleeAttack(livingentity);
+    double d0 = this.golem.getMeleeAttackRangeSqr(livingentity);
     this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
     if ((this.followingTargetEvenIfNotSeen || this.golem.getSensing().hasLineOfSight(livingentity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.golem.getRandom().nextFloat() < 0.05F)) {
       this.pathedTargetX = livingentity.getX();
@@ -173,7 +173,7 @@ public class StoneGolemAttackGoal extends Goal {
       livingentity.playSound(this.getLaserFireSound(), 3.0F, 1.0F);
       livingentity.hurt(DamageSource.indirectMagic(this.golem, this.golem), f);
       livingentity.hurt(DamageSource.mobAttack(this.golem), this.golem.getAttackDamage() / 2);
-      livingentity.addDeltaMovement(vec3);
+      livingentity.setDeltaMovement(livingentity.getDeltaMovement().add(vec3));
       this.golem.setTarget((LivingEntity) null);
       this.laserCooldown = 85;
     }

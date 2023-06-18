@@ -27,6 +27,7 @@ public abstract class EntityMobProjectile extends Entity {
   private int ownerNetworkId;
   private boolean leftOwner;
 
+  // code from AlexMod MudBall
   public EntityMobProjectile(EntityType type, Level level) {
     super(type, level);
   }

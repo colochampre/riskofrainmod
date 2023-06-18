@@ -38,7 +38,7 @@ public final class SoundInit {
   public static final RegistryObject<SoundEvent> STONE_GOLEM_STEP = registerSoundEvent("entity.stone_golem.step");
 
   private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
-    return SOUNDS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(RoRmod.MODID, soundName)));
+    return SOUNDS.register(soundName, () -> new SoundEvent(new ResourceLocation(RoRmod.MODID, soundName)));
   }
 
   private SoundInit() {

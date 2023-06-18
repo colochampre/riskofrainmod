@@ -2,7 +2,9 @@ package io.github.colochampre.riskofrain_mobs.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.StoneGolemModel;
 import io.github.colochampre.riskofrain_mobs.client.renderer.layers.StoneGolemEyeLayer;
@@ -22,8 +24,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolemModel<StoneGolemEntity>> {
@@ -85,8 +85,8 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
       vec32 = vec32.normalize();
       float f5 = (float) Math.acos(vec32.y);
       float f6 = (float) Math.atan2(vec32.z, vec32.x);
-      poseStack.mulPose(Axis.YP.rotationDegrees((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI)));
-      poseStack.mulPose(Axis.XP.rotationDegrees(f5 * (180F / (float) Math.PI)));
+      poseStack.mulPose(Vector3f.YP.rotationDegrees((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI)));
+      poseStack.mulPose(Vector3f.XP.rotationDegrees(f5 * (180F / (float) Math.PI)));
       float f7 = f1 * 0.05F * -1.5F;
       float f8 = f * f;
       int j = 64 + (int) (f8 * 191.0F);

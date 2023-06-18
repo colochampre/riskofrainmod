@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.init;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,6 +21,6 @@ public class ItemInit {
           () -> new ForgeSpawnEggItem(EntityInit.GUNNER_DRONE_ENTITY, 0x007ada, 0x202f51, props()));
 
   private static Item.Properties props() {
-    return new Item.Properties();
+    return new Item.Properties().tab(CreativeModeTab.TAB_MISC);
   }
 }
