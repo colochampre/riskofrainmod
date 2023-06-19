@@ -1,18 +1,18 @@
 {
   "variants": {
     "facing=north": {
-      "model": "riskofrain_items:block/small:chest"
+      "model": "riskofrain_items:block/small_chest"
     },
     "facing=south": {
-      "model": "riskofrain_items:block/small:chest",
+      "model": "riskofrain_items:block/small_chest",
       "y": 180
     },
     "facing=west": {
-      "model": "riskofrain_items:block/small:chest",
+      "model": "riskofrain_items:block/small_chest",
       "y": 270
     },
     "facing=east": {
-      "model": "riskofrain_items:block/small:chest",
+      "model": "riskofrain_items:block/small_chest",
       "y": 90
     }
   }
