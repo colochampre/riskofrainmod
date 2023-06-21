@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "entries": [
+    "riskofrain_items:inject_abandoned_mineshaft_chest",
+    "riskofrain_items:inject_ancient_city_chest",
+    "riskofrain_items:inject_bastion_treasure_chest",
+    "riskofrain_items:inject_buried_treasure_chest",
+    "riskofrain_items:inject_desert_pyramid_chest",
+    "riskofrain_items:inject_end_city_treasure_chest",
+    "riskofrain_items:inject_jungle_temple_chest",
+    "riskofrain_items:inject_jungle_temple_dispenser_chest",
+    "riskofrain_items:inject_nether_bridge_chest",
+    "riskofrain_items:inject_pillager_outpost_chest",
+    "riskofrain_items:inject_ruined_portal_chest",
+    "riskofrain_items:inject_shipwreck_treasure_chest",
+    "riskofrain_items:inject_simple_dungeon_chest",
+    "riskofrain_items:inject_stronghold_corridor_chest",
+    "riskofrain_items:inject_stronghold_crossing_chest",
+    "riskofrain_items:inject_stronghold_library_chest",
+    "riskofrain_items:inject_underwater_ruin_big_chest",
+    "riskofrain_items:inject_underwater_ruin_small_chest",
+    "riskofrain_items:inject_woodland_mansion"
+  ]
+}

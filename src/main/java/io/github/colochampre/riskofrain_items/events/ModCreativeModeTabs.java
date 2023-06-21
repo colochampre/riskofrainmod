@@ -34,7 +34,7 @@ public class ModCreativeModeTabs {
       event.accept(ItemInit.INFUSION);
       event.accept(ItemInit.ROSE_BUCKLER);
       event.accept(ItemInit.SMART_SHOPPER);
-      event.accept(BlockInit.SMALL_CHEST);
+      // event.accept(BlockInit.SMALL_CHEST);
     }
   }
 }
