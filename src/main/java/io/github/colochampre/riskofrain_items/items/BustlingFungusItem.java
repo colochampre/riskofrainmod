@@ -2,6 +2,7 @@ package io.github.colochampre.riskofrain_items.items;
 
 import io.github.colochampre.riskofrain_items.init.SoundInit;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -34,7 +35,7 @@ public class BustlingFungusItem extends Item {
 
   @Override
   public void inventoryTick(ItemStack stack, Level level, @NotNull Entity entity, int itemSlot, boolean isSelected) {
-    Player player = (Player) entity;
+    ServerPlayer player = (ServerPlayer) entity;
     int amount = stack.getCount();
     if (!level.isClientSide()) {
       if (this.isMoving(player)) {
