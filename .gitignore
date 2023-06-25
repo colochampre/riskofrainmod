@@ -16,6 +16,7 @@ out
 # gradle
 build
 .gradle
+7.5.1
 
 # other
 changelog.txt
