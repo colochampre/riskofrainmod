@@ -1,7 +1,7 @@
 package io.github.colochampre.riskofrain_items.events;
 
 import io.github.colochampre.riskofrain_items.RoRitems;
-import io.github.colochampre.riskofrain_items.init.BlockInit;
+//import io.github.colochampre.riskofrain_items.init.BlockInit;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
