@@ -15,6 +15,8 @@ public class ItemInit {
           () -> new BustlingFungusItem(new Item.Properties()));
   public static final RegistryObject<Item> CROWBAR = ITEMS.register("crowbar",
           () -> new CrowbarItem(new Item.Properties()));
+  public static final RegistryObject<Item> GOAT_HOOF = ITEMS.register("goat_hoof",
+          () -> new GoatHoofItem(new Item.Properties()));
   public static final RegistryObject<Item> GOLDEN_GUN = ITEMS.register("golden_gun",
           () -> new GoldenGunItem(new Item.Properties()));
   public static final RegistryObject<Item> INFUSION = ITEMS.register("infusion",
@@ -27,6 +29,8 @@ public class ItemInit {
           () -> new RoseBucklerItem (new Item.Properties()));
   public static final RegistryObject<Item> SMART_SHOPPER = ITEMS.register("smart_shopper",
           () -> new SmartShopperItem(new Item.Properties()));
+  public static final RegistryObject<Item> SOLDIERS_SYRINGE = ITEMS.register("soldiers_syringe",
+          () -> new SoldiersSyringeItem(new Item.Properties()));
   public static final RegistryObject<Item> TOPAZ_BROOCH = ITEMS.register("topaz_brooch",
           () -> new TopazBroochItem(new Item.Properties()));
   public static final RegistryObject<Item> TOUGHER_TIMES = ITEMS.register("tougher_times",

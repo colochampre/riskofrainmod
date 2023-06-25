@@ -28,7 +28,7 @@
   "item.riskofrain_items.crowbar.tooltip_3": "to enemies above 80% health",
 
   "item.riskofrain_items.goat_hoof.tooltip_1": "Increases movement speed by 20%",
-  "item.riskofrain_items.goat_hoof.tooltip_2": "Every 4 stacks: +20% movement speed",
+  "item.riskofrain_items.goat_hoof.tooltip_2": "Every 4 stacked: +20% movement speed",
 
   "item.riskofrain_items.golden_gun.tooltip_1": "Deal bonus damage depending on how",
   "item.riskofrain_items.golden_gun.tooltip_2": "much gold the player has, up to 40%",
@@ -56,7 +56,7 @@
   "item.riskofrain_items.smart_shopper.tooltip_3": "for enemies to drop gold",
 
   "item.riskofrain_items.soldiers_syringe.tooltip_1": "Increases attack and mining speed",
-  "item.riskofrain_items.soldiers_syringe.tooltip_2": "Every 4 stacks: +10% attack speed and +20% mining speed",
+  "item.riskofrain_items.soldiers_syringe.tooltip_2": "Every 4 stacked: +10% attack speed and +20% mining speed",
 
   "item.riskofrain_items.topaz_brooch.tooltip_1": "On kill:",
   "item.riskofrain_items.topaz_brooch.tooltip_2": "Gain a temporary barrier for 2 hearts",

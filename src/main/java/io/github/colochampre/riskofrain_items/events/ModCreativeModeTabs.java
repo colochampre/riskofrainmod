@@ -26,8 +26,10 @@ public class ModCreativeModeTabs {
     if (event.getTab() == ModCreativeModeTabs.RISKOFRAIN_TAB) {
       event.accept(ItemInit.BUSTLING_FUNGUS);
       event.accept(ItemInit.CROWBAR);
+      event.accept(ItemInit.GOAT_HOOF);
       event.accept(ItemInit.LENS_MAKERS_GLASSES);
       event.accept(ItemInit.REPULSION_ARMOR_PLATE);
+      event.accept(ItemInit.SOLDIERS_SYRINGE);
       event.accept(ItemInit.TOPAZ_BROOCH);
       event.accept(ItemInit.TOUGHER_TIMES);
       event.accept(ItemInit.GOLDEN_GUN);
