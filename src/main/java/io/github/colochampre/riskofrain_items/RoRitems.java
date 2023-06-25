@@ -1,7 +1,6 @@
 package io.github.colochampre.riskofrain_items;
 
 import com.mojang.logging.LogUtils;
-import io.github.colochampre.riskofrain_items.events.ModCreativeModeTabs;
 import io.github.colochampre.riskofrain_items.init.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -15,11 +14,12 @@ public class RoRitems {
 
   public RoRitems() {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-    bus.addListener(ModCreativeModeTabs::addItemsToTabs);
+    bus.addListener(CreativeModeTabsInit::addItemsToTabs);
 
     ItemInit.ITEMS.register(bus);
     BlockInit.BLOCKS.register(bus);
     // BlockEntityInit.BLOCK_ENTITIES.register(bus);
+    CreativeModeTabsInit.CREATIVE_MODE_TABS.register(bus);
     LootInit.LOOT_MODIFIER_SERIALIZERS.register(bus);
     PaintingInit.PAINTING_VARIANTS.register(bus);
     SoundInit.SOUNDS.register(bus);

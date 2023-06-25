@@ -39,7 +39,7 @@ public class ModCommonEvents {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void coinPickupSound(EntityItemPickupEvent event) {
       Player player = event.getEntity();
-      Level level = player.getLevel();
+      Level level = player.level();
       ItemStack itemStack = event.getItem().getItem();
       Item item = itemStack.getItem();
       if (!level.isClientSide()) {
@@ -66,7 +66,7 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        Level level = player.getLevel();
+        Level level = player.level();
         if (!level.isClientSide()) {
           boolean canProc = false;
           LivingEntity livingentity = event.getEntity();
@@ -118,7 +118,7 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        Level level = player.getLevel();
+        Level level = player.level();
         if (!level.isClientSide()) {
           float damage = event.getAmount();
           double neededGoldForMaxAmplifier = total > 9 ? 9 : (2304 / Math.pow(2, total)) * 2;
@@ -147,7 +147,7 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        Level level = player.getLevel();
+        Level level = player.level();
         if (!player.isCreative()) {
           if (!level.isClientSide()) {
             if (player.getMaxHealth() < 20 + (total * 10 * 2)) {
@@ -176,7 +176,7 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        Level level = player.getLevel();
+        Level level = player.level();
         if (!level.isClientSide()) {
           boolean proc = false;
           double chance = 1.5625D * (double) total - 1.0D;
@@ -212,7 +212,7 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        Level level = player.getLevel();
+        Level level = player.level();
         if (!level.isClientSide()) {
           float damage = event.getAmount();
           float reducedDamage = damage - total < 1 ? 1 : damage - total;
@@ -239,7 +239,7 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        Level level = player.getLevel();
+        Level level = player.level();
         if (!level.isClientSide()) {
           if (player.isSprinting()) {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), RoseBucklerItem.getProcSound(), SoundSource.PLAYERS, Math.min(0.4F * total, 8.0F), 1.0F + (RandomSource.create().nextFloat() - RandomSource.create().nextFloat()) * 0.2F);
@@ -266,7 +266,7 @@ public class ModCommonEvents {
           return;
         }
         LivingEntity livingentity = event.getEntity();
-        Level level = player.getLevel();
+        Level level = player.level();
         if (!level.isClientSide()) {
           ItemStack goldItem = new ItemStack(Items.GOLD_NUGGET, livingentity.getExperienceReward());
           ItemEntity goldItemEntity = new ItemEntity(level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), goldItem);
@@ -302,7 +302,7 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        Level level = player.getLevel();
+        Level level = player.level();
         if (!level.isClientSide()) {
           if (total * 4 <= player.getMaxHealth()) {
             player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 160, total - 1, true, false));
@@ -330,7 +330,7 @@ public class ModCommonEvents {
         if (!found) {
           return;
         }
-        Level level = player.getLevel();
+        Level level = player.level();
         if (!level.isClientSide()) {
           boolean proc = false;
           double chance = (1.0D - 1.0D / (1.0D + 0.15D * (double) total) - 0.01D) * 100.0D;
