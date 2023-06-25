@@ -21,7 +21,7 @@ public class SoldiersSyringeItem extends Item {
   }
 
   @Override
-  public void appendHoverText(ItemStack itemstack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+  public void appendHoverText(@NotNull ItemStack itemstack, @Nullable Level level, List<Component> tooltip, @NotNull TooltipFlag flag) {
     tooltip.add(Component.translatable("item.riskofrain_items.soldiers_syringe.tooltip_1"));
     tooltip.add(Component.translatable("item.riskofrain_items.soldiers_syringe.tooltip_2"));
     super.appendHoverText(itemstack, level, tooltip, flag);

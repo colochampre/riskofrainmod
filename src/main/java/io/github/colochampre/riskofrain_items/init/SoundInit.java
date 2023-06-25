@@ -32,6 +32,6 @@ public class SoundInit {
           registerSoundEvent("item.tougher_times.proc");
 
   private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
-    return SOUNDS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(RoRitems.MODID, soundName)));
+    return SOUNDS.register(soundName, () -> new SoundEvent(new ResourceLocation(RoRitems.MODID, soundName)));
   }
 }
