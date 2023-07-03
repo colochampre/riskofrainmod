@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class GunnerDroneRenderer extends MobRenderer<GunnerDroneEntity, GunnerDroneModel<GunnerDroneEntity>> {
@@ -24,7 +25,7 @@ public class GunnerDroneRenderer extends MobRenderer<GunnerDroneEntity, GunnerDr
   }
 
   @Override
-  public ResourceLocation getTextureLocation(GunnerDroneEntity entity) {
+  public @NotNull ResourceLocation getTextureLocation(GunnerDroneEntity entity) {
     return GunnerDroneRenderer.DEFAULT_TEXTURE;
   }
 }

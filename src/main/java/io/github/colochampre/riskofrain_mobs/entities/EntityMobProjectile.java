@@ -17,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -50,7 +51,7 @@ public abstract class EntityMobProjectile extends Entity {
   }
 
   @Override
-  public Packet<ClientGamePacketListener> getAddEntityPacket() {
+  public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
     return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
   }
 

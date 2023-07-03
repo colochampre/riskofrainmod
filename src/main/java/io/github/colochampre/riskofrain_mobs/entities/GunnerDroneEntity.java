@@ -32,6 +32,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements RangedAttackMob {
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
@@ -101,7 +102,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   @Override
-  public InteractionResult mobInteract(Player player, InteractionHand hand) {
+  public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
     Item item = itemstack.getItem();
     // Set body color
@@ -135,7 +136,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     return 0.055F;
   }
 
-  public Vec3 getLeashOffset() {
+  public @NotNull Vec3 getLeashOffset() {
     return new Vec3(0.0D, (double) (0.6F * this.getEyeHeight()), (double) (this.getBbWidth() * 0.2F));
   }
 
