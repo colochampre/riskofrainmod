@@ -32,6 +32,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -60,7 +61,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
   }
 
-  protected PathNavigation createNavigation(Level level) {
+  protected @NotNull PathNavigation createNavigation(Level level) {
     FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
       public boolean isStableDestination(BlockPos pos) {
         return !this.level.getBlockState(pos.below()).isAir();
@@ -160,7 +161,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   @Override
-  public InteractionResult mobInteract(Player player, InteractionHand hand) {
+  public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
     Item item = itemstack.getItem();
     if (this.isTame()) {

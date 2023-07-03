@@ -22,6 +22,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -139,7 +140,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
   }
 
   @Override
-  public ResourceLocation getTextureLocation(StoneGolemEntity entity) {
+  public @NotNull ResourceLocation getTextureLocation(StoneGolemEntity entity) {
     return DEFAULT_TEXTURE;
   }
 }

@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class StoneGolemEntity extends Monster {
@@ -48,7 +49,7 @@ public class StoneGolemEntity extends Monster {
 
   public StoneGolemEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
-    this.maxUpStep = 1.0F;
+    this.setMaxUpStep(1.0F);
     this.xpReward = 24;
     this.setPathfindingMalus(BlockPathTypes.LEAVES, 0.0F);
   }
@@ -288,7 +289,7 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Override
-  protected ResourceLocation getDefaultLootTable() {
+  protected @NotNull ResourceLocation getDefaultLootTable() {
     return STONE_GOLEM_LOOT_TABLE;
   }
 
