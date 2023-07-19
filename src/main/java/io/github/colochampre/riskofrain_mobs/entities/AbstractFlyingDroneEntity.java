@@ -32,6 +32,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -61,7 +62,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
   }
 
-  protected PathNavigation createNavigation(Level level) {
+  protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
     FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
       public boolean isStableDestination(BlockPos pos) {
         return !this.level.getBlockState(pos.below()).isAir();
@@ -73,7 +74,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     return flyingpathnavigation;
   }
 
-  public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+  public float getWalkTargetValue(@NotNull BlockPos pos, LevelReader level) {
     return level.getBlockState(pos).isAir() ? 10.0F : 0.0F;
   }
 
@@ -140,11 +141,11 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     }
   }
 
-  public boolean causeFallDamage(float p_149683_, float p_149684_, DamageSource source) {
+  public boolean causeFallDamage(float p_149683_, float p_149684_, @NotNull DamageSource source) {
     return false;
   }
 
-  protected void checkFallDamage(double p_218316_, boolean p_218317_, BlockState state, BlockPos pos) {
+  protected void checkFallDamage(double p_218316_, boolean p_218317_, @NotNull BlockState state, @NotNull BlockPos pos) {
   }
 
   protected int decreaseAirSupply(int air) {
@@ -152,7 +153,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   @Override
-  public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
     String price = String.valueOf(this.goldCount);
     Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
     this.setCustomName(component);
@@ -161,7 +162,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   @Override
-  public InteractionResult mobInteract(Player player, InteractionHand hand) {
+  public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
     Item item = itemstack.getItem();
     if (this.isTame()) {
@@ -235,7 +236,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   @Override
-  public void die(DamageSource source) {
+  public void die(@NotNull DamageSource source) {
     this.playSound(this.getShutDownSound(), 1.0F, 1.0F);
     super.die(source);
   }
@@ -253,14 +254,9 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     return SoundInit.DRONE_FLYING.get();
   }
 
-  protected void playStepSound(BlockPos pos, BlockState blockIn) {
+  protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
   }
-
-  /*
-  public int getGoldCount() {
-    return goldCount;
-  }
-  */
+  
   private int setGoldCount() {
     Difficulty difficulty = this.level.getDifficulty();
     if (difficulty == Difficulty.HARD) {
@@ -285,12 +281,12 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   @Override
-  public boolean canBeLeashed(Player player) {
+  public boolean canBeLeashed(@NotNull Player player) {
     return (this.isTame() && !this.isInSittingPose());
   }
 
   @Override
-  public boolean hurt(DamageSource source, float damage) {
+  public boolean hurt(@NotNull DamageSource source, float damage) {
     if (this.isInvulnerableTo(source)) {
       return false;
     } else {
@@ -317,15 +313,11 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
 
   public boolean isLowHealth() {
     double health = this.getHealth();
-    if (health < 10.0D) {
-      return true;
-    } else {
-      return false;
-    }
+    return health < 10.0D;
   }
 
   @Override
-  public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
+  public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mob) {
     return null;
   }
 

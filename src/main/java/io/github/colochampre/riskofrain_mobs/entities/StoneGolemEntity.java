@@ -41,6 +41,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class StoneGolemEntity extends Monster {
@@ -94,7 +95,7 @@ public class StoneGolemEntity extends Monster {
     super.aiStep();
   }
 
-  protected PathNavigation createNavigation(Level level) {
+  protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
     return new StoneGolemEntity.StoneGolemNavigation(this, level);
   }
 
@@ -103,7 +104,7 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Override
-  public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
+  public boolean causeFallDamage(float p_147187_, float p_147188_, @NotNull DamageSource p_147189_) {
     this.playSound(this.getStepSound(), 3, 1.0F);
     this.playSound(this.getStepSound(), 3, 1.2F);
     return false;
@@ -194,7 +195,7 @@ public class StoneGolemEntity extends Monster {
 
   @Nullable
   @Override
-  public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
     this.playSound(this.getSpawnSound(), 4.0F, 1.0F);
     return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
   }
@@ -267,14 +268,14 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Override
-  public void die(DamageSource src) {
+  public void die(@NotNull DamageSource src) {
     this.playSound(this.getDeathVoiceSound(), 1.5F, 1.0F);
     super.die(src);
   }
 
 
   @Override
-  protected SoundEvent getHurtSound(DamageSource source) {
+  protected SoundEvent getHurtSound(@NotNull DamageSource source) {
     return SoundInit.STONE_GOLEM_HURT.get();
   }
 
@@ -287,12 +288,12 @@ public class StoneGolemEntity extends Monster {
   }
 
 
-  protected void playStepSound(BlockPos pos, BlockState blockState) {
+  protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockState) {
     this.playSound(this.getStepSound(), 3.0F, 1.0F);
   }
 
   @Override
-  protected ResourceLocation getDefaultLootTable() {
+  protected @NotNull ResourceLocation getDefaultLootTable() {
     return STONE_GOLEM_LOOT_TABLE;
   }
 
@@ -302,7 +303,7 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Override
-  protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
     return 3.5F;
   }
 
@@ -317,7 +318,7 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Override
-  public boolean isInvulnerableTo(DamageSource src) {
+  public boolean isInvulnerableTo(@NotNull DamageSource src) {
     return src == DamageSource.FREEZE ||
             src == DamageSource.HOT_FLOOR ||
             src == DamageSource.IN_WALL ||
@@ -341,7 +342,7 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Override
-  public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+  public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> accessor) {
     super.onSyncedDataUpdated(accessor);
     if (DATA_ID_ATTACK_TARGET.equals(accessor)) {
       this.clientSideAttackTime = 0;
@@ -354,7 +355,7 @@ public class StoneGolemEntity extends Monster {
     Difficulty difficulty = this.level.getDifficulty();
     if (difficulty == Difficulty.HARD) {
       return false;
-    } else if (difficulty == Difficulty.NORMAL && !(distance > 16384.0D)) {
+    } else if (difficulty == Difficulty.NORMAL && !(distance > 8192.0D)) {
       return false;
     }
     return true;
@@ -373,14 +374,14 @@ public class StoneGolemEntity extends Monster {
       super(mob, level);
     }
 
-    protected PathFinder createPathFinder(int p_33382_) {
+    protected @NotNull PathFinder createPathFinder(int p_33382_) {
       this.nodeEvaluator = new StoneGolemEntity.StoneGolemNodeEvaluator();
       return new PathFinder(this.nodeEvaluator, p_33382_);
     }
   }
 
   static class StoneGolemNodeEvaluator extends WalkNodeEvaluator {
-    protected BlockPathTypes evaluateBlockPathType(BlockGetter block, boolean p_33388_, boolean p_33389_, BlockPos pos, BlockPathTypes pathTypes) {
+    protected @NotNull BlockPathTypes evaluateBlockPathType(@NotNull BlockGetter block, boolean p_33388_, boolean p_33389_, @NotNull BlockPos pos, @NotNull BlockPathTypes pathTypes) {
       return pathTypes == BlockPathTypes.LEAVES ? BlockPathTypes.OPEN : super.evaluateBlockPathType(block, p_33388_, p_33389_, pos, pathTypes);
     }
   }

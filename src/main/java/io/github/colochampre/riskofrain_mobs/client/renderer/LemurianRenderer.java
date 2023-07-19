@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class LemurianRenderer extends MobRenderer<LemurianEntity, LemurianModel<LemurianEntity>> {
@@ -21,12 +22,12 @@ public class LemurianRenderer extends MobRenderer<LemurianEntity, LemurianModel<
   }
 
   @Override
-  protected float getFlipDegrees(LemurianEntity entity) {
+  protected float getFlipDegrees(@NotNull LemurianEntity entity) {
     return 90;
   }
 
   @Override
-  public ResourceLocation getTextureLocation(LemurianEntity entity) {
+  public @NotNull ResourceLocation getTextureLocation(@NotNull LemurianEntity entity) {
     return LemurianRenderer.DEFAULT_TEXTURE;
   }
 }

@@ -24,6 +24,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolemModel<StoneGolemEntity>> {
@@ -40,7 +41,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
     super(context, new StoneGolemModel(context.bakeLayer(layerLocation)), shadow);
   }
 
-  public boolean shouldRender(StoneGolemEntity golem, Frustum frustum, double p_114838_, double p_114839_, double p_114840_) {
+  public boolean shouldRender(@NotNull StoneGolemEntity golem, @NotNull Frustum frustum, double p_114838_, double p_114839_, double p_114840_) {
     if (super.shouldRender(golem, frustum, p_114838_, p_114839_, p_114840_)) {
       return true;
     } else {
@@ -64,7 +65,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
     return new Vec3(d0, d1, d2);
   }
 
-  public void render(StoneGolemEntity entity, float p_114830_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+  public void render(@NotNull StoneGolemEntity entity, float p_114830_, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
     super.render(entity, p_114830_, partialTicks, poseStack, bufferSource, packedLight);
     renderLaser(entity, partialTicks, poseStack, bufferSource);
   }
@@ -139,7 +140,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
   }
 
   @Override
-  public ResourceLocation getTextureLocation(StoneGolemEntity entity) {
+  public @NotNull ResourceLocation getTextureLocation(@NotNull StoneGolemEntity entity) {
     return DEFAULT_TEXTURE;
   }
 }

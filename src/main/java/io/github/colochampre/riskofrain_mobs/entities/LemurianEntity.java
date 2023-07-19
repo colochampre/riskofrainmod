@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import org.jetbrains.annotations.NotNull;
 
 public class LemurianEntity extends Monster {
   private int attackTimer;
@@ -70,7 +71,7 @@ public class LemurianEntity extends Monster {
   }
 
   @Override
-  public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
+  public boolean causeFallDamage(float p_147187_, float p_147188_, @NotNull DamageSource p_147189_) {
     this.playSound(this.getStepSound(), 0.8F, 1.0F);
     this.playSound(this.getStepSound(), 0.8F, 1.0F);
     return super.causeFallDamage(p_147187_, p_147188_, p_147189_);
@@ -119,7 +120,7 @@ public class LemurianEntity extends Monster {
   }
 
   @Override
-  protected SoundEvent getHurtSound(DamageSource source) {
+  protected SoundEvent getHurtSound(@NotNull DamageSource source) {
     return SoundInit.LEMURIAN_HURT.get();
   }
 
@@ -127,7 +128,7 @@ public class LemurianEntity extends Monster {
     return SoundInit.LEMURIAN_STEP.get();
   }
 
-  protected void playStepSound(BlockPos pos, BlockState blockState) {
+  protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockState) {
     this.playSound(this.getStepSound(), 0.15F, 1.0F);
   }
 
@@ -136,7 +137,7 @@ public class LemurianEntity extends Monster {
   }
 
   @Override
-  protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
     return 1.62F;
   }
 
@@ -153,7 +154,7 @@ public class LemurianEntity extends Monster {
   @Override
   public boolean removeWhenFarAway(double distance) {
     Difficulty difficulty = this.level.getDifficulty();
-    if ((difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD) && !(distance > 16384.0D)) {
+    if ((difficulty == Difficulty.HARD) && !(distance > 4096.0D)) {
       return false;
     }
     return true;

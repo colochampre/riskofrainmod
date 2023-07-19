@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 public class BulletRenderer extends EntityRenderer<BulletEntity> {
   private static final ResourceLocation TEXTURE = new ResourceLocation("textures/item/iron_nugget.png");
@@ -21,7 +22,7 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
     super(context);
   }
 
-  public void render(BulletEntity entity, float f, float f2, PoseStack pose, MultiBufferSource buffer, int p_114085_) {
+  public void render(@NotNull BulletEntity entity, float f, float f2, PoseStack pose, MultiBufferSource buffer, int p_114085_) {
     pose.pushPose();
     pose.scale(0.7F, 0.7F, 0.7F);
     pose.mulPose(this.entityRenderDispatcher.cameraOrientation());
@@ -42,7 +43,7 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
     p_114090_.vertex(p_114091_, p_114094_ - 0.5F, (float) p_114095_ - 0.25F, 0.0F).color(255, 255, 255, 255).uv((float) p_114096_, (float) p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_114093_).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
   }
 
-  public ResourceLocation getTextureLocation(BulletEntity renderer) {
+  public ResourceLocation getTextureLocation(@NotNull BulletEntity renderer) {
     return TEXTURE;
   }
 }

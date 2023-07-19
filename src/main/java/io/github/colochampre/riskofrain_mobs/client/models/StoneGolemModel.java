@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> {
@@ -287,12 +288,12 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
   }
 
   @Override
-  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+  public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
     core.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
   }
 
   @Override
-  public void setupAnim(StoneGolemEntity entity, float limbSwing, float limbSwingAmmount, float ageInTicks, float headYaw, float headPitch) {
+  public void setupAnim(@NotNull StoneGolemEntity entity, float limbSwing, float limbSwingAmmount, float ageInTicks, float headYaw, float headPitch) {
     getLookAnim(headYaw, headPitch);
     getIdleAnim(entity, ageInTicks);
     getWalkingAnim(entity, limbSwing, limbSwingAmmount);

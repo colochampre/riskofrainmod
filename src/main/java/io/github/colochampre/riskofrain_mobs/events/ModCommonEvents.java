@@ -36,10 +36,7 @@ public class ModCommonEvents {
     @SubscribeEvent
     public static void immuneDrones(LivingAttackEvent event) {
       if (event.getEntity() instanceof AbstractFlyingDroneEntity drone && event.getSource().getDirectEntity() instanceof LivingEntity) {
-        boolean isTamed = false;
-        if (drone.isTame()) {
-          isTamed = true;
-        }
+        boolean isTamed = drone.isTame();
         if (isTamed) {
           return;
         }
