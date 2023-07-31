@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
+import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.goals.StoneGolemAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
@@ -352,13 +353,7 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public boolean removeWhenFarAway(double distance) {
-    Difficulty difficulty = this.level.getDifficulty();
-    if (difficulty == Difficulty.HARD) {
-      return false;
-    } else if (difficulty == Difficulty.NORMAL && !(distance > 8192.0D)) {
-      return false;
-    }
-    return true;
+    return RoRConfig.SERVER.STONE_GOLEMS_DESPAWN.get();
   }
 
   public void strongKnockback(Entity entity) {

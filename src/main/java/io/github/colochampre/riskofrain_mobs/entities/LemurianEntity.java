@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
+import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -153,11 +154,7 @@ public class LemurianEntity extends Monster {
 
   @Override
   public boolean removeWhenFarAway(double distance) {
-    Difficulty difficulty = this.level.getDifficulty();
-    if ((difficulty == Difficulty.HARD) && !(distance > 4096.0D)) {
-      return false;
-    }
-    return true;
+    return RoRConfig.SERVER.LEMURIANS_DESPAWN.get();
   }
 
   public void setIsSelectingHand(boolean value) {
