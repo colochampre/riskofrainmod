@@ -10,18 +10,19 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
+import org.jetbrains.annotations.NotNull;
 
 public class BulletRenderer extends EntityRenderer<BulletEntity> {
   private static final ResourceLocation TEXTURE = new ResourceLocation("textures/item/iron_nugget.png");
 
+  // code from AlexMod MudBall
   public BulletRenderer(EntityRendererProvider.Context context) {
     super(context);
   }
 
-  public void render(BulletEntity entity, float f, float f2, PoseStack p_114083_, MultiBufferSource p_114084_, int p_114085_) {
+  public void render(@NotNull BulletEntity entity, float f, float f2, PoseStack p_114083_, MultiBufferSource p_114084_, int p_114085_) {
     p_114083_.pushPose();
     p_114083_.scale(0.7F, 0.7F, 0.7F);
     p_114083_.mulPose(this.entityRenderDispatcher.cameraOrientation());

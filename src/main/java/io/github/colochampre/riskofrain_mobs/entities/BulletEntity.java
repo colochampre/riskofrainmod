@@ -18,6 +18,7 @@ import net.minecraftforge.network.PlayMessages;
 
 public class BulletEntity extends EntityMobProjectile {
 
+  // code from AlexMod MudBall
   public BulletEntity(EntityType type, Level level) {
     super(type, level);
   }

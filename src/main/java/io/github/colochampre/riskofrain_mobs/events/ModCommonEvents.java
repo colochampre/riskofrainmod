@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.events;
 
+import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.AbstractFlyingDroneEntity;
 import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
@@ -27,7 +28,7 @@ public class ModCommonEvents {
 
     @SubscribeEvent
     public static void playerDeathSound(LivingDeathEvent event) {
-      if (event.getEntity() instanceof Player player) {
+      if (RoRConfig.SERVER.DEATH_SOUND.get() && event.getEntity() instanceof Player player) {
         Level level = player.level();
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.PLAYER_DEATH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
       }
@@ -36,10 +37,7 @@ public class ModCommonEvents {
     @SubscribeEvent
     public static void immuneDrones(LivingAttackEvent event) {
       if (event.getEntity() instanceof AbstractFlyingDroneEntity drone && event.getSource().getDirectEntity() instanceof LivingEntity) {
-        boolean isTamed = false;
-        if (drone.isTame()) {
-          isTamed = true;
-        }
+        boolean isTamed = drone.isTame();
         if (isTamed) {
           return;
         }

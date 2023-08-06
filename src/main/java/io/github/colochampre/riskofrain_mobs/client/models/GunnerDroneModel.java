@@ -11,6 +11,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T> {
@@ -130,7 +131,7 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
   }
 
   @Override
-  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+  public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
     core.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
   }
 
