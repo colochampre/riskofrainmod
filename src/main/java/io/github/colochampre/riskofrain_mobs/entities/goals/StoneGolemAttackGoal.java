@@ -113,13 +113,13 @@ public class StoneGolemAttackGoal extends Goal {
         this.golem.setTarget((LivingEntity) null);
       } else {
         laserTick(livingentity);
-        super.tick();
+        //super.tick();
       }
     }
   }
 
   private void meleeAttackTick(LivingEntity livingentity) {
-    double d0 = this.golem.getMeleeAttackRangeSqr(livingentity);
+    double d0 = this.golem.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
     this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
     if ((this.followingTargetEvenIfNotSeen || this.golem.getSensing().hasLineOfSight(livingentity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.golem.getRandom().nextFloat() < 0.05F)) {
       this.pathedTargetX = livingentity.getX();
@@ -201,7 +201,7 @@ public class StoneGolemAttackGoal extends Goal {
     return (SoundEvent) SoundInit.STONE_GOLEM_LASER_FIRE.get();
   }
 
-  protected double getAttackReachSqr(LivingEntity p_25556_) {
-    return (double) (this.golem.getBbWidth() * 1.5F * this.golem.getBbWidth() * 1.5F + p_25556_.getBbWidth());
+  protected double getAttackReachSqr(LivingEntity entity) {
+    return (double) (this.golem.getBbWidth() * 1.5F * this.golem.getBbWidth() * 1.5F + entity.getBbWidth());
   }
 }
