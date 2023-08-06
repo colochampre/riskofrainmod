@@ -32,6 +32,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements RangedAttackMob {
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
@@ -63,7 +64,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
             .add(Attributes.MOVEMENT_SPEED, 0.0D);
   }
 
-  public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+  public float getWalkTargetValue(@NotNull BlockPos pos, LevelReader level) {
     return level.getBlockState(pos).isAir() ? 20.0F : 0.0F;
   }
 
@@ -87,13 +88,13 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag tag) {
+  public void addAdditionalSaveData(@NotNull CompoundTag tag) {
     super.addAdditionalSaveData(tag);
     tag.putByte("BodyColor", (byte) this.getBodyColor().getId());
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag tag) {
+  public void readAdditionalSaveData(@NotNull CompoundTag tag) {
     super.readAdditionalSaveData(tag);
     if (tag.contains("BodyColor", 99)) {
       this.setBodyColor(DyeColor.byId(tag.getInt("BodyColor")));
@@ -101,7 +102,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   @Override
-  public InteractionResult mobInteract(Player player, InteractionHand hand) {
+  public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
     Item item = itemstack.getItem();
     // Set body color
@@ -131,11 +132,11 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   @Override
-  protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
     return 0.055F;
   }
 
-  public Vec3 getLeashOffset() {
+  public @NotNull Vec3 getLeashOffset() {
     return new Vec3(0.0D, (double) (0.6F * this.getEyeHeight()), (double) (this.getBbWidth() * 0.2F));
   }
 
@@ -152,7 +153,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   @Override
-  public boolean wantsToAttack(LivingEntity livingentity, LivingEntity owner) {
+  public boolean wantsToAttack(@NotNull LivingEntity livingentity, @NotNull LivingEntity owner) {
     if (!(livingentity instanceof Creeper)) {
       if (livingentity instanceof Wolf) {
         Wolf wolf = (Wolf) livingentity;

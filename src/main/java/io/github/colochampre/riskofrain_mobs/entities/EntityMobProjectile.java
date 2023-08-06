@@ -17,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -26,6 +27,7 @@ public abstract class EntityMobProjectile extends Entity {
   private int ownerNetworkId;
   private boolean leftOwner;
 
+  // code from AlexMod MudBall
   public EntityMobProjectile(EntityType type, Level level) {
     super(type, level);
   }
@@ -50,7 +52,7 @@ public abstract class EntityMobProjectile extends Entity {
   }
 
   @Override
-  public Packet<ClientGamePacketListener> getAddEntityPacket() {
+  public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
     return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
   }
 
@@ -126,7 +128,7 @@ public abstract class EntityMobProjectile extends Entity {
 
   }
 
-  protected void addAdditionalSaveData(CompoundTag compound) {
+  protected void addAdditionalSaveData(@NotNull CompoundTag compound) {
     if (this.ownerUUID != null) {
       compound.putUUID("Owner", this.ownerUUID);
     }

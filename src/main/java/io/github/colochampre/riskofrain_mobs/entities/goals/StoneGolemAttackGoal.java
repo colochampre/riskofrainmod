@@ -112,7 +112,7 @@ public class StoneGolemAttackGoal extends Goal {
         this.golem.setTarget((LivingEntity) null);
       } else {
         laserTick(livingentity);
-        super.tick();
+        //super.tick();
       }
     }
   }
@@ -200,7 +200,7 @@ public class StoneGolemAttackGoal extends Goal {
     return (SoundEvent) SoundInit.STONE_GOLEM_LASER_FIRE.get();
   }
 
-  protected double getAttackReachSqr(LivingEntity p_25556_) {
-    return (double) (this.golem.getBbWidth() * 1.5F * this.golem.getBbWidth() * 1.5F + p_25556_.getBbWidth());
+  protected double getAttackReachSqr(LivingEntity entity) {
+    return (double) (this.golem.getBbWidth() * 1.5F * this.golem.getBbWidth() * 1.5F + entity.getBbWidth());
   }
 }
