@@ -11,12 +11,17 @@ import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.piglin.Piglin;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -27,8 +32,22 @@ public class ModCommonEvents {
   public static class ForgeEvents {
 
     @SubscribeEvent
+    public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
+      try {
+        if (event.getEntity() instanceof final Piglin piglin && RoRConfig.SERVER.PIGLINS_ATTACK_LEMURIANS.get()) {
+          piglin.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(piglin, LemurianEntity.class, 20, true, true, null));
+        }
+        else if (event.getEntity() instanceof final AbstractVillager villager) {
+          villager.targetSelector.addGoal(3, new AvoidEntityGoal<>(villager, LemurianEntity.class, 6.0F, 0.8D, 1.0D));
+        }
+      } catch (Exception e) {
+        RoRmod.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
+      }
+    }
+
+    @SubscribeEvent
     public static void playerDeathSound(LivingDeathEvent event) {
-      if (RoRConfig.SERVER.DEATH_SOUND.get() && event.getEntity() instanceof Player player) {
+      if (event.getEntity() instanceof Player player && RoRConfig.SERVER.DEATH_SOUND.get()) {
         Level level = player.getLevel();
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.PLAYER_DEATH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
       }

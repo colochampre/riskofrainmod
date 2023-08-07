@@ -3,9 +3,15 @@ package io.github.colochampre.riskofrain_mobs.entities;
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -13,6 +19,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
@@ -20,20 +27,30 @@ import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class LemurianEntity extends Monster {
+  private static final EntityDataAccessor<Boolean> DATA_TYPE_ID = SynchedEntityData.defineId(LemurianEntity.class, EntityDataSerializers.BOOLEAN);
   private int attackTimer;
   private boolean selectingHand = true;
   private boolean rightHandSelected = true;
+
 
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
     this.xpReward = 12;
     this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, -1.0F);
+  }
+
+  @Override
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    this.entityData.define(DATA_TYPE_ID, false);
   }
 
   @Override
@@ -88,12 +105,42 @@ public class LemurianEntity extends Monster {
     return flag;
   }
 
+  @Nullable
+  @Override
+  public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag nbt) {
+    Holder<Biome> holder = level.getBiome(this.blockPosition());
+    Fox.Type lemurian$type = LemurianEntity.Type.byBiome(holder);
+    groupData = new LemurianEntity().LemurianGroupData(lemurian$type);
+    this.setLemurianType(lemurian$type);
+    return super.finalizeSpawn(level, difficulty, type, groupData, nbt);
+  }
+
   public float getAttackDamage() {
     float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
     if (this.level.getDifficulty() == Difficulty.HARD) {
       f *= 2.0F;
     }
     return f;
+  }
+
+  public LemurianEntity.Type getLemurianType() {
+    return LemurianEntity.Type.byId(this.entityData.get(DATA_TYPE_ID));
+  }
+
+  private void setLemurianType(LemurianEntity.Type type) {
+    this.entityData.set(DATA_TYPE_ID, type.getId());
+  }
+
+  @Override
+  public void addAdditionalSaveData(CompoundTag nbt) {
+    super.addAdditionalSaveData(nbt);
+    nbt.putString("Type", this.getLemurianType().getName());
+  }
+
+  @Override
+  public void readAdditionalSaveData(CompoundTag nbt) {
+    super.readAdditionalSaveData(nbt);
+    this.setLemurianType(LemurianEntity.Type.byName(nbt.getString("Type")));
   }
 
   public int getAttackTimer() {

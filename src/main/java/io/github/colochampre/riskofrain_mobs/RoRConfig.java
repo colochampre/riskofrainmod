@@ -21,6 +21,7 @@ public class RoRConfig {
     public final ForgeConfigSpec.IntValue LEMURIAN_MIN_GROUP_SIZE;
     public final ForgeConfigSpec.IntValue LEMURIAN_MAX_GROUP_SIZE;
     public final ForgeConfigSpec.BooleanValue LEMURIANS_DESPAWN;
+    public final ForgeConfigSpec.BooleanValue PIGLINS_ATTACK_LEMURIANS;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_OVERWORLD_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_NETHER_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_MIN_GROUP_SIZE;
@@ -52,6 +53,9 @@ public class RoRConfig {
       LEMURIANS_DESPAWN = builder
               .comment("Despawn lemurians when they are far away")
               .define("enableLemurianDespawn", true);
+      PIGLINS_ATTACK_LEMURIANS = builder
+              .comment("Piglins attack Lemurians for not wearing gold")
+              .define("piglinsAttackLemurians", true);
       builder.pop();
 
       builder.push("StoneGolems");
