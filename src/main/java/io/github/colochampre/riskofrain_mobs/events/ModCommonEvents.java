@@ -34,10 +34,7 @@ public class ModCommonEvents {
     @SubscribeEvent
     public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
       try {
-        if (event.getEntity() instanceof final Piglin piglin && RoRConfig.SERVER.PIGLINS_ATTACK_LEMURIANS.get()) {
-          piglin.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(piglin, LemurianEntity.class, 20, true, true, null));
-        }
-        else if (event.getEntity() instanceof final AbstractVillager villager) {
+        if (event.getEntity() instanceof final AbstractVillager villager) {
           villager.targetSelector.addGoal(3, new AvoidEntityGoal<>(villager, LemurianEntity.class, 6.0F, 0.8D, 1.0D));
         }
       } catch (Exception e) {

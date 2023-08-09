@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
+import io.github.colochampre.riskofrain_mobs.entities.goals.LemurianAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -19,7 +20,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
@@ -28,13 +28,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class LemurianEntity extends Monster {
-  private static final EntityDataAccessor<Boolean> DATA_TYPE_ID = SynchedEntityData.defineId(LemurianEntity.class, EntityDataSerializers.BOOLEAN);
+  private static final EntityDataAccessor<Integer> DATA_TYPE_ID = SynchedEntityData.defineId(LemurianEntity.class, EntityDataSerializers.INT);
+  private final float FIREBALL_ATTACK_RANGE = 20;
+  private final MeleeAttackGoal meleeAttackGoal = new MeleeAttackGoal(this, 1.0D, true);
+  private final LemurianAttackGoal fireballAttackGoal = new LemurianAttackGoal(this, this.FIREBALL_ATTACK_RANGE, 0.8D);
   private int attackTimer;
   private boolean selectingHand = true;
   private boolean rightHandSelected = true;
@@ -50,7 +59,7 @@ public class LemurianEntity extends Monster {
   @Override
   protected void defineSynchedData() {
     super.defineSynchedData();
-    this.entityData.define(DATA_TYPE_ID, false);
+    this.entityData.define(DATA_TYPE_ID, 0);
   }
 
   @Override
@@ -58,7 +67,7 @@ public class LemurianEntity extends Monster {
     this.goalSelector.addGoal(1, new FloatGoal(this));
     this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolem.class, 8.0F, 0.8D, 1.0D));
     this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Creeper.class, 6.0F, 0.8D, 1.0D));
-    this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+    //this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
     this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.6D));
     this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
     this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -81,6 +90,22 @@ public class LemurianEntity extends Monster {
     super.aiStep();
     if (this.attackTimer > 0) {
       --this.attackTimer;
+    }
+    if (this.isEvolved() && RoRConfig.SERVER.ENABLE_FIREBALL_ATTACK.get()) {
+      LivingEntity livingentity = this.getTarget();
+      if (livingentity != null) {
+        float attackReach = this.FIREBALL_ATTACK_RANGE * this.FIREBALL_ATTACK_RANGE;
+        double d0 = this.distanceToSqr(livingentity);
+        if (d0 < (double) attackReach && d0 > (double) attackReach * 0.3) {
+          this.goalSelector.addGoal(4, this.fireballAttackGoal);
+          this.goalSelector.removeGoal(this.meleeAttackGoal);
+        } else {
+          this.goalSelector.addGoal(4, this.meleeAttackGoal);
+          this.goalSelector.removeGoal(this.fireballAttackGoal);
+        }
+      }
+    } else {
+      this.goalSelector.addGoal(4, this.meleeAttackGoal);
     }
   }
 
@@ -107,10 +132,9 @@ public class LemurianEntity extends Monster {
 
   @Nullable
   @Override
-  public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag nbt) {
+  public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag nbt) {
     Holder<Biome> holder = level.getBiome(this.blockPosition());
-    Fox.Type lemurian$type = LemurianEntity.Type.byBiome(holder);
-    groupData = new LemurianEntity().LemurianGroupData(lemurian$type);
+    LemurianEntity.Type lemurian$type = LemurianEntity.Type.byBiome(holder);
     this.setLemurianType(lemurian$type);
     return super.finalizeSpawn(level, difficulty, type, groupData, nbt);
   }
@@ -132,19 +156,26 @@ public class LemurianEntity extends Monster {
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag nbt) {
+  public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
     super.addAdditionalSaveData(nbt);
     nbt.putString("Type", this.getLemurianType().getName());
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag nbt) {
+  public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
     super.readAdditionalSaveData(nbt);
     this.setLemurianType(LemurianEntity.Type.byName(nbt.getString("Type")));
   }
 
   public int getAttackTimer() {
     return this.attackTimer;
+  }
+
+  public int getExperienceReward() {
+    if (this.isEvolved()) {
+      this.xpReward = (int) ((double) this.xpReward * 2.0D);
+    }
+    return super.getExperienceReward();
   }
 
   public boolean getIsRightHandSelected() {
@@ -208,7 +239,53 @@ public class LemurianEntity extends Monster {
     this.selectingHand = value;
   }
 
+  public boolean isEvolved() {
+    return this.getEntityData().get(DATA_TYPE_ID) == 1;
+  }
+
   public static boolean isMoving(LivingEntity entity) {
     return entity.getX() != entity.xOld || entity.getZ() != entity.zOld;
+  }
+
+  public static enum Type {
+    DEFAULT(0, "default"),
+    EVOLVED(1, "evolved");
+
+    private static final LemurianEntity.Type[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(LemurianEntity.Type::getId)).toArray((p_28822_) -> {
+      return new LemurianEntity.Type[p_28822_];
+    });
+    private static final Map<String, LemurianEntity.Type> BY_NAME = Arrays.stream(values()).collect(Collectors.toMap(LemurianEntity.Type::getName, (p_28815_) -> {
+      return p_28815_;
+    }));
+    private final int id;
+    private final String name;
+
+    private Type(int id, String name) {
+      this.id = id;
+      this.name = name;
+    }
+
+    public String getName() {
+      return this.name;
+    }
+
+    public int getId() {
+      return this.id;
+    }
+
+    public static LemurianEntity.Type byName(String name) {
+      return BY_NAME.getOrDefault(name, DEFAULT);
+    }
+
+    public static LemurianEntity.Type byId(int i) {
+      if (i < 0 || i > BY_ID.length) {
+        i = 0;
+      }
+      return BY_ID[i];
+    }
+
+    public static LemurianEntity.Type byBiome(Holder<Biome> biome) {
+      return (biome.value().getBaseTemperature() >= 1.0F && !biome.is(Biomes.WARPED_FOREST)) ? EVOLVED : DEFAULT;
+    }
   }
 }

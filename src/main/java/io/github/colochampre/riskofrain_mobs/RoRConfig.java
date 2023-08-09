@@ -21,7 +21,8 @@ public class RoRConfig {
     public final ForgeConfigSpec.IntValue LEMURIAN_MIN_GROUP_SIZE;
     public final ForgeConfigSpec.IntValue LEMURIAN_MAX_GROUP_SIZE;
     public final ForgeConfigSpec.BooleanValue LEMURIANS_DESPAWN;
-    public final ForgeConfigSpec.BooleanValue PIGLINS_ATTACK_LEMURIANS;
+    public final ForgeConfigSpec.BooleanValue ENABLE_FIREBALL_ATTACK;
+    public final ForgeConfigSpec.BooleanValue ENABLE_FIREBALL_GRIEF;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_OVERWORLD_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_NETHER_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_MIN_GROUP_SIZE;
@@ -31,7 +32,7 @@ public class RoRConfig {
 
 
     public ServerConfig(ForgeConfigSpec.Builder builder) {
-      builder.comment("Entity spawn configs").push("Drones");
+      builder.comment("Entity configs").push("Drones");
       DRONES_SPAWN_RATE = builder
               .comment("Drones spawn rate")
               .defineInRange("droneSpawnWeight", 1, 0, 100);
@@ -43,19 +44,22 @@ public class RoRConfig {
               .defineInRange("lemurianOverworldSpawnWeight", 66, 0, 100);
       LEMURIAN_NETHER_SPAWN_RATE = builder
               .comment("Lemurians nether spawn rate (Sensitive). Set this to 0 to disable spawns")
-              .defineInRange("lemurianNetherSpawnWeight", 4, 0, 100);
+              .defineInRange("lemurianNetherSpawnWeight", 2, 0, 100);
       LEMURIAN_MIN_GROUP_SIZE = builder
               .comment("Lemurians minimum group size on spawn. Set this equal or lower than max group size")
               .defineInRange("lemurianMinGroupSize", 1, 1, 8);
       LEMURIAN_MAX_GROUP_SIZE = builder
               .comment("Lemurians maximum group size on spawn. Set this equal or higher than min group size")
-              .defineInRange("lemurianMaxGroupSize", 2, 1, 8);
+              .defineInRange("lemurianMaxGroupSize", 3, 1, 8);
       LEMURIANS_DESPAWN = builder
               .comment("Despawn lemurians when they are far away")
               .define("enableLemurianDespawn", true);
-      PIGLINS_ATTACK_LEMURIANS = builder
-              .comment("Piglins attack Lemurians for not wearing gold")
-              .define("piglinsAttackLemurians", true);
+      ENABLE_FIREBALL_ATTACK = builder
+              .comment("Allow evolved lemurians to spit fireballs")
+              .define("enableFireballAttack", true);
+      ENABLE_FIREBALL_GRIEF = builder
+              .comment("Allow lemurian fireballs to set blocks on fire")
+              .define("enableFireballGrief", true);
       builder.pop();
 
       builder.push("StoneGolems");
@@ -64,7 +68,7 @@ public class RoRConfig {
               .defineInRange("stoneGolemOverworldSpawnWeight", 10, 0, 100);
       STONE_GOLEM_NETHER_SPAWN_RATE = builder
               .comment("Stone Golems nether spawn rate (Sensitive). Set this to 0 to disable spawns")
-              .defineInRange("stoneGolemNetherSpawnWeight", 2, 0, 100);
+              .defineInRange("stoneGolemNetherSpawnWeight", 1, 0, 100);
       STONE_GOLEM_MIN_GROUP_SIZE = builder
               .comment("Stone Golems minimum group size. Set this equal or lower than max group size")
               .defineInRange("stoneGolemMinGroupSize", 1, 1, 8);
