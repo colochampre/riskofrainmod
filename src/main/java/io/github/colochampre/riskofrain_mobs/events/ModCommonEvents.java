@@ -11,12 +11,15 @@ import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -25,6 +28,17 @@ public class ModCommonEvents {
 
   @Mod.EventBusSubscriber(modid = RoRmod.MODID)
   public static class ForgeEvents {
+
+    @SubscribeEvent
+    public void onEntityJoinWorld(MobSpawnEvent.FinalizeSpawn event) {
+      try {
+        if (event.getEntity() instanceof final AbstractVillager villager) {
+          villager.targetSelector.addGoal(3, new AvoidEntityGoal<>(villager, LemurianEntity.class, 6.0F, 0.8D, 1.0D));
+        }
+      } catch (Exception e) {
+        RoRmod.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
+      }
+    }
 
     @SubscribeEvent
     public static void playerDeathSound(LivingDeathEvent event) {
