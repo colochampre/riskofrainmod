@@ -9,27 +9,27 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.SmallFireball;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.NotNull;
 
 public class LemurianFireBallEntity extends Fireball {
-  public LemurianFireBallEntity(EntityType<? extends SmallFireball> p_37364_, Level p_37365_) {
-    super(p_37364_, p_37365_);
+  public LemurianFireBallEntity(EntityType<? extends SmallFireball> type, Level level) {
+    super(type, level);
   }
 
-  public LemurianFireBallEntity(Level level, LivingEntity entity, double p_37377_, double p_37378_, double p_37379_) {
-    super(EntityType.SMALL_FIREBALL, entity, p_37377_, p_37378_, p_37379_, level);
+  public LemurianFireBallEntity(Level level, LivingEntity entity, double x, double y, double z) {
+    super(EntityType.SMALL_FIREBALL, entity, x, y, z, level);
   }
 
   public LemurianFireBallEntity(Level level, double p_37368_, double p_37369_, double p_37370_, double p_37371_, double p_37372_, double p_37373_) {
     super(EntityType.SMALL_FIREBALL, p_37368_, p_37369_, p_37370_, p_37371_, p_37372_, p_37373_, level);
   }
 
-  protected void onHitEntity(EntityHitResult hitResult) {
+  protected void onHitEntity(@NotNull EntityHitResult hitResult) {
     super.onHitEntity(hitResult);
     if (!this.level.isClientSide) {
       Entity entity = hitResult.getEntity();
@@ -44,7 +44,7 @@ public class LemurianFireBallEntity extends Fireball {
     }
   }
 
-  protected void onHitBlock(BlockHitResult hitResult) {
+  protected void onHitBlock(@NotNull BlockHitResult hitResult) {
     super.onHitBlock(hitResult);
     if (!this.level.isClientSide) {
       Entity entity = this.getOwner();
@@ -58,8 +58,8 @@ public class LemurianFireBallEntity extends Fireball {
     }
   }
 
-  protected void onHit(HitResult p_37388_) {
-    super.onHit(p_37388_);
+  protected void onHit(@NotNull HitResult hitResult) {
+    super.onHit(hitResult);
     if (!this.level.isClientSide) {
       this.discard();
     }
@@ -70,7 +70,7 @@ public class LemurianFireBallEntity extends Fireball {
     return false;
   }
 
-  public boolean hurt(DamageSource source, float p_37382_) {
+  public boolean hurt(@NotNull DamageSource source, float p_37382_) {
     return false;
   }
 }

@@ -5,7 +5,6 @@ import io.github.colochampre.riskofrain_mobs.entities.LemurianFireBallEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -102,10 +101,6 @@ public class LemurianAttackGoal extends Goal {
 
   private void fireballAttackTick(LivingEntity entity, double distance, boolean canSee) {
     if (((distance > this.maxAttackDistance * 0.3) || (this.lemurian.getNavigation().isDone())) && (distance < (double) this.maxAttackDistance) && canSee) {
-      Vec3 vec3 = this.lemurian.getViewVector(1.0F);
-      double d1 = entity.getX() - this.lemurian.getX();
-      double d2 = entity.getY(0.6D) - (0.6D + this.lemurian.getY(0.6D));
-      double d3 = entity.getZ() - this.lemurian.getZ();
       if (this.attackTime <= 0) {
         ++this.attackStep;
         if (this.attackStep == 1) {
@@ -117,12 +112,16 @@ public class LemurianAttackGoal extends Goal {
           this.attackStep = 0;
         }
         if (this.attackStep > 1) {
+          double d1 = entity.getX() - this.lemurian.getX();
+          double d2 = entity.getY(0.6D) - (0.6D + this.lemurian.getY(0.6D));
+          double d3 = entity.getZ() - this.lemurian.getZ();
           double d4 = Math.sqrt(Math.sqrt((float) distance)) * 0.25F;
+          Vec3 vec3 = this.lemurian.getViewVector(1.0F);
           if (!this.lemurian.isSilent()) {
             /* Lemurian fireball sound */
             this.lemurian.level.levelEvent((Player) null, 1018, this.lemurian.blockPosition(), 0);
           }
-          LemurianFireBallEntity fireball = new LemurianFireBallEntity(this.lemurian.level, this.lemurian, d1 * (double) d4, d2, d3 * (double) d4);
+          LemurianFireBallEntity fireball = new LemurianFireBallEntity(this.lemurian.level, this.lemurian, d1 * d4, d2, d3 * d4);
           fireball.setPos(fireball.getX() + vec3.x * 0.8D, this.lemurian.getY(0.6D) + 0.6D, fireball.getZ() + vec3.z * 0.8D);
           this.lemurian.level.addFreshEntity(fireball);
         }
