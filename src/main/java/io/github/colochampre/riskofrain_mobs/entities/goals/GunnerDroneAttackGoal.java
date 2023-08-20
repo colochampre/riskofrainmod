@@ -79,7 +79,6 @@ public class GunnerDroneAttackGoal extends Goal {
           }
           // Shoot target
           if (this.attackTime <= 0) {
-
             ++this.attackStep;
             if (this.attackStep == 1) {
               this.attackTime = 30;

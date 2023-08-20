@@ -11,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
@@ -169,12 +170,12 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
   }
 
   @Override
-  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+  public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
     core.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
   }
 
   @Override
-  public void setupAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
+  public void setupAnim(@NotNull LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
     getLookAnim(headYaw, headPitch);
     getIdleAnim(entity, ageInTicks);
     getWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
@@ -250,7 +251,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
   }
 
   private void getAttackAnim(LemurianEntity entity, int i, float ageInTicks) {
-    int random = RandomSource.create().nextIntBetweenInclusive(1, 3);
+    //int random = RandomSource.create().nextIntBetweenInclusive(1, 3);
     if (entity.getIsSelectedHand()) {
       this.rightHandSelected = entity.getIsRightHandSelected();
       entity.setIsSelectingHand(false);

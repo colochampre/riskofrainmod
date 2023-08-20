@@ -37,7 +37,6 @@ import org.jetbrains.annotations.NotNull;
 public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements RangedAttackMob {
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
   private final GunnerDroneAttackGoal attackGoal = new GunnerDroneAttackGoal(this, 16.0F);
-  //private int attackTimer;
 
   public GunnerDroneEntity(EntityType<? extends GunnerDroneEntity> entity, Level level) {
     super(entity, level);
@@ -73,11 +72,6 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     if (this.isTame()) {
       this.goalSelector.addGoal(2, this.attackGoal);
     }
-    /*
-    if (this.attackTimer > 0) {
-      --this.attackTimer;
-    }
-    */
     super.aiStep();
   }
 

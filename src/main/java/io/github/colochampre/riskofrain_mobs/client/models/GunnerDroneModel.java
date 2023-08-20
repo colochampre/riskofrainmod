@@ -163,14 +163,13 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
     }
     //Moving inclination
     if (this.bodyPitch > 0.0F && entity.isDroneMoving()) {
-      float f1 = Mth.cos(ageInTicks * 0.18F);
-      this.eye.xRot = 0.1F + f1 * (float) Math.PI * 0.025F;
+      float f2 = Mth.cos(ageInTicks * 0.18F);
+      this.eye.xRot = 0.1F + f2 * (float) Math.PI * 0.025F;
     }
   }
 
   @Override
   public void prepareMobModel(GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    //super.prepareMobModel(entity, limbSwing, limbSwingAmount, ageInTicks);
     this.bodyPitch = entity.getRollAmount(ageInTicks);
   }
 }

@@ -133,6 +133,24 @@
       }
     ]
   },
+  "entity.lemurian.fireball": {
+    "category": "entity",
+    "subtitle": "Lemurian attacks",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/lemurian/lemurian_fireball_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/lemurian/lemurian_fireball_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/lemurian/lemurian_fireball_03",
+        "stream": true
+      }
+    ]
+  },
   "entity.lemurian.death": {
     "category": "entity",
     "subtitle": "Lemurian dies",
