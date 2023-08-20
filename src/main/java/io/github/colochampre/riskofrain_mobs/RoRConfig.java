@@ -21,6 +21,8 @@ public class RoRConfig {
     public final ForgeConfigSpec.IntValue LEMURIAN_MIN_GROUP_SIZE;
     public final ForgeConfigSpec.IntValue LEMURIAN_MAX_GROUP_SIZE;
     public final ForgeConfigSpec.BooleanValue LEMURIANS_DESPAWN;
+    public final ForgeConfigSpec.BooleanValue ENABLE_FIREBALL_ATTACK;
+    public final ForgeConfigSpec.BooleanValue ENABLE_FIREBALL_GRIEF;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_OVERWORLD_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_NETHER_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_MIN_GROUP_SIZE;
@@ -48,10 +50,16 @@ public class RoRConfig {
               .defineInRange("lemurianMinGroupSize", 1, 1, 8);
       LEMURIAN_MAX_GROUP_SIZE = builder
               .comment("Lemurians maximum group size on spawn. Set this equal or higher than min group size")
-              .defineInRange("lemurianMaxGroupSize", 2, 1, 8);
+              .defineInRange("lemurianMaxGroupSize", 3, 1, 8);
       LEMURIANS_DESPAWN = builder
               .comment("Despawn lemurians when they are far away")
               .define("enableLemurianDespawn", true);
+      ENABLE_FIREBALL_ATTACK = builder
+              .comment("Allow evolved lemurians to spit fireballs")
+              .define("enableFireballAttack", true);
+      ENABLE_FIREBALL_GRIEF = builder
+              .comment("Allow lemurian fireballs to set blocks on fire")
+              .define("enableFireballGrief", true);
       builder.pop();
 
       builder.push("StoneGolems");

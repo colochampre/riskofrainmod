@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class LemurianRenderer extends MobRenderer<LemurianEntity, LemurianModel<LemurianEntity>> {
   private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/lemurian/lemurian_default.png");
+  private static final ResourceLocation EVOLVED_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/lemurian/lemurian_evolved.png");
 
   public LemurianRenderer(EntityRendererProvider.Context context) {
     super(context, new LemurianModel<>(context.bakeLayer(ModClientEvents.LEMURIAN_LAYER)), 0.4F);
@@ -27,6 +28,10 @@ public class LemurianRenderer extends MobRenderer<LemurianEntity, LemurianModel<
 
   @Override
   public ResourceLocation getTextureLocation(LemurianEntity entity) {
-    return LemurianRenderer.DEFAULT_TEXTURE;
+    if (entity.getLemurianType() == LemurianEntity.Type.EVOLVED) {
+      return LemurianRenderer.EVOLVED_TEXTURE;
+    } else {
+      return LemurianRenderer.DEFAULT_TEXTURE;
+    }
   }
 }
