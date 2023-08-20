@@ -1,5 +1,4 @@
 package io.github.colochampre.riskofrain_mobs.entities;
-
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
