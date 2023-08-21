@@ -70,9 +70,10 @@ public class LemurianEntity extends Monster {
     this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.6D));
     this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
     this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-    this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, WanderingTrader.class, true));
+    this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+    this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, WanderingTrader.class, true));
   }
 
   public static AttributeSupplier.Builder createAttributes() {
