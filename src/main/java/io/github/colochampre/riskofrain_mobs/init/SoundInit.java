@@ -25,6 +25,7 @@ public final class SoundInit {
   public static final RegistryObject<SoundEvent> LEMURIAN_AMBIENT = registerSoundEvent("entity.lemurian.ambient");
   public static final RegistryObject<SoundEvent> LEMURIAN_ATTACK = registerSoundEvent("entity.lemurian.attack");
   public static final RegistryObject<SoundEvent> LEMURIAN_DEATH = registerSoundEvent("entity.lemurian.death");
+  public static final RegistryObject<SoundEvent> LEMURIAN_FIREBALL = registerSoundEvent("entity.lemurian.fireball");
   public static final RegistryObject<SoundEvent> LEMURIAN_HURT = registerSoundEvent("entity.lemurian.hurt");
   public static final RegistryObject<SoundEvent> LEMURIAN_STEP = registerSoundEvent("entity.lemurian.step");
 

@@ -2,6 +2,8 @@ package io.github.colochampre.riskofrain_mobs.entities.goals;
 
 import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
 import io.github.colochampre.riskofrain_mobs.entities.LemurianFireballEntity;
+import io.github.colochampre.riskofrain_mobs.init.SoundInit;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
@@ -118,8 +120,7 @@ public class LemurianAttackGoal extends Goal {
           double d4 = Math.sqrt(Math.sqrt((float) distance)) * 0.25F;
           Vec3 vec3 = this.lemurian.getViewVector(1.0F);
           if (!this.lemurian.isSilent()) {
-            /* Lemurian fireball sound */
-            this.lemurian.level().levelEvent((Player) null, 1018, this.lemurian.blockPosition(), 0);
+            this.lemurian.playSound(getFireballSound(), 1.5F, 1.0F);
           }
           LemurianFireballEntity fireball = new LemurianFireballEntity(this.lemurian.level(), this.lemurian, d1 * d4, d2, d3 * d4);
           fireball.setPos(fireball.getX() + vec3.x * 0.8D, this.lemurian.getY(0.6D) + 0.6D, fireball.getZ() + vec3.z * 0.8D);
@@ -128,5 +129,9 @@ public class LemurianAttackGoal extends Goal {
       }
       this.lemurian.getLookControl().setLookAt(entity, 30.0F, 30.0F);
     }
+  }
+
+  protected SoundEvent getFireballSound() {
+    return (SoundEvent) SoundInit.LEMURIAN_FIREBALL.get();
   }
 }
