@@ -16,16 +16,16 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
-public class LemurianFireBallEntity extends Fireball {
-  public LemurianFireBallEntity(EntityType<? extends SmallFireball> type, Level level) {
+public class LemurianFireballEntity extends Fireball {
+  public LemurianFireballEntity(EntityType<? extends SmallFireball> type, Level level) {
     super(type, level);
   }
 
-  public LemurianFireBallEntity(Level level, LivingEntity entity, double x, double y, double z) {
+  public LemurianFireballEntity(Level level, LivingEntity entity, double x, double y, double z) {
     super(EntityType.SMALL_FIREBALL, entity, x, y, z, level);
   }
 
-  public LemurianFireBallEntity(Level level, double p_37368_, double p_37369_, double p_37370_, double p_37371_, double p_37372_, double p_37373_) {
+  public LemurianFireballEntity(Level level, double p_37368_, double p_37369_, double p_37370_, double p_37371_, double p_37372_, double p_37373_) {
     super(EntityType.SMALL_FIREBALL, p_37368_, p_37369_, p_37370_, p_37371_, p_37372_, p_37373_, level);
   }
 

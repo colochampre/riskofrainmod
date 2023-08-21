@@ -135,7 +135,7 @@
   },
   "entity.lemurian.fireball": {
     "category": "entity",
-    "subtitle": "Lemurian attacks",
+    "subtitle": "Lemurian spits fireball",
     "sounds": [
       {
         "name": "riskofrain_mobs:entity/lemurian/lemurian_fireball_01",
