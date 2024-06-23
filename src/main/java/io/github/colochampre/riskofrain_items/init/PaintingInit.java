@@ -9,8 +9,12 @@ import net.minecraftforge.registries.RegistryObject;
 public class PaintingInit {
   public static final DeferredRegister<PaintingVariant> PAINTING_VARIANTS = DeferredRegister.create(ForgeRegistries.PAINTING_VARIANTS, RoRitems.MODID);
 
-  public static final RegistryObject<PaintingVariant> FANART_BETAWHO_1 = PAINTING_VARIANTS.register("fanart_betawho_1",
+  public static final RegistryObject<PaintingVariant> FANART_99HUNTERS = PAINTING_VARIANTS.register("fanart_99hunters_1",
+          () -> new PaintingVariant(32, 32));
+  public static final RegistryObject<PaintingVariant> FANART_AYMBORD = PAINTING_VARIANTS.register("fanart_aymbord_1",
           () -> new PaintingVariant(32, 16));
+  public static final RegistryObject<PaintingVariant> FANART_BETAWHO_1 = PAINTING_VARIANTS.register("fanart_betawho_1",
+          () -> new PaintingVariant(64, 32));
   public static final RegistryObject<PaintingVariant> FANART_BETAWHO_2 = PAINTING_VARIANTS.register("fanart_betawho_2",
           () -> new PaintingVariant(64, 32));
   public static final RegistryObject<PaintingVariant> FANART_BETAWHO_3 = PAINTING_VARIANTS.register("fanart_betawho_3",
@@ -19,15 +23,21 @@ public class PaintingInit {
           () -> new PaintingVariant(32, 32));
   public static final RegistryObject<PaintingVariant> FANART_BETAWHO_5 = PAINTING_VARIANTS.register("fanart_betawho_5",
           () -> new PaintingVariant(64, 32));
+  public static final RegistryObject<PaintingVariant> FANART_BURN = PAINTING_VARIANTS.register("fanart_burn_1",
+          () -> new PaintingVariant(32, 32));
   public static final RegistryObject<PaintingVariant> FANART_CORRECT_APPLE = PAINTING_VARIANTS.register("fanart_correct_apple_1",
           () -> new PaintingVariant(16, 16));
   public static final RegistryObject<PaintingVariant> FANART_DINAMITTIN = PAINTING_VARIANTS.register("fanart_dinamittin_1",
           () -> new PaintingVariant(64, 32));
   public static final RegistryObject<PaintingVariant> FANART_DRANSVITRY = PAINTING_VARIANTS.register("fanart_dransvitry_1",
           () -> new PaintingVariant(32, 16));
+  public static final RegistryObject<PaintingVariant> FANART_IVANGOGH99 = PAINTING_VARIANTS.register("fanart_ivangogh99_1",
+          () -> new PaintingVariant(32, 32));
   public static final RegistryObject<PaintingVariant> FANART_LAMBOSAURUS = PAINTING_VARIANTS.register("fanart_lambosaurus_1",
           () -> new PaintingVariant(32, 32));
   public static final RegistryObject<PaintingVariant> FANART_MAFFI1996 = PAINTING_VARIANTS.register("fanart_maffi1996_1",
+          () -> new PaintingVariant(32, 16));
+  public static final RegistryObject<PaintingVariant> FANART_MATHIEUBAL = PAINTING_VARIANTS.register("fanart_mathieubal_1",
           () -> new PaintingVariant(32, 16));
   public static final RegistryObject<PaintingVariant> FANART_PCMYTH = PAINTING_VARIANTS.register("fanart_pcmyth_1",
           () -> new PaintingVariant(32, 16));

@@ -1,0 +1,29 @@
+{
+  "type": "riskofrain_items:add_uncommon_loot_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_treasure"
+    },
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/buried_treasure"
+    },
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/end_city_treasure"
+    },
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/jungle_temple"
+    },
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/shipwreck_treasure"
+    },
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/stronghold_library"
+    }
+  ]
+}
