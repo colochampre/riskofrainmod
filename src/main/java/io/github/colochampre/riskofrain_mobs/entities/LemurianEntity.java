@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -239,7 +240,8 @@ public class LemurianEntity extends Monster {
 
   public static enum Type {
     DEFAULT(0, "default"),
-    EVOLVED(1, "evolved");
+    EVOLVED(1, "evolved"),
+    GOLDEN_ARMOR(2, "golden_armor");
 
     private static final LemurianEntity.Type[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(LemurianEntity.Type::getId)).toArray((p_28822_) -> {
       return new LemurianEntity.Type[p_28822_];
@@ -275,7 +277,10 @@ public class LemurianEntity extends Monster {
     }
 
     public static LemurianEntity.Type byBiome(Holder<Biome> biome) {
-      return (biome.value().getBaseTemperature() >= 1.0F && !biome.is(Biomes.WARPED_FOREST)) ? EVOLVED : DEFAULT;
+      if (biome.containsTag(BiomeTags.IS_NETHER)) {
+        return GOLDEN_ARMOR;
+      }
+      return (biome.value().getBaseTemperature() >= 1.0F) ? EVOLVED : DEFAULT;
     }
   }
 }

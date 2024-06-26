@@ -12,5 +12,5 @@ public class BiomeModifierInit {
           DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, RoRmod.MODID);
 
   public static final RegistryObject<Codec<RoRBiomeModifier>> ROR_ENTITY_MODIFIER_TYPE =
-          BIOME_MODIFIER_SERIALIZERS.register("riskofrain_entity_modifier", () -> Codec.unit(RoRBiomeModifier.INSTANCE));
+          BIOME_MODIFIER_SERIALIZERS.register("add_mob_spawns", () -> Codec.unit(RoRBiomeModifier.INSTANCE));
 }
