@@ -2,7 +2,7 @@ package io.github.colochampre.riskofrain_items.loot;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.colochampre.riskofrain_items.items.ItemList;
+import io.github.colochampre.riskofrain_items.util.Util;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -11,7 +11,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -38,7 +37,7 @@ public class UncommonLootTableModifier implements IGlobalLootModifier {
 
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         if (context.getRandom().nextInt(1) == 0) { // 100% spawn chance
-            generatedLoot.add(new ItemStack(ItemList.getLargeChestItem()));
+            generatedLoot.add(new ItemStack(Util.getLargeChestItem()));
         }
         return generatedLoot;
     }

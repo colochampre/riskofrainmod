@@ -1,13 +1,17 @@
-package io.github.colochampre.riskofrain_items.items;
+package io.github.colochampre.riskofrain_items.util;
 
+import io.github.colochampre.riskofrain_items.RoRitems;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ItemList {
+public class Util {
 
     private static final List<Item> commonItems = new ArrayList<>();
     private static final List<Item> uncommonItems = new ArrayList<>();
@@ -70,5 +74,29 @@ public class ItemList {
         */
         randomInt = random.nextInt(uncommonItems.size());
         return uncommonItems.get(randomInt);
+    }
+
+    public static boolean hasItemStack(Player player, Item item) {
+        Inventory inv = player.getInventory();
+        for (int i = 0; i <= 35; ++i) {
+            if (inv.getItem(i).getItem().equals(item)) {
+                RoRitems.LOGGER.info("Item found in slot " + i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int countItemStack(Player player, Item item) {
+        int total = 0;
+        Inventory inv = player.getInventory();
+        for (int i = 0; i <= 35; ++i) {
+            ItemStack stack = inv.getItem(i);
+            if (stack.getItem().equals(item)) {
+                total += stack.getCount();
+            }
+        }
+        RoRitems.LOGGER.info("Item stacked: " + total);
+        return total;
     }
 }

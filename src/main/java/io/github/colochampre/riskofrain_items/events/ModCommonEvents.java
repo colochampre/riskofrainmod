@@ -5,6 +5,7 @@ import io.github.colochampre.riskofrain_items.RoRitems;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import io.github.colochampre.riskofrain_items.init.SoundInit;
 import io.github.colochampre.riskofrain_items.items.*;
+import io.github.colochampre.riskofrain_items.util.Util;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -314,8 +315,26 @@ public class ModCommonEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
-    public static void tougherTimesProc(LivingDamageEvent event) {
+    public void tougherTimesProc(LivingDamageEvent event) {
       if (event.getEntity() instanceof Player player) {
+        Level level = player.level();
+        if (!level.isClientSide()) {;
+          if (Util.hasItemStack(player, ItemInit.TOUGHER_TIMES.get())) {
+            int total = Util.countItemStack(player, ItemInit.TOUGHER_TIMES.get());
+            boolean proc = false;
+            double chance = (1.0D - 1.0D / (1.0D + 0.15D * (double) total) - 0.01D) * 100.0D;
+            int random = RandomSource.create().nextInt(100);
+            if (random <= chance) {
+              proc = true;
+            }
+            if (!proc) {
+              return;
+            }
+            event.setAmount(0);
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), TougherTimesItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F);
+          }
+        }
+        /*
         int total = 0;
         boolean found = false;
         ItemStack stack;
@@ -333,7 +352,7 @@ public class ModCommonEvents {
         Level level = player.level();
         if (!level.isClientSide()) {
           boolean proc = false;
-          double chance = (1.0D - 1.0D / (1.0D + 0.15D * (double) total) - 0.01D) * 100.0D;
+          double chance = (1.0D - 1.0D / (1.0D + 0.15D * (double) this.countItemStack(player, ItemInit.TOUGHER_TIMES.get())) - 0.01D) * 100.0D;
           int random = RandomSource.create().nextInt(99);
           if (random <= chance) {
             proc = true;
@@ -344,6 +363,7 @@ public class ModCommonEvents {
           event.setAmount(0);
           level.playSound(null, player.getX(), player.getY(), player.getZ(), TougherTimesItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F);
         }
+        */
       }
     }
   }
