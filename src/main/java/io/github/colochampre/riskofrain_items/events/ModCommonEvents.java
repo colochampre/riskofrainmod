@@ -96,6 +96,9 @@ public class ModCommonEvents {
                 }
               }
             }
+            if (gold == 0) {
+              return;
+            }
             float damage = event.getAmount();
             double neededGoldForMaxAmplifier = total > 9 ? 9 : (2304 / Math.pow(2, total)) * 2;
             double damageAmplifier = gold > neededGoldForMaxAmplifier ? 40.0D : Mth.floor(gold * 40 / neededGoldForMaxAmplifier);
