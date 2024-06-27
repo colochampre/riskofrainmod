@@ -14,8 +14,8 @@ out
 .idea
 
 # gradle
-build
 .gradle
+build
 7.5.1
 
 # other
@@ -26,3 +26,4 @@ run
 
 # Files from Forge MDK
 forge*changelog.txt
+/.gradle/
