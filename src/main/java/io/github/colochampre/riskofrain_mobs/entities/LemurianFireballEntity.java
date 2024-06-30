@@ -2,6 +2,7 @@ package io.github.colochampre.riskofrain_mobs.entities;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -9,11 +10,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.SmallFireball;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class LemurianFireballEntity extends Fireball {
@@ -21,25 +24,27 @@ public class LemurianFireballEntity extends Fireball {
     super(type, level);
   }
 
-  public LemurianFireballEntity(Level level, LivingEntity entity, double x, double y, double z) {
-    super(EntityType.SMALL_FIREBALL, entity, x, y, z, level);
+  public LemurianFireballEntity(Level level, LivingEntity entity, Vec3 vec3) {
+    super(EntityType.SMALL_FIREBALL, entity, vec3, level);
   }
 
-  public LemurianFireballEntity(Level level, double p_37368_, double p_37369_, double p_37370_, double p_37371_, double p_37372_, double p_37373_) {
-    super(EntityType.SMALL_FIREBALL, p_37368_, p_37369_, p_37370_, p_37371_, p_37372_, p_37373_, level);
+  public LemurianFireballEntity(Level level, double x, double y, double z, Vec3 vec3) {
+    super(EntityType.SMALL_FIREBALL, x, y, z, vec3, level);
   }
 
   protected void onHitEntity(@NotNull EntityHitResult hitResult) {
     super.onHitEntity(hitResult);
-    if (!this.level().isClientSide) {
-      Entity entity = hitResult.getEntity();
-      Entity entity1 = this.getOwner();
-      int i = entity.getRemainingFireTicks();
-      entity.setSecondsOnFire(5);
-      if (!entity.hurt(this.damageSources().fireball(this, entity1), 5.0F)) {
-        entity.setRemainingFireTicks(i);
-      } else if (entity1 instanceof LivingEntity) {
-        this.doEnchantDamageEffects((LivingEntity) entity1, entity);
+    Level var3 = this.level();
+    if (var3 instanceof ServerLevel serverlevel) {
+      Entity entity1 = hitResult.getEntity();
+      Entity owner = this.getOwner();
+      int ticks = entity1.getRemainingFireTicks();
+      entity1.igniteForSeconds(5.0F);
+      DamageSource source = this.damageSources().fireball(this, owner);
+      if (!entity1.hurt(source, 5.0F)) {
+        entity1.setRemainingFireTicks(ticks);
+      } else {
+        EnchantmentHelper.doPostAttackEffects(serverlevel, entity1, source);
       }
     }
   }

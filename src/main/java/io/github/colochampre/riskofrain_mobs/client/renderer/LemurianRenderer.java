@@ -14,9 +14,9 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class LemurianRenderer extends MobRenderer<LemurianEntity, LemurianModel<LemurianEntity>> {
-  private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/lemurian/lemurian_default.png");
-  private static final ResourceLocation EVOLVED_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/lemurian/lemurian_evolved.png");
-  private static final ResourceLocation GOLDEN_ARMOR = new ResourceLocation(RoRmod.MODID, "textures/entity/lemurian/lemurian_golden_armor.png");
+  private static final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/lemurian/lemurian_default.png");
+  private static final ResourceLocation EVOLVED_TEXTURE = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/lemurian/lemurian_evolved.png");
+  private static final ResourceLocation GOLDEN_ARMOR = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/lemurian/lemurian_golden_armor.png");
 
   public LemurianRenderer(EntityRendererProvider.Context context) {
     super(context, new LemurianModel<>(context.bakeLayer(ModClientEvents.LEMURIAN_LAYER)), 0.4F);

@@ -17,11 +17,7 @@ out
 build
 .gradle
 
-# windows
-desktop.ini
-
 # other
-changelog.txt
 eclipse
 run
 

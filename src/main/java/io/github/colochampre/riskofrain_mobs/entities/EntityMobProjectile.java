@@ -1,8 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
@@ -16,7 +15,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -50,15 +48,14 @@ public abstract class EntityMobProjectile extends Entity {
     }
     return Mth.lerp(0.2F, f, f1);
   }
-
+  /*
   @Override
   public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
     return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
   }
-
+  */
   @Override
-  protected void defineSynchedData() {
-
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
   }
 
   public void tick() {

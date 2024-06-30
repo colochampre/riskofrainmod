@@ -1,12 +1,11 @@
 package io.github.colochampre.riskofrain_mobs.world;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.init.BiomeModifierInit;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -62,7 +61,7 @@ public class RoRBiomeModifier implements BiomeModifier {
   }
 
   @Override
-  public Codec<? extends BiomeModifier> codec() {
-    return BiomeModifierInit.ROR_ENTITY_MODIFIER_TYPE.get();
+  public MapCodec<? extends BiomeModifier> codec() {
+    return (MapCodec<? extends BiomeModifier>) BiomeModifierInit.ROR_ENTITY_MODIFIER_TYPE.get();
   }
 }

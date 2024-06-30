@@ -6,7 +6,6 @@ import io.github.colochampre.riskofrain_mobs.entities.goals.DroneFollowOwnerGoal
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -30,7 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,13 +51,13 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   public AbstractFlyingDroneEntity(EntityType<? extends AbstractFlyingDroneEntity> type, Level level) {
     super(type, level);
     this.moveControl = new FlyingMoveControl(this, 16, true);
-    this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
+    this.setPathfindingMalus(PathType.COCOA, -1.0F);
+    this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
+    this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+    this.setPathfindingMalus(PathType.DAMAGE_OTHER, -1.0F);
+    this.setPathfindingMalus(PathType.FENCE, -1.0F);
+    this.setPathfindingMalus(PathType.WATER, -1.0F);
+    this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
   }
 
   protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
@@ -152,12 +151,12 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   @Override
-  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData) {
     String price = String.valueOf(this.goldCount);
     Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
     this.setCustomName(component);
     this.setCustomNameVisible(true);
-    return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
+    return super.finalizeSpawn(level, instance, type, groupData);
   }
 
   @Override
@@ -285,7 +284,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   @Override
-  public boolean canBeLeashed(@NotNull Player player) {
+  public boolean canBeLeashed() {
     return (this.isTame() && !this.isInSittingPose());
   }
 

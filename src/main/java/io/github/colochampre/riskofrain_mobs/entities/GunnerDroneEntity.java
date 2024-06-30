@@ -82,9 +82,9 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   }
 
   @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_BODY_COLOR, DyeColor.LIGHT_BLUE.getId());
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(DATA_BODY_COLOR, DyeColor.LIGHT_BLUE.getId());
   }
 
   @Override
@@ -99,6 +99,11 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     if (tag.contains("BodyColor", 99)) {
       this.setBodyColor(DyeColor.byId(tag.getInt("BodyColor")));
     }
+  }
+
+  @Override
+  public boolean isFood(@NotNull ItemStack itemStack) {
+    return false;
   }
 
   @Override
@@ -129,11 +134,6 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
 
   public static boolean checkDroneSpawnRules(EntityType<GunnerDroneEntity> drone, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource randomSource) {
     return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
-  }
-
-  @Override
-  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
-    return 0.055F;
   }
 
   public @NotNull Vec3 getLeashOffset() {

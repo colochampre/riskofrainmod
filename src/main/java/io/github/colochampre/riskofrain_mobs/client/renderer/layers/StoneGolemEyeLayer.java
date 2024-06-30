@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class StoneGolemEyeLayer extends EyesLayer<StoneGolemEntity, StoneGolemModel<StoneGolemEntity>> {
-  static final RenderType STONE_GOLEM_EYE = RenderType.eyes(new ResourceLocation(RoRmod.MODID, "textures/entity/stone_golem/stone_golem_eye.png"));
+  static final RenderType STONE_GOLEM_EYE = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/stone_golem/stone_golem_eye.png"));
 
   public StoneGolemEyeLayer(RenderLayerParent<StoneGolemEntity, StoneGolemModel<StoneGolemEntity>> layer) {
     super(layer);

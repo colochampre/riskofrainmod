@@ -167,10 +167,15 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
 
     return LayerDefinition.create(mesh, 110, 64);
   }
-
+  /*
   @Override
   public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
     core.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+  }
+  */
+  @Override
+  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int i1, int i2) {
+    core.render(poseStack, vertexConsumer, i, i1, i2);
   }
 
   @Override

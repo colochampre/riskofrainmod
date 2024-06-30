@@ -29,9 +29,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -51,14 +50,14 @@ public class LemurianEntity extends Monster {
   public LemurianEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
     this.xpReward = 12;
-    this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, -1.0F);
+    this.setPathfindingMalus(PathType.POWDER_SNOW, -1.0F);
+    this.setPathfindingMalus(PathType.DANGER_POWDER_SNOW, -1.0F);
   }
 
   @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_TYPE_ID, 0);
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(DATA_TYPE_ID, 0);
   }
 
   @Override
@@ -130,11 +129,11 @@ public class LemurianEntity extends Monster {
   }
 
   @Override
-  public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, SpawnGroupData groupData, CompoundTag nbt) {
+  public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, SpawnGroupData groupData) {
     Holder<Biome> holder = level.getBiome(this.blockPosition());
     LemurianEntity.Type lemurian$type = LemurianEntity.Type.byBiome(holder);
     this.setLemurianType(lemurian$type);
-    return super.finalizeSpawn(level, difficulty, type, groupData, nbt);
+    return super.finalizeSpawn(level, difficulty, type, groupData);
   }
 
   public LemurianEntity.Type getLemurianType() {
@@ -204,11 +203,6 @@ public class LemurianEntity extends Monster {
 
   public boolean getIsSelectedHand() {
     return this.selectingHand;
-  }
-
-  @Override
-  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
-    return 1.62F;
   }
 
   @Override

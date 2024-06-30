@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
@@ -12,7 +13,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class DroneFollowOwnerGoal extends Goal {
@@ -69,14 +70,14 @@ public class DroneFollowOwnerGoal extends Goal {
 
   public void start() {
     this.timeToRecalcPath = 0;
-    this.oldWaterCost = this.tamable.getPathfindingMalus(BlockPathTypes.WATER);
-    this.tamable.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+    this.oldWaterCost = this.tamable.getPathfindingMalus(PathType.WATER);
+    this.tamable.setPathfindingMalus(PathType.WATER, 0.0F);
   }
 
   public void stop() {
     this.owner = null;
     this.navigation.stop();
-    this.tamable.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+    this.tamable.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
   }
 
   public void tick() {
@@ -119,16 +120,16 @@ public class DroneFollowOwnerGoal extends Goal {
     }
   }
 
-  private boolean canTeleportTo(BlockPos p_25308_) {
-    BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, p_25308_.mutable());
-    if (blockpathtypes != BlockPathTypes.WALKABLE) {
+  private boolean canTeleportTo(BlockPos pos) {
+    PathType blockpathtypes = WalkNodeEvaluator.getPathTypeStatic((Mob) this.tamable, pos.mutable());
+    if (blockpathtypes != PathType.WALKABLE) {
       return false;
     } else {
-      BlockState blockstate = this.level.getBlockState(p_25308_.below());
+      BlockState blockstate = this.level.getBlockState(pos.below());
       if (!this.canFly && blockstate.getBlock() instanceof LeavesBlock) {
         return false;
       } else {
-        BlockPos blockpos = p_25308_.subtract(this.tamable.blockPosition());
+        BlockPos blockpos = pos.subtract(this.tamable.blockPosition());
         return this.level.noCollision(this.tamable, this.tamable.getBoundingBox().move(blockpos));
       }
     }

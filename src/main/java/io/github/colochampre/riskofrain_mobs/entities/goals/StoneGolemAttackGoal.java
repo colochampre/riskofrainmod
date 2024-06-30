@@ -118,7 +118,7 @@ public class StoneGolemAttackGoal extends Goal {
   }
 
   private void meleeAttackTick(LivingEntity livingentity) {
-    double d0 = this.golem.getPerceivedTargetDistanceSquareForMeleeAttack(livingentity);
+    double d0 = this.golem.distanceToSqr(livingentity);
     this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
     if ((this.followingTargetEvenIfNotSeen || this.golem.getSensing().hasLineOfSight(livingentity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.golem.getRandom().nextFloat() < 0.05F)) {
       this.pathedTargetX = livingentity.getX();

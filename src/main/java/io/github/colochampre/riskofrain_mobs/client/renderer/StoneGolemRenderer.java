@@ -28,8 +28,8 @@ import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolemModel<StoneGolemEntity>> {
-  private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/stone_golem/stone_golem_default.png");
-  private static final ResourceLocation BEAM_LOCATION = new ResourceLocation(RoRmod.MODID, "textures/entity/stone_golem/laser_beam.png");
+  private static final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/stone_golem/stone_golem_default.png");
+  private static final ResourceLocation BEAM_LOCATION = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/stone_golem/laser_beam.png");
   private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(BEAM_LOCATION);
 
   public StoneGolemRenderer(EntityRendererProvider.Context context) {
@@ -136,7 +136,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
   }
 
   private static void vertex(VertexConsumer vertexConsumer, Matrix4f matrix4f, Matrix3f matrix3f, float p_253994_, float p_254492_, float p_254474_, int p_254080_, int p_253655_, int p_254133_, float p_254233_, float p_253939_) {
-    vertexConsumer.vertex(matrix4f, p_253994_, p_254492_, p_254474_).color(250, 90, 90, 255).uv(p_254233_, p_253939_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+    vertexConsumer.addVertex(matrix4f, p_253994_, p_254492_, p_254474_).setColor(250, 90, 90, 255).setUv(p_254233_, p_253939_).setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(0.0F, 1.0F, 0.0F);
   }
 
   @Override

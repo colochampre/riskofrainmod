@@ -3,7 +3,9 @@ package io.github.colochampre.riskofrain_mobs.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.BulletEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -15,7 +17,7 @@ import org.joml.Matrix4f;
 import org.jetbrains.annotations.NotNull;
 
 public class BulletRenderer extends EntityRenderer<BulletEntity> {
-  private static final ResourceLocation TEXTURE = new ResourceLocation("textures/item/iron_nugget.png");
+  private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/item/iron_nugget.png");
 
   // code from AlexMod MudBall
   public BulletRenderer(EntityRendererProvider.Context context) {
@@ -40,7 +42,7 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
   }
 
   private static void vertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_, float p_114094_, int p_114095_, int p_114096_, int p_114097_) {
-    p_114090_.vertex(p_114091_, p_114094_ - 0.5F, (float) p_114095_ - 0.25F, 0.0F).color(255, 255, 255, 255).uv((float) p_114096_, (float) p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_114093_).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
+    p_114090_.addVertex(p_114091_, p_114094_ - 0.5F, (float) p_114095_ - 0.25F, 0.0F).setColor(255, 255, 255, 255).setUv((float) p_114096_, (float) p_114097_).setOverlay(OverlayTexture.NO_OVERLAY).setLight(p_114093_).setNormal(0.0F, 1.0F, 0.0F);
   }
 
   public @NotNull ResourceLocation getTextureLocation(BulletEntity renderer) {

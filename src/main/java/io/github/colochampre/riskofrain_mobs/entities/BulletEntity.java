@@ -4,6 +4,7 @@ import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.PatrollingMonster;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PlayMessages;
+import net.minecraftforge.network.packets.SpawnEntity;
 
 public class BulletEntity extends EntityMobProjectile {
 
@@ -29,7 +30,7 @@ public class BulletEntity extends EntityMobProjectile {
     this.setPos(vec3.x, vec3.y, vec3.z);
   }
 
-  public BulletEntity(PlayMessages.SpawnEntity entity, Level world) {
+  public BulletEntity(SpawnEntity entity, Level world) {
     this(EntityInit.DRONE_BULLET_ENTITY.get(), world);
   }
 
@@ -60,6 +61,10 @@ public class BulletEntity extends EntityMobProjectile {
       }
     }
     super.onEntityHit(hitResult);
+  }
+
+  @Override
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
   }
 
   @Override

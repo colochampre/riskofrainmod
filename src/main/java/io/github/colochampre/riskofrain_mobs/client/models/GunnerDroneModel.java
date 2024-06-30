@@ -129,10 +129,15 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
 
     return LayerDefinition.create(mesh, 112, 72);
   }
-
+  /*
   @Override
   public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
     core.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+  }
+  */
+  @Override
+  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int i2) {
+    core.render(poseStack, vertexConsumer, packedLight, packedOverlay, i2);
   }
 
   @Override

@@ -122,7 +122,7 @@ public class LemurianAttackGoal extends Goal {
           if (!this.lemurian.isSilent()) {
             this.lemurian.playSound(getFireballSound(), 1.5F, 1.0F);
           }
-          LemurianFireballEntity fireball = new LemurianFireballEntity(this.lemurian.level(), this.lemurian, d1 * d4, d2, d3 * d4);
+          LemurianFireballEntity fireball = new LemurianFireballEntity(this.lemurian.level(), this.lemurian, vec3);
           fireball.setPos(fireball.getX() + vec3.x * 0.8D, this.lemurian.getY(0.6D) + 0.6D, fireball.getZ() + vec3.z * 0.8D);
           this.lemurian.level().addFreshEntity(fireball);
         }

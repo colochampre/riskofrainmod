@@ -12,13 +12,13 @@ public class EntityInit {
   public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, RoRmod.MODID);
 
   public static final RegistryObject<EntityType<LemurianEntity>> LEMURIAN_ENTITY = ENTITY_TYPES.register("lemurian_entity",
-          () -> EntityType.Builder.of(LemurianEntity::new, MobCategory.MONSTER).sized(0.7F, 1.72F).build(RoRmod.MODID + ":lemurian_entity"));
+          () -> EntityType.Builder.of(LemurianEntity::new, MobCategory.MONSTER).eyeHeight(1.62F).sized(0.7F, 1.72F).build(RoRmod.MODID + ":lemurian_entity"));
 
   public static final RegistryObject<EntityType<StoneGolemEntity>> STONE_GOLEM_ENTITY = ENTITY_TYPES.register("stone_golem_entity",
-          () -> EntityType.Builder.of(StoneGolemEntity::new, MobCategory.MONSTER).sized(1.66F, 3.95F).build(RoRmod.MODID + ":stone_golem_entity"));
+          () -> EntityType.Builder.of(StoneGolemEntity::new, MobCategory.MONSTER).eyeHeight(3.5F).sized(1.66F, 3.95F).build(RoRmod.MODID + ":stone_golem_entity"));
 
   public static final RegistryObject<EntityType<GunnerDroneEntity>> GUNNER_DRONE_ENTITY = ENTITY_TYPES.register("gunner_drone_entity",
-          () -> EntityType.Builder.of(GunnerDroneEntity::new, MobCategory.CREATURE).sized(0.75F, 1.15F).build(RoRmod.MODID + ":gunner_drone_entity"));
+          () -> EntityType.Builder.of(GunnerDroneEntity::new, MobCategory.CREATURE).eyeHeight(0.055F).sized(0.75F, 1.15F).build(RoRmod.MODID + ":gunner_drone_entity"));
 
   public static final RegistryObject<EntityType<BulletEntity>> DRONE_BULLET_ENTITY = ENTITY_TYPES.register("drone_bullet_entity",
           () -> registerEntity(EntityType.Builder.of(BulletEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setCustomClientFactory(BulletEntity::new).fireImmune(), "drone_bullet_entity"));
