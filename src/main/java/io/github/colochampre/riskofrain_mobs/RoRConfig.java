@@ -44,7 +44,7 @@ public class RoRConfig {
               .defineInRange("lemurianOverworldSpawnWeight", 66, 0, 100);
       LEMURIAN_NETHER_SPAWN_RATE = builder
               .comment("Lemurians nether spawn rate (Sensitive). Set this to 0 to disable spawns")
-              .defineInRange("lemurianNetherSpawnWeight", 2, 0, 100);
+              .defineInRange("lemurianNetherSpawnWeight", 10, 0, 100);
       LEMURIAN_MIN_GROUP_SIZE = builder
               .comment("Lemurians minimum group size on spawn. Set this equal or lower than max group size")
               .defineInRange("lemurianMinGroupSize", 1, 1, 8);
@@ -68,7 +68,7 @@ public class RoRConfig {
               .defineInRange("stoneGolemOverworldSpawnWeight", 10, 0, 100);
       STONE_GOLEM_NETHER_SPAWN_RATE = builder
               .comment("Stone Golems nether spawn rate (Sensitive). Set this to 0 to disable spawns")
-              .defineInRange("stoneGolemNetherSpawnWeight", 1, 0, 100);
+              .defineInRange("stoneGolemNetherSpawnWeight", 2, 0, 100);
       STONE_GOLEM_MIN_GROUP_SIZE = builder
               .comment("Stone Golems minimum group size. Set this equal or lower than max group size")
               .defineInRange("stoneGolemMinGroupSize", 1, 1, 8);

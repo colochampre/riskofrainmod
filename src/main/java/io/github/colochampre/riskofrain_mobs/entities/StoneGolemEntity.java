@@ -161,7 +161,7 @@ public class StoneGolemEntity extends Monster {
           if (livingentity != null) {
             this.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
             this.getLookControl().tick();
-            double d5 = (double) this.getAttackAnimationScale(0.0F);
+            double d5 = this.getAttackAnimationScale(0.0F);
             double d0 = livingentity.getX() - this.getX();
             double d1 = livingentity.getY(0.5D) - this.getEyeY();
             double d2 = livingentity.getZ() - this.getZ();
@@ -282,12 +282,13 @@ public class StoneGolemEntity extends Monster {
   protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockState) {
     this.playSound(this.getStepSound(), 3.0F, 1.0F);
   }
-/*
-  @Override
-  public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
-    return STONE_GOLEM_LOOT_TABLE;
-  }
-  */
+
+  /*
+    @Override
+    public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
+      return STONE_GOLEM_LOOT_TABLE;
+    }
+    */
   @Override
   public int getMaxFallDistance() {
     return 24;

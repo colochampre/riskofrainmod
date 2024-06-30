@@ -18,8 +18,10 @@ build
 .gradle
 
 # other
+desktop.ini
 eclipse
 run
 
 # Files from Forge MDK
 forge*changelog.txt
+/riskofrain_changelog.txt

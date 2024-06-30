@@ -53,7 +53,6 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
           return frustum.isVisible(new AABB(vec31.x, vec31.y, vec31.z, vec3.x, vec3.y, vec3.z));
         }
       }
-
       return false;
     }
   }
