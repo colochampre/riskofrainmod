@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SmallChestBlock extends BaseEntityBlock {
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-  private static final VoxelShape SHAPE = Block.box(0, 0, 2, 16, 12, 14);
+  private static final VoxelShape SHAPE = Block.box(0, 0, 2, 14, 12, 14);
 
   public SmallChestBlock(Properties props) {
     super(props);

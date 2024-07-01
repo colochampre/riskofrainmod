@@ -1,10 +1,8 @@
 package io.github.colochampre.riskofrain_items.loot;
 
 import com.google.common.base.Suppliers;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.colochampre.riskofrain_items.init.LootInit;
 import io.github.colochampre.riskofrain_items.util.Util;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.ItemStack;
@@ -18,8 +16,8 @@ import java.util.function.Supplier;
 
 public class UncommonLootTableModifier extends LootModifier {
 
-  public static final Supplier<MapCodec<UncommonLootTableModifier>> CODEC =
-          Suppliers.memoize(() -> RecordCodecBuilder.mapCodec(inst -> codecStart(inst).apply(inst, UncommonLootTableModifier::new)));
+  public static final Supplier<MapCodec<UncommonLootTableModifier>> CODEC = Suppliers.memoize(() ->
+          RecordCodecBuilder.mapCodec(inst -> codecStart(inst).apply(inst, UncommonLootTableModifier::new)));
 
   /*public static final Supplier<Codec<UncommonLootTableModifier>> CODEC = () ->
           RecordCodecBuilder.create(inst -> inst.group(LOOT_CONDITIONS_CODEC.fieldOf("conditions")
@@ -29,7 +27,7 @@ public class UncommonLootTableModifier extends LootModifier {
 
   //private final Predicate<LootContext> orConditions;
 
-  protected UncommonLootTableModifier(LootItemCondition[] conditionsIn) {
+  public UncommonLootTableModifier(LootItemCondition[] conditionsIn) {
     super(conditionsIn);
     //this.conditions = conditionsIn;
     //this.orConditions = LootItemConditions.orConditions(conditionsIn);
@@ -52,6 +50,6 @@ public class UncommonLootTableModifier extends LootModifier {
 
   @Override
   public MapCodec<? extends IGlobalLootModifier> codec() {
-    return LootInit.ADD_UNCOMMON_LOOT.get();
+    return CODEC.get();
   }
 }

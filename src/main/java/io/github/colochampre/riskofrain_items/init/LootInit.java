@@ -14,12 +14,19 @@ public class LootInit {
   public static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> LOOT_MODIFIERS =
           DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, RoRitems.MODID);
 
+
   public static final RegistryObject<MapCodec<? extends IGlobalLootModifier>> ADD_COMMON_LOOT =
           LOOT_MODIFIERS.register("add_common_loot_table", CommonLootTableModifier.CODEC);
 
+  /*
+  static {
+    LOOT_MODIFIERS.register("add_common_loot_table", CommonLootTableModifier.CODEC);
+    LOOT_MODIFIERS.register("add_uncommon_loot_table", UncommonLootTableModifier.CODEC);
+  }
+
   public static final RegistryObject<MapCodec<? extends IGlobalLootModifier>> ADD_UNCOMMON_LOOT =
           LOOT_MODIFIERS.register("add_uncommon_loot_table", UncommonLootTableModifier.CODEC);
-  /*
+
   public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ADD_LEGENDARY_LOOT =
           LOOT_MODIFIER_SERIALIZERS.register("add_legendary_loot_table", LegendaryLootTableModifier.CODEC);
   */
