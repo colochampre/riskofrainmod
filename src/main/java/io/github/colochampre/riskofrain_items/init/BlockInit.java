@@ -17,7 +17,7 @@ public class BlockInit {
   public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, RoRitems.MODID);
 
   public static final RegistryObject<Block> SMALL_CHEST = registerBlock("small_chest",
-          () -> new SmallChestBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+          () -> new SmallChestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
                   .strength(6f).requiresCorrectToolForDrops().noOcclusion()));
 
   private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {

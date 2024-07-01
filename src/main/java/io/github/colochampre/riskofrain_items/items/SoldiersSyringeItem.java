@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class SoldiersSyringeItem extends Item {
   }
 
   @Override
-  public void appendHoverText(ItemStack itemstack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+  public void appendHoverText(ItemStack itemstack, TooltipContext level, List<Component> tooltip, TooltipFlag flag) {
     tooltip.add(Component.translatable("item.riskofrain_items.soldiers_syringe.tooltip_1"));
     tooltip.add(Component.translatable("item.riskofrain_items.soldiers_syringe.tooltip_2"));
     super.appendHoverText(itemstack, level, tooltip, flag);

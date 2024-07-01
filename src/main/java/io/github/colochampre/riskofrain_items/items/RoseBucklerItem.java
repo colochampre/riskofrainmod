@@ -20,12 +20,13 @@ public class RoseBucklerItem extends Item {
   }
 
   @Override
-  public void appendHoverText(ItemStack itemstack, Level level, List<Component> tooltip, TooltipFlag flag) {
+  public void appendHoverText(ItemStack itemstack, TooltipContext level, List<Component> tooltip, TooltipFlag flag) {
     tooltip.add(Component.translatable("item.riskofrain_items.rose_buckler.tooltip_1"));
     tooltip.add(Component.translatable("item.riskofrain_items.rose_buckler.tooltip_2"));
     tooltip.add(Component.translatable("item.riskofrain_items.rose_buckler.tooltip_3"));
     super.appendHoverText(itemstack, level, tooltip, flag);
   }
+
   @Override
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
     int amount = stack.getCount();

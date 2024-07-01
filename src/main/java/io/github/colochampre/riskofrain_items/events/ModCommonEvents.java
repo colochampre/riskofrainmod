@@ -6,6 +6,8 @@ import io.github.colochampre.riskofrain_items.init.ItemInit;
 import io.github.colochampre.riskofrain_items.init.SoundInit;
 import io.github.colochampre.riskofrain_items.items.*;
 import io.github.colochampre.riskofrain_items.util.Util;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -119,7 +121,7 @@ public class ModCommonEvents {
             if (Util.hasItemStack(player, ItemInit.INFUSION.get())) {
               int total = Util.countItemStack(player, ItemInit.INFUSION.get());
               if (player.getMaxHealth() < 20 + (total * 10 * 2)) {
-                player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier("Infusion hp increase", 1.0, AttributeModifier.Operation.ADDITION));
+                player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(RoRitems.MODID, "Infusion hp increase"), 1.0, AttributeModifier.Operation.ADD_VALUE));
                 level.playSound(null, player.getX(), player.getY(), player.getZ(), InfusionItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F);
               }
             }
@@ -189,7 +191,7 @@ public class ModCommonEvents {
           if (Util.hasItemStack(player, ItemInit.SMART_SHOPPER.get())) {
             int total = Util.countItemStack(player, ItemInit.SMART_SHOPPER.get());
             LivingEntity livingentity = event.getEntity();
-            ItemStack goldItem = new ItemStack(Items.GOLD_NUGGET, livingentity.getExperienceReward());
+            ItemStack goldItem = new ItemStack(Items.GOLD_NUGGET, livingentity.getExperienceReward((ServerLevel) level, player));
             ItemEntity goldItemEntity = new ItemEntity(level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), goldItem);
             double chance = 4 * (double) total;
             int random = RandomSource.create().nextInt(100);

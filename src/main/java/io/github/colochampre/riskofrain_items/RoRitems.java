@@ -20,7 +20,7 @@ public class RoRitems {
     BlockInit.BLOCKS.register(bus);
     // BlockEntityInit.BLOCK_ENTITIES.register(bus);
     CreativeModeTabsInit.CREATIVE_MODE_TABS.register(bus);
-    LootInit.LOOT_MODIFIER_SERIALIZERS.register(bus);
+    LootInit.LOOT_MODIFIERS.register(bus);
     PaintingInit.PAINTING_VARIANTS.register(bus);
     SoundInit.SOUNDS.register(bus);
   }

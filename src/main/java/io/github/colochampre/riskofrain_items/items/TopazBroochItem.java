@@ -4,8 +4,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class TopazBroochItem extends Item {
   }
 
   @Override
-  public void appendHoverText(ItemStack itemstack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+  public void appendHoverText(ItemStack itemstack, TooltipContext level, List<Component> tooltip, TooltipFlag flag) {
     tooltip.add(Component.translatable("item.riskofrain_items.topaz_brooch.tooltip_1"));
     tooltip.add(Component.translatable("item.riskofrain_items.topaz_brooch.tooltip_2"));
     tooltip.add(Component.translatable("item.riskofrain_items.topaz_brooch.tooltip_3"));

@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_items.blocks.custom;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,6 +23,11 @@ public class SmallChestBlock extends BaseEntityBlock {
     super(props);
     this.registerDefaultState(this.stateDefinition.any()
             .setValue(FACING, Direction.NORTH));
+  }
+
+  @Override
+  protected MapCodec<? extends BaseEntityBlock> codec() {
+    return null;
   }
 
   @Override
