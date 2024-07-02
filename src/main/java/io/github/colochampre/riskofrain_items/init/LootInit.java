@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_items.init;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import io.github.colochampre.riskofrain_items.RoRitems;
 import io.github.colochampre.riskofrain_items.loot.CommonLootTableModifier;
@@ -15,10 +16,9 @@ public class LootInit {
           DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, RoRitems.MODID);
 
   public static final RegistryObject<MapCodec<? extends IGlobalLootModifier>> ADD_COMMON_LOOT =
-          LOOT_MODIFIERS.register("add_common_loot_table", CommonLootTableModifier.CODEC);
-
+          LOOT_MODIFIERS.register("add_common_loot_table", () -> CommonLootTableModifier.CODEC.fieldOf("add_common_loot_table"));
   public static final RegistryObject<MapCodec<? extends IGlobalLootModifier>> ADD_UNCOMMON_LOOT =
-          LOOT_MODIFIERS.register("add_uncommon_loot_table", UncommonLootTableModifier.CODEC);
+          LOOT_MODIFIERS.register("add_uncommon_loot_table", () -> UncommonLootTableModifier.CODEC.fieldOf("add_uncommon_loot_table"));
   /*
   public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ADD_LEGENDARY_LOOT =
           LOOT_MODIFIER_SERIALIZERS.register("add_legendary_loot_table", LegendaryLootTableModifier.CODEC);
