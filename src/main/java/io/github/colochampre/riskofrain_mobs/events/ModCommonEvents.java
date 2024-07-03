@@ -2,10 +2,7 @@ package io.github.colochampre.riskofrain_mobs.events;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
-import io.github.colochampre.riskofrain_mobs.entities.AbstractFlyingDroneEntity;
-import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
-import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
-import io.github.colochampre.riskofrain_mobs.entities.StoneGolemEntity;
+import io.github.colochampre.riskofrain_mobs.entities.*;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.sounds.SoundSource;
@@ -68,6 +65,7 @@ public class ModCommonEvents {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
       event.enqueueWork(() -> {
+        SpawnPlacements.register(EntityInit.BEETLE_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, BeetleEntity::canSpawn);
         SpawnPlacements.register(EntityInit.LEMURIAN_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, LemurianEntity::canSpawn);
         SpawnPlacements.register(EntityInit.STONE_GOLEM_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, StoneGolemEntity::canSpawn);
         SpawnPlacements.register(EntityInit.GUNNER_DRONE_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, GunnerDroneEntity::checkDroneSpawnRules);
@@ -76,6 +74,7 @@ public class ModCommonEvents {
 
     @SubscribeEvent
     public static void entityAttributes(EntityAttributeCreationEvent event) {
+      event.put(EntityInit.BEETLE_ENTITY.get(), BeetleEntity.createAttributes().build());
       event.put(EntityInit.LEMURIAN_ENTITY.get(), LemurianEntity.createAttributes().build());
       event.put(EntityInit.STONE_GOLEM_ENTITY.get(), StoneGolemEntity.createAttributes().build());
       event.put(EntityInit.GUNNER_DRONE_ENTITY.get(), GunnerDroneEntity.createAttributes().build());

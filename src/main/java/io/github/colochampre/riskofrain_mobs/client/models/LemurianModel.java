@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
+
   protected final ModelPart core;
   protected ModelPart stomach_axis;
   protected ModelPart stomach;
