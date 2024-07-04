@@ -1,15 +1,11 @@
-modLoader="javafml"
-loaderVersion="[47,)"
-license="MIT"
+modLoader="javafml" #mandatory
+loaderVersion="${loader_version_range}" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="${mod_license}"
 
 [[mods]] #mandatory
-modId="riskofrain_mobs"
-version="1.2"
-displayName="Risk of Rain Mobs"
-logoFile="logo.png"
-credits="Thanks everyone who supports the effort and HOPOO GAMES for providing us with such a universe."
-authors="Colo Champre"
-
-description='''
-This mod brings some content from the Risk of Rain universe into Minecraft!
-'''
+modId="${mod_id}" #mandatory
+version="${mod_version}" #mandatory
+displayName="${mod_name}" #mandatory
+logoFile = "logo.png"
+authors="${mod_authors}" #optional
+description='''${mod_description}'''
