@@ -1,8 +1,8 @@
 package io.github.colochampre.riskofrain_mobs.client.renderer.layers;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
-import io.github.colochampre.riskofrain_mobs.client.models.LemurianModel;
-import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.client.models.BeetleModel;
+import io.github.colochampre.riskofrain_mobs.entities.BeetleEntity;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
@@ -12,16 +12,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class LemurianEyesLayer extends EyesLayer<LemurianEntity, LemurianModel<LemurianEntity>> {
-  static final RenderType LEMURIAN_EYES = RenderType.eyes(new ResourceLocation(RoRmod.MODID, "textures/entity/lemurian/lemurian_eyes.png"));
+public class BeetleEyesLayer extends EyesLayer<BeetleEntity, BeetleModel<BeetleEntity>> {
+  static final RenderType BEETLE_EYES = RenderType.eyes(new ResourceLocation(RoRmod.MODID, "textures/entity/beetle/beetle_eyes.png"));
 
-  public LemurianEyesLayer(RenderLayerParent<LemurianEntity, LemurianModel<LemurianEntity>> layer) {
+  public BeetleEyesLayer(RenderLayerParent<BeetleEntity, BeetleModel<BeetleEntity>> layer) {
     super(layer);
   }
 
   @NotNull
   @Override
   public RenderType renderType() {
-    return LEMURIAN_EYES;
+    return BEETLE_EYES;
   }
 }

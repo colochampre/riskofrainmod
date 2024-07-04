@@ -12,7 +12,7 @@ public class EntityInit {
   public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, RoRmod.MODID);
 
   public static final RegistryObject<EntityType<BeetleEntity>> BEETLE_ENTITY = ENTITY_TYPES.register("beetle_entity",
-          () -> EntityType.Builder.of(BeetleEntity::new, MobCategory.MONSTER).sized(1.0F, 1.875F).build(RoRmod.MODID + ":beetle_entity"));
+          () -> EntityType.Builder.of(BeetleEntity::new, MobCategory.MONSTER).sized(0.98F, 1.70F).build(RoRmod.MODID + ":beetle_entity"));
 
   public static final RegistryObject<EntityType<LemurianEntity>> LEMURIAN_ENTITY = ENTITY_TYPES.register("lemurian_entity",
           () -> EntityType.Builder.of(LemurianEntity::new, MobCategory.MONSTER).sized(0.7F, 1.72F).build(RoRmod.MODID + ":lemurian_entity"));

@@ -70,7 +70,7 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
             .texOffs(63, 83).addBox(-2.25F, -6.0F, -4.5F, 4.5F, 7.5F, 4.5F, new CubeDeformation(0.0F))
             .texOffs(0, 69).addBox(-2.5F, -4.0F, -6.5F, 5.0F, 4.0F, 8.5F, new CubeDeformation(0.0F))
             .texOffs(0, 34).addBox(-5.5F, -4.0F, -6.0F, 11.0F, 4.0F, 7.5F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -9.0F, -1.5F));
-    PartDefinition head_shell = head.addOrReplaceChild("head_shell", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -5.0F, -2.0F, -0.1745F, 0.0F, 0.0F));
+    PartDefinition head_shell = head.addOrReplaceChild("head_shell", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -5.0F, -2.0F, -0.0873F, 0.0F, 0.0F));
     PartDefinition head_shell_6_r1 = head_shell.addOrReplaceChild("head_shell_6_r1", CubeListBuilder.create().texOffs(43, 19).addBox(-6.5F, -3.5F, -6.5F, 9.0F, 2.0F, 11.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 1.0F, 4.0F, -0.48F, 0.9163F, -0.4843F));
     PartDefinition head_shell_5_r1 = head_shell.addOrReplaceChild("head_shell_5_r1", CubeListBuilder.create().texOffs(84, 19).addBox(-2.5F, -3.5F, -6.5F, 9.0F, 2.0F, 11.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 1.0F, 4.0F, -0.48F, -0.9163F, 0.4843F));
     PartDefinition head_shell_4_r1 = head_shell.addOrReplaceChild("head_shell_4_r1", CubeListBuilder.create().texOffs(39, 34).addBox(-9.5F, -1.5F, -4.0F, 11.0F, 2.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, -1.0F, 0.5F, 0.0436F, 0.1745F, -0.1745F));
@@ -107,6 +107,13 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
   }
 
   @Override
-  public void setupAnim(@NotNull BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+  public void setupAnim(@NotNull BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
+    getLookAnim(headYaw, headPitch);
+  }
+
+  private void getLookAnim(float headYaw, float headPitch) {
+    this.head.xRot = headPitch * 0.023271058F / 2;
+    this.head.yRot = headYaw * 0.017453292F / 2;
+    this.chest.yRot = headYaw * 0.017453292F / 3.0F;
   }
 }

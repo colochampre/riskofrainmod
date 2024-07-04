@@ -203,7 +203,6 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     }
   }
 
-  // field_f = xRot | field_g = yRot | field_h = zRot
   private void getLookAnim(float headYaw, float headPitch) {
     this.head.xRot = headPitch * 0.023271058F;
     this.head.yRot = headYaw * 0.017453292F / 2.0F;
