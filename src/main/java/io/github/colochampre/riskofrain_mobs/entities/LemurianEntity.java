@@ -81,7 +81,7 @@ public class LemurianEntity extends Monster {
             .add(Attributes.ATTACK_DAMAGE, 3.5D)
             .add(Attributes.FOLLOW_RANGE, 32.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
-            .add(Attributes.MOVEMENT_SPEED, 0.3D);
+            .add(Attributes.MOVEMENT_SPEED, 0.26D);
   }
 
   @Override

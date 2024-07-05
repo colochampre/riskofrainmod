@@ -148,15 +148,17 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
 
   @Override
   public void setupAnim(@NotNull BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
-    getLookAnim(headYaw, headPitch);
+    getLookAnim(entity, headYaw, headPitch);
     getIdleAnim(entity, ageInTicks);
     getWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
   }
 
-  private void getLookAnim(float headYaw, float headPitch) {
+  private void getLookAnim(BeetleEntity entity, float headYaw, float headPitch) {
     this.head.xRot = headPitch * 0.023271058F / 2;
     this.head.yRot = headYaw * 0.017453292F / 2;
-    this.chest.yRot = headYaw * 0.017453292F / 3.0F;
+    if (!entity.isMoving(entity)) {
+      this.chest.yRot = headYaw * 0.017453292F / 3.0F;
+    }
   }
 
   private void getIdleAnim(BeetleEntity entity, float ageInTicks) {
@@ -173,11 +175,15 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
   }
 
   private void getWalkAnim(BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    this.core.y = 12 + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.8F * limbSwingAmount;
-    this.chest_axis.xRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.8F * limbSwingAmount;
-    this.left_arm_axis.xRot = 0.0873F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 1.6F * limbSwingAmount;
-    this.left_forearm_axis.xRot = 0.1745F + -Mth.cos(limbSwing * 0.75F + 3.1415927F) * 1.6F * limbSwingAmount;
-    this.right_arm_axis.xRot = 0.0873F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 1.6F * limbSwingAmount;
-    this.right_forearm_axis.xRot = 0.1745F + -Mth.cos(limbSwing * 0.75F + 3.1415927F) * 1.6F * limbSwingAmount;
+    this.core.y = 12 - Mth.cos(limbSwing * 0.75F + 3.1415927F) * 4.0F * limbSwingAmount;
+    this.chest_axis.xRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.38F * limbSwingAmount;
+    this.chest_shell_axis.xRot = -Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.15F * limbSwingAmount;
+    this.head_axis.xRot = -Mth.cos(limbSwing * 0.748F + 3.1415927F) * 0.6F * limbSwingAmount;
+    this.left_arm_axis.xRot = 0.0873F + Mth.cos(limbSwing * 0.751F + 3.1415927F) * 1.245F * limbSwingAmount;
+    this.left_forearm_axis.xRot = 0.1745F + -Mth.cos(limbSwing * 0.751F + 3.1415927F) * 1.333F * limbSwingAmount;
+    this.right_arm_axis.xRot = 0.0873F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 1.242F * limbSwingAmount;
+    this.right_forearm_axis.xRot = 0.1745F + -Mth.cos(limbSwing * 0.75F + 3.1415927F) * 1.33F * limbSwingAmount;
+
+    this.hips_axis.xRot = 0 - Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
   }
 }

@@ -29,8 +29,8 @@ public class BeetleEntity extends Monster {
   protected void registerGoals() {
     this.goalSelector.addGoal(1, new FloatGoal(this));
     this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-    this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
-    this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+    //this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+    //this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
   }
 
   public static AttributeSupplier.Builder createAttributes() {
@@ -39,7 +39,7 @@ public class BeetleEntity extends Monster {
             .add(Attributes.ATTACK_DAMAGE, 2.0D)
             .add(Attributes.FOLLOW_RANGE, 32.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
-            .add(Attributes.MOVEMENT_SPEED, 0.20D);
+            .add(Attributes.MOVEMENT_SPEED, 0.23D);
   }
 
   public static boolean canSpawn(EntityType<BeetleEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {

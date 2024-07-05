@@ -143,7 +143,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     PartDefinition right_forearm_axis = right_arm.addOrReplaceChild("right_forearm_axis", CubeListBuilder.create().texOffs(50, 60).addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 9.0F, 0.0F, -0.2617994F, 0.0F, 0.0F));
     PartDefinition right_forearm = right_forearm_axis.addOrReplaceChild("right_forearm", CubeListBuilder.create().texOffs(81, 36).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 7.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-0.5F, 1.0F, 0.0F));
     PartDefinition right_claws = right_forearm.addOrReplaceChild("right_claws", CubeListBuilder.create().texOffs(90, 36).addBox(-1.5F, 0.0F, -1.5F, 2.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.75F, 0.0F));
-    PartDefinition tail_1_axis = core.addOrReplaceChild("tail_1_axis", CubeListBuilder.create().texOffs(95, 60).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.5F, 0.34906584F, 0.0F, 0.0F));
+    PartDefinition tail_1_axis = core.addOrReplaceChild("tail_1_axis", CubeListBuilder.create().texOffs(95, 60).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 1.5F, 0.34906584F, 0.0F, 0.0F));
     PartDefinition tail_1 = tail_1_axis.addOrReplaceChild("tail_1", CubeListBuilder.create().texOffs(1, 21).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
     PartDefinition tail_2_axis = tail_1.addOrReplaceChild("tail_2_axis", CubeListBuilder.create().texOffs(100, 60).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 5.0F, -0.5F, 0.2617994F, 0.0F, 0.0F));
     PartDefinition tail_2 = tail_2_axis.addOrReplaceChild("tail_2", CubeListBuilder.create().texOffs(16, 23).addBox(-1.5F, 0.0F, -2.0F, 3.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -216,7 +216,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     this.neck.yRot = Mth.cos(ageInTicks * 0.04F) * 0.06F;
     this.neck.zRot = -Mth.cos(ageInTicks * 0.04F) * 0.06F;
     this.rib_cage.xRot = -Mth.cos(ageInTicks * 0.06F) * 0.06F;
-    this.tail_1.xRot = Mth.cos(ageInTicks * 0.08F) * 0.09F;
+    this.tail_1.xRot = 0.34906584F + Mth.cos(ageInTicks * 0.08F) * 0.09F;
     this.tail_1.zRot = Mth.cos(ageInTicks * 0.12F) * 0.06F;
     this.tail_2.zRot = Mth.cos(ageInTicks * 0.12F) * 0.06F;
     this.tail_3.zRot = Mth.cos(ageInTicks * 0.12F) * 0.06F;
@@ -232,6 +232,8 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
   }
 
   private void getWalkAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+    this.stomach_axis.y = 0 - Mth.cos(limbSwing * 1.5F + 3.1415927F) * 2.0F * limbSwingAmount;
+    this.tail_1_axis.y = -1.0F - Mth.cos(limbSwing * 1.5F + 3.1415927F) * 2.0F * limbSwingAmount;
     this.rib_cage_axis.yRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.15F * limbSwingAmount;
     this.stomach_axis.yRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.3F * limbSwingAmount;
     this.left_arm_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;

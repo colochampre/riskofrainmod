@@ -344,6 +344,7 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
 
   // field_f = xRot | field_g = yRot | field_h = zRot
   private void getWalkingAnim(StoneGolemEntity entity, float limbSwing, float limbSwingAmount) {
+    this.torso_axis.y = -2.5F - Mth.cos(limbSwing * 1.0F + 3.1415927F) * 2.8F * limbSwingAmount;
     this.torso_axis.yRot = Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.6F * limbSwingAmount;
     this.left_shoulder_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
     this.right_shoulder_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
