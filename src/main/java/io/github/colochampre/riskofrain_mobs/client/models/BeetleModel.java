@@ -83,7 +83,7 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
     PartDefinition parts = mesh.getRoot();
 
     PartDefinition core = parts.addOrReplaceChild("core", CubeListBuilder.create().texOffs(81, 113).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 12.0F, 0.0F));
-    PartDefinition chest_axis = core.addOrReplaceChild("chest_axis", CubeListBuilder.create(), PartPose.offset(0.0F, -3.0F, -2.0F));
+    PartDefinition chest_axis = core.addOrReplaceChild("chest_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -3.0F, -2.0F, 0.0873F, 0.0F, 0.0F));
     PartDefinition chest = chest_axis.addOrReplaceChild("chest", CubeListBuilder.create().texOffs(53, 0).addBox(-6.75F, -6.5F, -4.0F, 13.5F, 10.0F, 8.0F, new CubeDeformation(0.0F))
             .texOffs(0, 49).addBox(-3.75F, -8.0F, -3.0F, 7.5F, 13.5F, 5.0F, new CubeDeformation(0.0F))
             .texOffs(0, 0).addBox(-7.75F, -4.0F, -4.5F, 15.5F, 4.5F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -94,7 +94,7 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
     PartDefinition chest_shell_3_r1 = chest_shell.addOrReplaceChild("chest_shell_3_r1", CubeListBuilder.create().texOffs(112, 69).addBox(0.0F, -0.75F, -1.0F, 8.0F, 2.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 3.0F, 4.0F, -0.7854F, -0.0873F, 0.2618F));
     PartDefinition chest_shell_2_r1 = chest_shell.addOrReplaceChild("chest_shell_2_r1", CubeListBuilder.create().texOffs(27, 49).addBox(-8.5F, -1.5F, -2.0F, 9.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, -0.5672F, -0.0873F, -0.1309F));
     PartDefinition chest_shell_1_r1 = chest_shell.addOrReplaceChild("chest_shell_1_r1", CubeListBuilder.create().texOffs(27, 59).addBox(-0.5F, -1.5F, -2.0F, 9.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, -0.5672F, 0.0873F, 0.1309F));
-    PartDefinition head_axis = chest.addOrReplaceChild("head_axis", CubeListBuilder.create(), PartPose.offset(0.0F, -9.0F, -1.5F));
+    PartDefinition head_axis = chest.addOrReplaceChild("head_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -9.0F, -1.5F, -0.0873F, 0.0F, 0.0F));
     PartDefinition head = head_axis.addOrReplaceChild("head", CubeListBuilder.create().texOffs(117, 34).addBox(-4.0F, -5.0F, -6.0F, 8.0F, 6.0F, 7.5F, new CubeDeformation(0.0F))
             .texOffs(63, 83).addBox(-2.25F, -6.0F, -4.5F, 4.5F, 7.5F, 4.5F, new CubeDeformation(0.0F))
             .texOffs(0, 69).addBox(-2.5F, -4.0F, -6.5F, 5.0F, 4.0F, 8.5F, new CubeDeformation(0.0F))
@@ -107,7 +107,7 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
     PartDefinition head_shell_3_r1 = head_shell.addOrReplaceChild("head_shell_3_r1", CubeListBuilder.create().texOffs(78, 34).addBox(-1.5F, -1.5F, -4.0F, 11.0F, 2.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.0F, -1.0F, 0.5F, 0.0436F, -0.1745F, 0.1745F));
     PartDefinition head_shell_2_r1 = head_shell.addOrReplaceChild("head_shell_2_r1", CubeListBuilder.create().texOffs(0, 19).addBox(-5.0F, -0.75F, -3.0F, 8.0F, 1.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, -4.0F, 0.5236F, -0.8727F, -0.6109F));
     PartDefinition head_shell_1_r1 = head_shell.addOrReplaceChild("head_shell_1_r1", CubeListBuilder.create().texOffs(98, 0).addBox(-3.0F, -0.75F, -3.0F, 8.0F, 1.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, -4.0F, 0.5236F, 0.8727F, 0.6109F));
-    PartDefinition left_arm_axis = chest.addOrReplaceChild("left_arm_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(8.0F, -1.0F, 0.0F, 0.0873F, 0.0F, 0.0F));
+    PartDefinition left_arm_axis = chest.addOrReplaceChild("left_arm_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(8.0F, -1.0F, 0.0F, 0.0436F, 0.0F, 0.0F));
     PartDefinition left_arm = left_arm_axis.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(0, 113).addBox(-2.25F, -1.5F, -1.0F, 4.0F, 2.5F, 3.0F, new CubeDeformation(0.0F))
             .texOffs(46, 83).addBox(-0.25F, 1.0F, -1.5F, 3.0F, 12.0F, 4.5F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
     PartDefinition left_forearm_axis = left_arm.addOrReplaceChild("left_forearm_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(1.0F, 12.0F, 0.0F, 0.1745F, 0.0F, 0.0F));
@@ -115,7 +115,7 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
             .texOffs(57, 101).addBox(-1.0F, -1.25F, -10.0F, 3.0F, 2.5F, 5.0F, new CubeDeformation(0.0F))
             .texOffs(70, 113).addBox(-0.5F, -1.25F, -13.0F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F))
             .texOffs(89, 101).addBox(0.0F, -1.25F, -15.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-    PartDefinition right_arm_axis = chest.addOrReplaceChild("right_arm_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(-8.0F, -1.0F, 1.0F, 0.0873F, 0.0F, 0.0F));
+    PartDefinition right_arm_axis = chest.addOrReplaceChild("right_arm_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(-8.0F, -1.0F, 1.0F, 0.0436F, 0.0F, 0.0F));
     PartDefinition right_arm = right_arm_axis.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(104, 101).addBox(-1.75F, -1.5F, -2.0F, 4.0F, 2.5F, 3.0F, new CubeDeformation(0.0F))
             .texOffs(29, 83).addBox(-2.75F, 1.0F, -2.5F, 3.0F, 12.0F, 4.5F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
     PartDefinition right_forearm_axis = right_arm.addOrReplaceChild("right_forearm_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.0F, 12.0F, -1.0F, 0.1745F, 0.0F, 0.0F));
@@ -127,13 +127,13 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
     PartDefinition hips = hips_axis.addOrReplaceChild("hips", CubeListBuilder.create().texOffs(60, 49).addBox(-2.0F, -1.0F, -0.5F, 4.0F, 3.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
     PartDefinition tail_axis = hips.addOrReplaceChild("tail_axis", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 7.0F));
     PartDefinition tail = tail_axis.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(21, 101).addBox(-2.5F, -2.5F, -2.0F, 5.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-    PartDefinition left_leg_1_axis = hips.addOrReplaceChild("left_leg_1_axis", CubeListBuilder.create(), PartPose.offset(3.0F, 0.0F, 3.0F));
-    PartDefinition left_leg_1 = left_leg_1_axis.addOrReplaceChild("left_leg_1", CubeListBuilder.create().texOffs(56, 69).addBox(-1.0F, -1.5F, -1.0F, 2.5F, 2.5F, 10.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.3491F, 0.0F, 0.0F));
+    PartDefinition left_leg_1_axis = hips.addOrReplaceChild("left_leg_1_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(3.0F, 0.0F, 3.0F, -0.3491F, 0.0F, 0.0F));
+    PartDefinition left_leg_1 = left_leg_1_axis.addOrReplaceChild("left_leg_1", CubeListBuilder.create().texOffs(56, 69).addBox(-1.0F, -1.5F, -1.0F, 2.5F, 2.5F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
     PartDefinition left_leg_2_axis = left_leg_1.addOrReplaceChild("left_leg_2_axis", CubeListBuilder.create(), PartPose.offset(0.0F, 1.0F, 8.5F));
     PartDefinition left_leg_2 = left_leg_2_axis.addOrReplaceChild("left_leg_2", CubeListBuilder.create().texOffs(28, 113).addBox(-1.0F, -1.5F, -1.0F, 2.5F, 5.5F, 2.5F, new CubeDeformation(0.0F))
             .texOffs(50, 113).addBox(-0.5F, 3.5F, -0.5F, 2.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-    PartDefinition right_leg_1_axis = hips.addOrReplaceChild("right_leg_1_axis", CubeListBuilder.create(), PartPose.offset(-3.0F, 0.0F, 3.0F));
-    PartDefinition right_leg_1 = right_leg_1_axis.addOrReplaceChild("right_leg_1", CubeListBuilder.create().texOffs(29, 69).addBox(-1.5F, -1.5F, -1.0F, 2.5F, 2.5F, 10.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.3491F, 0.0F, 0.0F));
+    PartDefinition right_leg_1_axis = hips.addOrReplaceChild("right_leg_1_axis", CubeListBuilder.create(), PartPose.offsetAndRotation(-3.0F, 0.0F, 3.0F, -0.3491F, 0.0F, 0.0F));
+    PartDefinition right_leg_1 = right_leg_1_axis.addOrReplaceChild("right_leg_1", CubeListBuilder.create().texOffs(29, 69).addBox(-1.5F, -1.5F, -1.0F, 2.5F, 2.5F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
     PartDefinition right_leg_2_axis = right_leg_1.addOrReplaceChild("right_leg_2_axis", CubeListBuilder.create(), PartPose.offset(0.0F, 1.0F, 8.5F));
     PartDefinition right_leg_2 = right_leg_2_axis.addOrReplaceChild("right_leg_2", CubeListBuilder.create().texOffs(15, 113).addBox(-1.5F, -1.5F, -1.0F, 2.5F, 5.5F, 2.5F, new CubeDeformation(0.0F))
             .texOffs(41, 113).addBox(-1.5F, 3.5F, -0.5F, 2.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -147,7 +147,20 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
   }
 
   @Override
+  public void prepareMobModel(BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+    /*
+    int i = entity.getAttackTimer();
+    if (i > 0) {
+      getAttackAnim(entity, i, ageInTicks);
+    } else {
+
+    }
+    */
+  }
+
+  @Override
   public void setupAnim(@NotNull BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
+    this.left_leg_1_axis.xRot = -0.3491F;
     getLookAnim(entity, headYaw, headPitch);
     getIdleAnim(entity, ageInTicks);
     getWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
@@ -162,12 +175,12 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
   }
 
   private void getIdleAnim(BeetleEntity entity, float ageInTicks) {
-    this.head_axis.xRot = Mth.cos(ageInTicks * 0.06F) * 0.06F;
     this.head_axis.yRot = -Mth.cos(ageInTicks * 0.04F) * 0.06F;
     this.head_axis.zRot = Mth.cos(ageInTicks * 0.04F) * 0.06F;
     this.tail.xRot = Mth.cos(ageInTicks * 0.08F) * 0.09F;
     this.tail.zRot = -Mth.cos(ageInTicks * 0.12F) * 0.06F;
     if (!entity.isMoving(entity)) {
+      this.head_axis.xRot = Mth.cos(ageInTicks * 0.06F) * 0.06F;
       this.chest.xRot = Mth.cos(ageInTicks * 0.05F) * 0.06F;
       this.left_arm.xRot = -Mth.cos(ageInTicks * 0.05F) * 0.06F;
       this.right_arm.xRot = -Mth.cos(ageInTicks * 0.05F) * 0.06F;
@@ -175,15 +188,22 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
   }
 
   private void getWalkAnim(BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    this.core.y = 12 - Mth.cos(limbSwing * 0.75F + 3.1415927F) * 4.0F * limbSwingAmount;
-    this.chest_axis.xRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.38F * limbSwingAmount;
-    this.chest_shell_axis.xRot = -Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.15F * limbSwingAmount;
-    this.head_axis.xRot = -Mth.cos(limbSwing * 0.748F + 3.1415927F) * 0.6F * limbSwingAmount;
-    this.left_arm_axis.xRot = 0.0873F + Mth.cos(limbSwing * 0.751F + 3.1415927F) * 1.245F * limbSwingAmount;
-    this.left_forearm_axis.xRot = 0.1745F + -Mth.cos(limbSwing * 0.751F + 3.1415927F) * 1.333F * limbSwingAmount;
-    this.right_arm_axis.xRot = 0.0873F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 1.242F * limbSwingAmount;
-    this.right_forearm_axis.xRot = 0.1745F + -Mth.cos(limbSwing * 0.75F + 3.1415927F) * 1.33F * limbSwingAmount;
 
-    this.hips_axis.xRot = 0 - Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
+    this.core.y = 12 - Mth.cos(limbSwing) * 2.50F * limbSwingAmount;
+
+    this.chest_axis.xRot = 0.0873F + Mth.cos(limbSwing) * 0.40F * limbSwingAmount;
+    this.chest_shell_axis.xRot = 0 - Mth.cos(limbSwing) * 0.20F * limbSwingAmount;
+    this.head_axis.xRot = -0.0873F - Mth.cos(limbSwing) * 0.38F * limbSwingAmount;
+
+    this.left_arm_axis.xRot = 0.0436F + Mth.cos(limbSwing) * 1.25F * limbSwingAmount;
+    this.left_forearm_axis.xRot = 0.1745F - Mth.cos(limbSwing) * 1.25F * limbSwingAmount;
+    this.right_arm_axis.xRot = 0.0436F + Mth.cos(limbSwing) * 0.65F * limbSwingAmount;
+    this.right_forearm_axis.xRot = 0.1745F - Mth.cos(limbSwing) * 0.65F * limbSwingAmount;
+
+    this.hips_axis.xRot = 0 - Mth.cos(limbSwing) * 0.40F * limbSwingAmount;
+    this.left_leg_1_axis.xRot = -0.3491F - Mth.cos(limbSwing) * 0.20F * limbSwingAmount;
+    this.left_leg_2_axis.xRot = 0 - Mth.cos(limbSwing) * 0.425F * limbSwingAmount;
+    this.right_leg_1_axis.xRot = -0.3491F - Mth.cos(limbSwing) * 0.30F * limbSwingAmount;
+    this.right_leg_2_axis.xRot = 0 - Mth.cos(limbSwing) * 0.40F * limbSwingAmount;
   }
 }

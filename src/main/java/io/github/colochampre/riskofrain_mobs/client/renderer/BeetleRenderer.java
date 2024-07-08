@@ -18,7 +18,7 @@ public class BeetleRenderer extends MobRenderer<BeetleEntity, BeetleModel<Beetle
   private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/beetle/beetle_default.png");
 
   public BeetleRenderer(EntityRendererProvider.Context context) {
-    super(context, new BeetleModel<>(context.bakeLayer(ModClientEvents.BEETLE_LAYER)), 0.5F);
+    super(context, new BeetleModel<>(context.bakeLayer(ModClientEvents.BEETLE_LAYER)), 0.6F);
     //this.addLayer(new BeetleEyesLayer(this));
   }
 

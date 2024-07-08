@@ -305,14 +305,14 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
     if (i > 0) {
       getAttackAnim(entity, i, ageInTicks);
     } else {
-      this.left_shoulder_axis.xRot = Mth.cos(limbSwing * 0.5F) * 0.8F * limbSwingAmount;
-      this.left_arm_1_axis.xRot = Mth.cos(limbSwing * 0.5F) * 0.8F * limbSwingAmount;
+      this.left_shoulder_axis.xRot = Mth.cos(limbSwing * 0.50F) * 0.8F * limbSwingAmount;
+      this.left_arm_1_axis.xRot = Mth.cos(limbSwing * 0.50F) * 0.8F * limbSwingAmount;
       this.left_forearm_axis.xRot = -Mth.cos(limbSwing * 0.75F) * 0.8F * limbSwingAmount;
       this.left_hand_1_axis.xRot = -Mth.cos(limbSwing * 0.75F) * 0.8F * limbSwingAmount;
-      this.right_shoulder_axis.xRot = Mth.cos(limbSwing * 0.5F + 3.1415927F) * 0.8F * limbSwingAmount;
-      this.right_arm_axis.xRot = Mth.cos(limbSwing * 0.5F + 3.1415927F) * 0.8F * limbSwingAmount;
-      this.right_forearm_axis.xRot = -Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.8F * limbSwingAmount;
-      this.right_hand_1_axis.xRot = -Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.8F * limbSwingAmount;
+      this.right_shoulder_axis.xRot = -Mth.cos(limbSwing * 0.50F) * 0.8F * limbSwingAmount;
+      this.right_arm_axis.xRot = -Mth.cos(limbSwing * 0.50F) * 0.8F * limbSwingAmount;
+      this.right_forearm_axis.xRot = Mth.cos(limbSwing * 0.75F) * 0.8F * limbSwingAmount;
+      this.right_hand_1_axis.xRot = Mth.cos(limbSwing * 0.75F) * 0.8F * limbSwingAmount;
       this.left_shoulder_axis.yRot = 0.0F;
       this.left_shoulder_axis.zRot = 0.0F;
       this.left_arm_1_axis.zRot = 0.5235988F;
@@ -344,15 +344,15 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
 
   // field_f = xRot | field_g = yRot | field_h = zRot
   private void getWalkingAnim(StoneGolemEntity entity, float limbSwing, float limbSwingAmount) {
-    this.torso_axis.y = -2.5F - Mth.cos(limbSwing * 1.0F + 3.1415927F) * 2.8F * limbSwingAmount;
-    this.torso_axis.yRot = Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.6F * limbSwingAmount;
-    this.left_shoulder_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
-    this.right_shoulder_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
+    this.torso_axis.y = -2.5F + Mth.cos(limbSwing) * 2.8F * limbSwingAmount;
+    this.torso_axis.yRot = -Mth.cos(limbSwing * 0.5F) * 1.6F * limbSwingAmount;
+    this.left_shoulder_axis.yRot = -0.08726646F - Mth.cos(limbSwing * 0.5F) * 0.4F * limbSwingAmount;
+    this.right_shoulder_axis.yRot = -0.08726646F - Mth.cos(limbSwing * 0.5F) * 0.4F * limbSwingAmount;
     this.hip_axis.yRot = Mth.cos(limbSwing * 0.5F) * 0.8F * limbSwingAmount;
-    this.left_leg_axis.xRot = 0.0F + Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.2F * limbSwingAmount;
-    this.left_leg_2_axis.xRot = 0.0F + -Mth.cos(limbSwing * 1.0F + 3.1415927F) * 0.6F * limbSwingAmount;
+    this.left_leg_axis.xRot = 0.0F - Mth.cos(limbSwing * 0.5F) * 1.2F * limbSwingAmount;
+    this.left_leg_2_axis.xRot = 0.0F + Mth.cos(limbSwing) * 0.6F * limbSwingAmount;
     this.right_leg_axis.xRot = 0.0F + Mth.cos(limbSwing * 0.5F) * 1.2F * limbSwingAmount;
-    this.right_leg_2_axis.xRot = 0.0F + Mth.cos(limbSwing * 1.0F) * 0.6F * limbSwingAmount;
+    this.right_leg_2_axis.xRot = 0.0F + Mth.cos(limbSwing) * 0.6F * limbSwingAmount;
   }
 
   private void getAttackAnim(StoneGolemEntity entity, int i, float ageInTicks) {
