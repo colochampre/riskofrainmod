@@ -1,4 +1,102 @@
 {
+  "entity.beetle.ambient": {
+    "category": "entity",
+    "subtitle": "Beetle idle",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_04",
+        "stream": true
+      }
+    ]
+  },
+  "entity.beetle.attack": {
+    "category": "entity",
+    "subtitle": "Beetle attack",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_attack_01",
+        "stream": true
+      }
+    ]
+  },
+  "entity.beetle.death": {
+    "category": "entity",
+    "subtitle": "Beetle dies",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_death_01",
+        "stream": true
+      }
+    ]
+  },
+  "entity.beetle.hurt": {
+    "category": "entity",
+    "subtitle": "Beetle hurts",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_05",
+        "stream": true
+      }
+    ]
+  },
+  "entity.beetle.step": {
+    "category": "entity",
+    "subtitle": "Beetle steps",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_05",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_06",
+        "stream": true
+      }
+    ]
+  },
   "entity.drone.death1": {
     "category": "entity",
     "subtitle": "Drone shuts down ",

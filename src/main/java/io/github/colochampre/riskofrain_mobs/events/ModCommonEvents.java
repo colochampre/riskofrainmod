@@ -5,6 +5,7 @@ import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.*;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
+import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -35,6 +37,14 @@ public class ModCommonEvents {
       } catch (Exception e) {
         RoRmod.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
       }
+    }
+
+    @SubscribeEvent
+    public static void chatMessageSound(ClientChatReceivedEvent event) {
+      // if (RoRConfig.SERVER.CHAT_SOUND.get() && event.getEntity() instanceof Player player) {
+        assert Minecraft.getInstance().player != null;
+        Minecraft.getInstance().player.playSound(SoundInit.CHAT_MESSAGE.get(), 1.0F, 1.0F);
+      // }
     }
 
     @SubscribeEvent

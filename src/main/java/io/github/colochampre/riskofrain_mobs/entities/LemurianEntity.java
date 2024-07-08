@@ -78,7 +78,7 @@ public class LemurianEntity extends Monster {
   public static AttributeSupplier.Builder createAttributes() {
     return Monster.createMonsterAttributes()
             .add(Attributes.ARMOR, 4.0D)
-            .add(Attributes.ATTACK_DAMAGE, 3.5D)
+            .add(Attributes.ATTACK_DAMAGE, 2.5D)
             .add(Attributes.FOLLOW_RANGE, 32.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.26D);
@@ -158,11 +158,7 @@ public class LemurianEntity extends Monster {
   }
 
   public float getAttackDamage() {
-    float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-    if (this.level().getDifficulty() == Difficulty.HARD) {
-      f *= 2.0F;
-    }
-    return f;
+    return this.level().getDifficulty() == Difficulty.HARD ? (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 2 : (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
   }
 
   public int getAttackTimer() {

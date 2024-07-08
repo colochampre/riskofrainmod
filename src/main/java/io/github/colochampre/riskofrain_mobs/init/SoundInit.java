@@ -16,6 +16,12 @@ public final class SoundInit {
   public static final RegistryObject<SoundEvent> INSUFFICIENT_FOUNDS_PROC = registerSoundEvent("interactive.insufficient_founds.proc");
   public static final RegistryObject<SoundEvent> PLAYER_DEATH = registerSoundEvent("entity.player_death.proc");
 
+  public static final RegistryObject<SoundEvent> BEETLE_AMBIENT = registerSoundEvent("entity.beetle.ambient");
+  public static final RegistryObject<SoundEvent> BEETLE_ATTACK = registerSoundEvent("entity.beetle.attack");
+  public static final RegistryObject<SoundEvent> BEETLE_DEATH = registerSoundEvent("entity.beetle.death");
+  public static final RegistryObject<SoundEvent> BEETLE_HURT = registerSoundEvent("entity.beetle.hurt");
+  public static final RegistryObject<SoundEvent> BEETLE_STEP = registerSoundEvent("entity.beetle.step");
+
   public static final RegistryObject<SoundEvent> DRONE_DEATH1 = registerSoundEvent("entity.drone.death1");
   public static final RegistryObject<SoundEvent> DRONE_DEATH2 = registerSoundEvent("entity.drone.death2");
   public static final RegistryObject<SoundEvent> DRONE_FLYING = registerSoundEvent("entity.drone.flying");

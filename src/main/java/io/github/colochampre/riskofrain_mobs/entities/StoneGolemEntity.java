@@ -227,11 +227,7 @@ public class StoneGolemEntity extends Monster {
   }
 
   public float getAttackDamage() {
-    float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-    if (this.level().getDifficulty() == Difficulty.HARD) {
-      f *= 1.5F;
-    }
-    return f;
+    return this.level().getDifficulty() == Difficulty.HARD ? (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F : (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
   }
 
   public int getAttackDuration() {

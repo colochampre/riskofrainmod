@@ -16,6 +16,12 @@ public class RoRConfig {
 
   public static class ServerConfig {
     public final ForgeConfigSpec.IntValue DRONES_SPAWN_RATE;
+
+    public final ForgeConfigSpec.IntValue BEETLE_OVERWORLD_SPAWN_RATE;
+    public final ForgeConfigSpec.IntValue BEETLE_NETHER_SPAWN_RATE;
+    public final ForgeConfigSpec.IntValue BEETLE_MIN_GROUP_SIZE;
+    public final ForgeConfigSpec.IntValue BEETLE_MAX_GROUP_SIZE;
+    public final ForgeConfigSpec.BooleanValue BEETLES_DESPAWN;
     public final ForgeConfigSpec.IntValue LEMURIAN_OVERWORLD_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue LEMURIAN_NETHER_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue LEMURIAN_MIN_GROUP_SIZE;
@@ -28,6 +34,7 @@ public class RoRConfig {
     public final ForgeConfigSpec.IntValue STONE_GOLEM_MIN_GROUP_SIZE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_MAX_GROUP_SIZE;
     public final ForgeConfigSpec.BooleanValue STONE_GOLEMS_DESPAWN;
+    public final ForgeConfigSpec.BooleanValue CHAT_MESSAGE;
     public final ForgeConfigSpec.BooleanValue DEATH_SOUND;
 
 
@@ -38,19 +45,37 @@ public class RoRConfig {
               .defineInRange("droneSpawnWeight", 1, 0, 100);
       builder.pop();
 
+      builder.push("Beetles");
+      BEETLE_OVERWORLD_SPAWN_RATE = builder
+              .comment("Beetles overworld spawn rate. Set this to 0 to disable spawns")
+              .defineInRange("beetleOverworldSpawnWeight", 66, 0, 100);
+      BEETLE_NETHER_SPAWN_RATE = builder
+              .comment("Beetles nether spawn rate (Sensitive). Set this to 0 to disable spawns")
+              .defineInRange("beetleNetherSpawnWeight", 10, 0, 100);
+      BEETLE_MIN_GROUP_SIZE = builder
+              .comment("Beetles minimum group size on spawn. Set this equal or lower than max group size")
+              .defineInRange("beetleMinGroupSize", 1, 1, 8);
+      BEETLE_MAX_GROUP_SIZE = builder
+              .comment("Beetles maximum group size on spawn. Set this equal or higher than min group size")
+              .defineInRange("beetleMaxGroupSize", 3, 1, 8);
+      BEETLES_DESPAWN = builder
+              .comment("Despawn beetles when they are far away")
+              .define("enableBeetleDespawn", true);
+      builder.pop();
+
       builder.push("Lemurians");
       LEMURIAN_OVERWORLD_SPAWN_RATE = builder
               .comment("Lemurians overworld spawn rate. Set this to 0 to disable spawns")
               .defineInRange("lemurianOverworldSpawnWeight", 66, 0, 100);
       LEMURIAN_NETHER_SPAWN_RATE = builder
               .comment("Lemurians nether spawn rate (Sensitive). Set this to 0 to disable spawns")
-              .defineInRange("lemurianNetherSpawnWeight", 2, 0, 100);
+              .defineInRange("lemurianNetherSpawnWeight", 10, 0, 100);
       LEMURIAN_MIN_GROUP_SIZE = builder
               .comment("Lemurians minimum group size on spawn. Set this equal or lower than max group size")
               .defineInRange("lemurianMinGroupSize", 1, 1, 8);
       LEMURIAN_MAX_GROUP_SIZE = builder
               .comment("Lemurians maximum group size on spawn. Set this equal or higher than min group size")
-              .defineInRange("lemurianMaxGroupSize", 2, 1, 8);
+              .defineInRange("lemurianMaxGroupSize", 3, 1, 8);
       LEMURIANS_DESPAWN = builder
               .comment("Despawn lemurians when they are far away")
               .define("enableLemurianDespawn", true);
@@ -68,7 +93,7 @@ public class RoRConfig {
               .defineInRange("stoneGolemOverworldSpawnWeight", 10, 0, 100);
       STONE_GOLEM_NETHER_SPAWN_RATE = builder
               .comment("Stone Golems nether spawn rate (Sensitive). Set this to 0 to disable spawns")
-              .defineInRange("stoneGolemNetherSpawnWeight", 1, 0, 100);
+              .defineInRange("stoneGolemNetherSpawnWeight", 2, 0, 100);
       STONE_GOLEM_MIN_GROUP_SIZE = builder
               .comment("Stone Golems minimum group size. Set this equal or lower than max group size")
               .defineInRange("stoneGolemMinGroupSize", 1, 1, 8);
@@ -81,6 +106,9 @@ public class RoRConfig {
       builder.pop();
 
       builder.push("Sounds");
+      CHAT_MESSAGE = builder
+              .comment("Enable chat sound effect from Risk of Rain")
+              .define("enableChatSound", true);
       DEATH_SOUND = builder
               .comment("Enable death sound effect from Risk of Rain")
               .define("enableDeathSound", true);
