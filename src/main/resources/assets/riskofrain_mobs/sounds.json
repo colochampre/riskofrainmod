@@ -1,102 +1,4 @@
 {
-  "entity.beetle.ambient": {
-    "category": "entity",
-    "subtitle": "Beetle idle",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_03",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_04",
-        "stream": true
-      }
-    ]
-  },
-  "entity.beetle.attack": {
-    "category": "entity",
-    "subtitle": "Beetle attack",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_attack_01",
-        "stream": true
-      }
-    ]
-  },
-  "entity.beetle.death": {
-    "category": "entity",
-    "subtitle": "Beetle dies",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_death_01",
-        "stream": true
-      }
-    ]
-  },
-  "entity.beetle.hurt": {
-    "category": "entity",
-    "subtitle": "Beetle hurts",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_impact_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_impact_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_impact_03",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_impact_04",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_impact_05",
-        "stream": true
-      }
-    ]
-  },
-  "entity.beetle.step": {
-    "category": "entity",
-    "subtitle": "Beetle steps",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_step_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_step_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_step_03",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_step_04",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_step_05",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/beetle/beetle_step_06",
-        "stream": true
-      }
-    ]
-  },
   "entity.drone.death1": {
     "category": "entity",
     "subtitle": "Drone shuts down ",
@@ -455,58 +357,68 @@
       }
     ]
   },
-  "entity.advancement.proc": {
-    "category": "entity",
+  "event.advancement": {
+    "category": "event",
     "subtitle": "Advancement",
     "sounds": [
       {
-        "name": "riskofrain_mobs:entity/event/advancement_proc_01",
+        "name": "riskofrain_mobs:event/advancement_01",
         "stream": true
       }
     ]
   },
-  "entity.level_up.proc": {
-    "category": "entity",
-    "subtitle": "Level up",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:entity/event/level_up_proc_01",
-        "stream": true
-      }
-    ]
-  },
-  "entity.player_death.proc": {
-    "category": "entity",
-    "subtitle": "Player dies",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:entity/event/player_death_proc_01",
-        "stream": true
-      }
-    ]
-  },
-  "interactive.chat_message": {
-    "category": "entity",
+  "event.chat_message": {
+    "category": "event",
     "subtitle": "Chat message",
     "sounds": [
       {
-        "name": "riskofrain_mobs:interactive/chat_message_01",
+        "name": "riskofrain_mobs:event/chat_message_01",
         "stream": true
       },
       {
-        "name": "riskofrain_mobs:interactive/chat_message_02",
+        "name": "riskofrain_mobs:event/chat_message_02",
         "stream": true
       },
       {
-        "name": "riskofrain_mobs:interactive/chat_message_03",
+        "name": "riskofrain_mobs:event/chat_message_03",
         "stream": true
       },
       {
-        "name": "riskofrain_mobs:interactive/chat_message_04",
+        "name": "riskofrain_mobs:event/chat_message_04",
         "stream": true
       },
       {
-        "name": "riskofrain_mobs:interactive/chat_message_05",
+        "name": "riskofrain_mobs:event/chat_message_05",
+        "stream": true
+      }
+    ]
+  },
+  "event.difficulty_change": {
+    "category": "event",
+    "subtitle": "Difficulty change",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:event/difficulty_change_01",
+        "stream": true
+      }
+    ]
+  },
+  "event.level_up": {
+    "category": "event",
+    "subtitle": "Level up",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:event/level_up_01",
+        "stream": true
+      }
+    ]
+  },
+  "event.player_death": {
+    "category": "event",
+    "subtitle": "Player dies",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:event/player_death_01",
         "stream": true
       }
     ]
@@ -539,128 +451,6 @@
     "sounds": [
       {
         "name": "riskofrain_mobs:interactive/insufficient_founds_01",
-        "stream": true
-      }
-    ]
-  },
-  "item.bustling_fungus.proc_1": {
-    "category": "item",
-    "subtitle": "Bustling Fungus proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/bustling_fungus/bustling_fungus_proc_01",
-        "stream": true
-      }
-    ]
-  },
-  "item.bustling_fungus.proc_2": {
-    "category": "item",
-    "subtitle": "Bustling Fungus proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/bustling_fungus/bustling_fungus_proc_02",
-        "stream": true
-      }
-    ]
-  },
-  "item.crowbar.proc": {
-    "category": "item",
-    "subtitle": "Crowbar proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/crowbar/crowbar_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/crowbar/crowbar_proc_02",
-        "stream": true
-      }
-    ]
-  },
-  "item.infusion.proc": {
-    "category": "item",
-    "subtitle": "Infusion proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_03",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_04",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_05",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_06",
-        "stream": true
-      }
-    ]
-  },
-  "item.lens_crit.proc": {
-    "category": "item",
-    "subtitle": "Lens crit proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_03",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_04",
-        "stream": true
-      }
-    ]
-  },
-  "item.rose_buckler.proc": {
-    "category": "item",
-    "subtitle": "Rose Buckler proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/rose_buckler/rose_buckler_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/rose_buckler/rose_buckler_proc_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/rose_buckler/rose_buckler_proc_03",
-        "stream": true
-      }
-    ]
-  },
-  "item.tougher_times.proc": {
-    "category": "item",
-    "subtitle": "Tougher Times proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/tougher_times/tougher_times_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/tougher_times/tougher_times_proc_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/tougher_times/tougher_times_proc_03",
         "stream": true
       }
     ]

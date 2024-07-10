@@ -4,6 +4,8 @@ import io.github.colochampre.riskofrain_mobs.init.BiomeModifierInit;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.ItemInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
+import io.github.colochampre.riskofrain_mobs.network.packets.SoundPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -11,7 +13,10 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,10 +25,18 @@ import org.apache.logging.log4j.Logger;
 public class RoRmod {
   public static final Logger LOGGER = LogManager.getLogger();
   public static final String MODID = "riskofrain_mobs";
+  private static final String PROTOCOL_VERSION = "1";
+  public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
+          new ResourceLocation(MODID, "main"),
+          () -> PROTOCOL_VERSION,
+          PROTOCOL_VERSION::equals,
+          PROTOCOL_VERSION::equals
+  );
 
   public RoRmod() {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::addItemsToTabs);
+    bus.addListener(this::setup);
 
     SoundInit.SOUNDS.register(bus);
     ItemInit.ITEMS.register(bus);
@@ -32,6 +45,10 @@ public class RoRmod {
 
     MinecraftForge.EVENT_BUS.register(this);
     ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, RoRConfig.SERVER_SPEC);
+  }
+
+  private void setup(FMLCommonSetupEvent event) {
+    CHANNEL.registerMessage(0, SoundPacket.class, SoundPacket::encode, SoundPacket::decode, SoundPacket::handle);
   }
 
   private void addItemsToTabs(BuildCreativeModeTabContentsEvent event) {

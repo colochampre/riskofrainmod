@@ -196,7 +196,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
         Component notGold = Component.translatable("message.riskofrain_mobs.not_gold").withStyle(ChatFormatting.YELLOW);
         this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.INSUFFICIENT_FOUNDS_PROC.get(), this.getSoundSource(), 0.5F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         if (!this.level().isClientSide) {
-          this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.CHAT_MESSAGE.get(), this.getSoundSource(), 1.0F, 1.0F);
+          // this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.CHAT_MESSAGE.get(), this.getSoundSource(), 1.0F, 1.0F);
           player.sendSystemMessage(notGold);
         }
         return InteractionResult.SUCCESS;
@@ -205,7 +205,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
         if (!player.getAbilities().instabuild) {
           itemstack.shrink(1);
         }
-        this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.COIN_PROC.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+        this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundInit.COIN_PROC.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         if (itemstack.getItem().equals(Items.GOLD_INGOT)) {
           goldCount -= 9;
         } else if (itemstack.getItem().equals(Items.RAW_GOLD)) {

@@ -22,6 +22,7 @@ public class RoRConfig {
     public final ForgeConfigSpec.IntValue BEETLE_MIN_GROUP_SIZE;
     public final ForgeConfigSpec.IntValue BEETLE_MAX_GROUP_SIZE;
     public final ForgeConfigSpec.BooleanValue BEETLES_DESPAWN;
+
     public final ForgeConfigSpec.IntValue LEMURIAN_OVERWORLD_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue LEMURIAN_NETHER_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue LEMURIAN_MIN_GROUP_SIZE;
@@ -29,13 +30,19 @@ public class RoRConfig {
     public final ForgeConfigSpec.BooleanValue LEMURIANS_DESPAWN;
     public final ForgeConfigSpec.BooleanValue ENABLE_FIREBALL_ATTACK;
     public final ForgeConfigSpec.BooleanValue ENABLE_FIREBALL_GRIEF;
+
     public final ForgeConfigSpec.IntValue STONE_GOLEM_OVERWORLD_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_NETHER_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_MIN_GROUP_SIZE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_MAX_GROUP_SIZE;
-    public final ForgeConfigSpec.BooleanValue STONE_GOLEMS_DESPAWN;
-    public final ForgeConfigSpec.BooleanValue CHAT_MESSAGE;
-    public final ForgeConfigSpec.BooleanValue DEATH_SOUND;
+    public final ForgeConfigSpec.BooleanValue STONE_GOLEM_DESPAWN;
+    public final ForgeConfigSpec.IntValue STONE_GOLEM_SPAWN_VOLUME;
+
+    public final ForgeConfigSpec.IntValue ADVANCEMENT;
+    public final ForgeConfigSpec.IntValue CHAT_MESSAGE;
+    public final ForgeConfigSpec.IntValue PLAYER_DEATH_SOUND;
+    public final ForgeConfigSpec.IntValue DIFFICULTY_UPDATE;
+    public final ForgeConfigSpec.IntValue LEVEL_UPDATE;
 
 
     public ServerConfig(ForgeConfigSpec.Builder builder) {
@@ -87,7 +94,7 @@ public class RoRConfig {
               .define("enableFireballGrief", true);
       builder.pop();
 
-      builder.push("StoneGolems");
+      builder.push("Stone Golems");
       STONE_GOLEM_OVERWORLD_SPAWN_RATE = builder
               .comment("Stone Golems overworld spawn rate. Set this to 0 to disable spawns")
               .defineInRange("stoneGolemOverworldSpawnWeight", 10, 0, 100);
@@ -100,18 +107,30 @@ public class RoRConfig {
       STONE_GOLEM_MAX_GROUP_SIZE = builder
               .comment("Stone Golems maximum group size. Set this equal or higher than min group size")
               .defineInRange("stoneGolemMaxGroupSize", 1, 1, 8);
-      STONE_GOLEMS_DESPAWN = builder
+      STONE_GOLEM_DESPAWN = builder
               .comment("Despawn stone golems when they are far away")
               .define("enableStoneGolemDespawn", false);
+      STONE_GOLEM_SPAWN_VOLUME = builder
+              .comment("Sstone Golems spawn volume. Set this to 0 to disable")
+              .defineInRange("stoneGolemSpawnVolume", 100, 0, 100);
       builder.pop();
 
-      builder.push("Sounds");
+      builder.push("Sound effects from Risk of Rain");
+      ADVANCEMENT = builder
+              .comment("Advancement sound volume. Set this to 0 to disable")
+              .defineInRange("advancementSoundVolume", 10, 0, 100);
       CHAT_MESSAGE = builder
-              .comment("Enable chat sound effect from Risk of Rain")
-              .define("enableChatSound", true);
-      DEATH_SOUND = builder
-              .comment("Enable death sound effect from Risk of Rain")
-              .define("enableDeathSound", true);
+              .comment("Chat sound volume. Set this to 0 to disable")
+              .defineInRange("chatSoundVolume", 100, 0, 100);
+      DIFFICULTY_UPDATE = builder
+              .comment("Difficulty update sound volume. Set this to 0 to disable")
+              .defineInRange("difficultyUpdateSoundVolume", 100, 0, 100);
+      LEVEL_UPDATE = builder
+              .comment("Level update sound volume. Set this to 0 to disable")
+              .defineInRange("levelUpdateSoundVolume", 100, 0, 100);
+      PLAYER_DEATH_SOUND = builder
+              .comment("Player death sound volume. Set this to 0 to disable")
+              .defineInRange("deathSoundVolume", 100, 0, 100);
       builder.pop();
     }
   }

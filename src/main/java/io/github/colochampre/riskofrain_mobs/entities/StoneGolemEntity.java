@@ -189,7 +189,10 @@ public class StoneGolemEntity extends Monster {
   @Nullable
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
-    this.playSound(this.getSpawnSound(), 4.0F, 1.0F);
+    double d0 = RoRConfig.SERVER.STONE_GOLEM_SPAWN_VOLUME.get();
+    if (d0 > 0) {
+      this.playSound(this.getSpawnSound(), (float) ((d0 * 4) / 100), 1.0F);
+    }
     return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
   }
 
@@ -341,7 +344,7 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public boolean removeWhenFarAway(double distance) {
-    return RoRConfig.SERVER.STONE_GOLEMS_DESPAWN.get();
+    return RoRConfig.SERVER.STONE_GOLEM_DESPAWN.get();
   }
 
   public void strongKnockback(Entity entity) {

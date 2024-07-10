@@ -29,7 +29,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +43,7 @@ public class LemurianEntity extends Monster {
   private final float FIREBALL_ATTACK_RANGE = 20;
   private final MeleeAttackGoal meleeAttackGoal = new MeleeAttackGoal(this, 1.0D, true);
   private final LemurianAttackGoal fireballAttackGoal = new LemurianAttackGoal(this, this.FIREBALL_ATTACK_RANGE, 0.8D);
-  private int attackTimer;
+  private int attackTick;
   private boolean selectingHand = true;
   private boolean rightHandSelected = true;
 
@@ -87,8 +86,8 @@ public class LemurianEntity extends Monster {
   @Override
   public void aiStep() {
     super.aiStep();
-    if (this.attackTimer > 0) {
-      --this.attackTimer;
+    if (this.attackTick > 0) {
+      --this.attackTick;
     }
     if (this.isEvolved() && RoRConfig.SERVER.ENABLE_FIREBALL_ATTACK.get()) {
       LivingEntity livingentity = this.getTarget();
@@ -161,8 +160,8 @@ public class LemurianEntity extends Monster {
     return this.level().getDifficulty() == Difficulty.HARD ? (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 2 : (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
   }
 
-  public int getAttackTimer() {
-    return this.attackTimer;
+  public int getAttackTick() {
+    return this.attackTick;
   }
 
   public boolean getIsRightHandSelected() {
@@ -210,7 +209,7 @@ public class LemurianEntity extends Monster {
   @Override
   public void handleEntityEvent(byte b) {
     if (b == 4) {
-      this.attackTimer = 10;
+      this.attackTick = 10;
       this.playSound(SoundInit.LEMURIAN_ATTACK.get(), 1.0F, 1.0F);
     } else {
       super.handleEntityEvent(b);

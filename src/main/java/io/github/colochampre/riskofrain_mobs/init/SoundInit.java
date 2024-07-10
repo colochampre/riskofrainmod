@@ -11,10 +11,14 @@ public final class SoundInit {
 
   public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, RoRmod.MODID);
 
-  public static final RegistryObject<SoundEvent> CHAT_MESSAGE = registerSoundEvent("interactive.chat_message");
+  public static final RegistryObject<SoundEvent> ADVANCEMENT = registerSoundEvent("event.advancement");
+  public static final RegistryObject<SoundEvent> CHAT_MESSAGE = registerSoundEvent("event.chat_message");
+  public static final RegistryObject<SoundEvent> DIFFICULTY_CHANGE = registerSoundEvent("event.difficulty_change");
+  public static final RegistryObject<SoundEvent> LEVEL_UP = registerSoundEvent("event.level_up");
+  public static final RegistryObject<SoundEvent> PLAYER_DEATH = registerSoundEvent("event.player_death");
+
   public static final RegistryObject<SoundEvent> COIN_PROC = registerSoundEvent("interactive.coin.proc");
   public static final RegistryObject<SoundEvent> INSUFFICIENT_FOUNDS_PROC = registerSoundEvent("interactive.insufficient_founds.proc");
-  public static final RegistryObject<SoundEvent> PLAYER_DEATH = registerSoundEvent("entity.player_death.proc");
 
   public static final RegistryObject<SoundEvent> BEETLE_AMBIENT = registerSoundEvent("entity.beetle.ambient");
   public static final RegistryObject<SoundEvent> BEETLE_ATTACK = registerSoundEvent("entity.beetle.attack");
@@ -46,8 +50,5 @@ public final class SoundInit {
 
   private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
     return SOUNDS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(RoRmod.MODID, soundName)));
-  }
-
-  private SoundInit() {
   }
 }
