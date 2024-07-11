@@ -301,7 +301,7 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
 
   @Override
   public void prepareMobModel(StoneGolemEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    int i = entity.getAttackTimer();
+    int i = entity.getAttackTick();
     if (i > 0) {
       getAttackAnim(entity, i, ageInTicks);
     } else {

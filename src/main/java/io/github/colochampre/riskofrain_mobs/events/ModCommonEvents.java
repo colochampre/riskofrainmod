@@ -5,7 +5,7 @@ import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.*;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
-import io.github.colochampre.riskofrain_mobs.network.packets.SoundPacket;
+import io.github.colochampre.riskofrain_mobs.network.packets.DifficultyChangeSoundPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -65,7 +65,7 @@ public class ModCommonEvents {
     public static void difficultyChangeSound(DifficultyChangeEvent event) {
       if (RoRConfig.SERVER.DIFFICULTY_UPDATE.get() > 0) {
         SoundEvent soundEvent = SoundInit.DIFFICULTY_CHANGE.get();
-        RoRmod.CHANNEL.send(PacketDistributor.ALL.noArg(), new SoundPacket(soundEvent));
+        RoRmod.CHANNEL.send(PacketDistributor.ALL.noArg(), new DifficultyChangeSoundPacket(soundEvent));
       }
     }
 

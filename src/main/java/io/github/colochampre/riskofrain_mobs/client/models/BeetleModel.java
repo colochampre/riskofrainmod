@@ -155,13 +155,11 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
       this.head.z = 0 - Mth.cos(limbSwing) * 2.00F * limbSwingAmount;
       this.chest_axis.xRot = 0.0873F + Mth.cos(limbSwing) * 0.40F * limbSwingAmount;
       this.head_axis.xRot = -0.0873F - Mth.cos(limbSwing) * 0.38F * limbSwingAmount;
-      this.chest_axis.z = -2.0F;
     }
   }
 
   @Override
   public void setupAnim(@NotNull BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
-    this.left_leg_1_axis.xRot = -0.3491F;
     getLookAnim(entity, headYaw, headPitch);
     getIdleAnim(entity, ageInTicks);
     getWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
@@ -170,8 +168,9 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
   private void getLookAnim(BeetleEntity entity, float headYaw, float headPitch) {
     this.head.xRot = headPitch * 0.023271058F / 2;
     this.head.yRot = headYaw * 0.017453292F / 2;
+    this.chest.yRot = 0;
     if (!entity.isMoving(entity)) {
-      this.chest.yRot = headYaw * 0.017453292F / 3.0F;
+      this.chest.yRot = headYaw * 0.017453292F / 3;
     }
   }
 
@@ -189,31 +188,23 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
   }
 
   private void getWalkAnim(BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-
     this.core.y = 12 - Mth.cos(limbSwing) * 2.50F * limbSwingAmount;
-
     this.chest_shell_axis.xRot = 0 - Mth.cos(limbSwing) * 0.20F * limbSwingAmount;
-
     this.left_arm_axis.xRot = 0.0436F + Mth.cos(limbSwing) * 1.25F * limbSwingAmount;
     this.left_forearm_axis.xRot = 0.1745F - Mth.cos(limbSwing) * 1.25F * limbSwingAmount;
     this.right_arm_axis.xRot = 0.0436F + Mth.cos(limbSwing) * 0.65F * limbSwingAmount;
     this.right_forearm_axis.xRot = 0.1745F - Mth.cos(limbSwing) * 0.65F * limbSwingAmount;
-
     this.hips_axis.xRot = 0 - Mth.cos(limbSwing) * 0.40F * limbSwingAmount;
     this.left_leg_1_axis.xRot = -0.3491F - Mth.cos(limbSwing) * 0.15F * limbSwingAmount;
-    this.left_leg_2_axis.xRot = 0 - Mth.cos(limbSwing) * 0.225F * limbSwingAmount;
+    this.left_leg_2_axis.xRot = 0 - Mth.cos(limbSwing) * 0.35F * limbSwingAmount;
     this.right_leg_1_axis.xRot = -0.3491F - Mth.cos(limbSwing) * 0.20F * limbSwingAmount;
-    this.right_leg_2_axis.xRot = 0 - Mth.cos(limbSwing) * 0.20F * limbSwingAmount;
+    this.right_leg_2_axis.xRot = 0 - Mth.cos(limbSwing) * 0.30F * limbSwingAmount;
   }
 
   private void getAttackAnim(BeetleEntity entity, int i, float ageInTicks) {
-    float f9 = 0.25F * Mth.triangleWave((float) i - ageInTicks, 25.0F);
-    float f10 = (1.0F + f9) * 0.5F;
-    float f11 = f10 * f10 * f10 * 12.0F;
-    this.chest_axis.z = -3.0F + f11;
-
-    this.head_axis.xRot = -(-0.66F + 0.66F * Mth.triangleWave((float) i - ageInTicks, 25.0F));
-    this.chest_axis.xRot = -(-0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 25.0F));
-    this.head_shell_axis.xRot = -0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 25.0F);
+    this.head_axis.xRot = -(-0.50F + 0.50F * Mth.triangleWave((float) i - ageInTicks, 16.0F));
+    this.chest_axis.xRot = -(-0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 16.0F));
+    this.left_arm.xRot = -0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 16.0F);
+    this.right_arm.xRot = -0.25F + 0.25F * Mth.triangleWave((float) i - ageInTicks, 16.0F);
   }
 }

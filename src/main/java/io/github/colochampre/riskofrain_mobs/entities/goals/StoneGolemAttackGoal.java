@@ -158,7 +158,7 @@ public class StoneGolemAttackGoal extends Goal {
     if (this.laserAttackTick == 0) {
       this.golem.setActiveAttackTarget(livingentity.getId());
       if (!this.golem.isSilent()) {
-        this.golem.level().broadcastEntityEvent(this.golem, (byte) 21);
+        // this.golem.level().broadcastEntityEvent(this.golem, (byte) 21);
         this.golem.playSound(this.getLaserChargeSound(), 2.0F, 1.0F);
       }
     } else if (this.laserAttackTick >= this.golem.getAttackDuration()) {

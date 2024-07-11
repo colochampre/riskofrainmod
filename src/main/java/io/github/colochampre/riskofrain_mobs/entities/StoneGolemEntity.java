@@ -44,7 +44,7 @@ public class StoneGolemEntity extends Monster {
   private static final ResourceLocation STONE_GOLEM_LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(StoneGolemEntity.class, EntityDataSerializers.INT);
   private final HurtByTargetGoal hurtByTargetGoal = new HurtByTargetGoal(this);
-  private int attackTimer;
+  private int attackTick;
   public int clientSideAttackTime;
   private LivingEntity clientSideCachedAttackTarget;
 
@@ -79,17 +79,24 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public void aiStep() {
-    LivingEntity target = this.getTarget();
-    if (target == null) {
-      this.goalSelector.addGoal(3, this.hurtByTargetGoal);
-    }
-    if (this.attackTimer > 0) {
-      --this.attackTimer;
-    }
-    destroyLeavesBlocks();
-    doFloorParticleEffect();
-    doLaserParticleEffects();
     super.aiStep();
+    if (this.isAlive()) {
+      if (this.isImmobile()) {
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0);
+      } else {
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+      }
+      LivingEntity target = this.getTarget();
+      if (target == null) {
+        this.goalSelector.addGoal(3, this.hurtByTargetGoal);
+      }
+      if (this.attackTick > 0) {
+        --this.attackTick;
+      }
+      destroyLeavesBlocks();
+      doFloorParticleEffect();
+      doLaserParticleEffects();
+    }
   }
 
   public static boolean canSpawn(EntityType<StoneGolemEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -129,7 +136,7 @@ public class StoneGolemEntity extends Monster {
 
   @Override
   public boolean doHurtTarget(Entity entity) {
-    this.attackTimer = 15;
+    this.attackTick = 15;
     this.level().broadcastEntityEvent(this, (byte) 4);
     float f = this.getAttackDamage();
     boolean flag = entity.hurt(this.damageSources().mobAttack(this), f);
@@ -186,6 +193,11 @@ public class StoneGolemEntity extends Monster {
     }
   }
 
+  @Override
+  protected boolean isImmobile() {
+    return super.isImmobile() || this.attackTick > 0;
+  }
+
   @Nullable
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
@@ -237,8 +249,8 @@ public class StoneGolemEntity extends Monster {
     return 75;
   }
 
-  public int getAttackTimer() {
-    return this.attackTimer;
+  public int getAttackTick() {
+    return this.attackTick;
   }
 
   @Override
@@ -302,7 +314,7 @@ public class StoneGolemEntity extends Monster {
   @Override
   public void handleEntityEvent(byte b) {
     if (b == 4) {
-      this.attackTimer = 15;
+      this.attackTick = 15;
       this.playSound(SoundInit.STONE_GOLEM_CLAP.get(), 3.0F, 1.0F);
     } else {
       super.handleEntityEvent(b);

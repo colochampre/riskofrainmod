@@ -4,7 +4,7 @@ import io.github.colochampre.riskofrain_mobs.init.BiomeModifierInit;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.ItemInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
-import io.github.colochampre.riskofrain_mobs.network.packets.SoundPacket;
+import io.github.colochampre.riskofrain_mobs.network.packets.DifficultyChangeSoundPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -48,7 +48,7 @@ public class RoRmod {
   }
 
   private void setup(FMLCommonSetupEvent event) {
-    CHANNEL.registerMessage(0, SoundPacket.class, SoundPacket::encode, SoundPacket::decode, SoundPacket::handle);
+    CHANNEL.registerMessage(0, DifficultyChangeSoundPacket.class, DifficultyChangeSoundPacket::encode, DifficultyChangeSoundPacket::decode, DifficultyChangeSoundPacket::handle);
   }
 
   private void addItemsToTabs(BuildCreativeModeTabContentsEvent event) {
