@@ -11,8 +11,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -21,7 +19,6 @@ import net.minecraftforge.event.DifficultyChangeEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,18 +32,7 @@ public class ModCommonEvents {
   public static class ForgeEvents {
 
     @SubscribeEvent
-    public void onEntityJoinWorld(MobSpawnEvent.FinalizeSpawn event) {
-      try {
-        if (event.getEntity() instanceof final AbstractVillager villager) {
-          villager.targetSelector.addGoal(3, new AvoidEntityGoal<>(villager, LemurianEntity.class, 6.0F, 0.8D, 1.0D));
-        }
-      } catch (Exception e) {
-        RoRmod.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
-      }
-    }
-
-    @SubscribeEvent
-    public static void advancementeSound(AdvancementEvent event) {
+    public static void advancementsSound(AdvancementEvent event) {
       double d0 = RoRConfig.SERVER.ADVANCEMENT.get();
       if (d0 > 0 && Minecraft.getInstance().player != null) {
         Minecraft.getInstance().player.playSound(SoundInit.ADVANCEMENT.get(), (float) (d0 / 100), 1.0F);

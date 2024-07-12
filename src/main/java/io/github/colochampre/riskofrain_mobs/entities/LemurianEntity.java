@@ -226,7 +226,7 @@ public class LemurianEntity extends Monster {
   }
 
   public boolean isEvolved() {
-    return this.getEntityData().get(DATA_TYPE_ID) == 1;
+    return this.getEntityData().get(DATA_TYPE_ID) > 0;
   }
 
   public static boolean isMoving(LivingEntity entity) {

@@ -47,16 +47,19 @@ public class RoRBiomeModifier implements BiomeModifier {
     }
     /* Nether */
     if (phase == Phase.ADD && biome.containsTag(BiomeTags.IS_NETHER) && !biome.is(Tags.Biomes.IS_VOID)) {
-      /* Lemurians */
-      if (RoRConfig.SERVER.LEMURIAN_NETHER_SPAWN_RATE.get() > 0) {
-        if (!biome.is(Biomes.WARPED_FOREST)) {
+      if (!biome.is(Biomes.WARPED_FOREST)) {
+        /* Beetles */
+        if (RoRConfig.SERVER.BEETLE_NETHER_SPAWN_RATE.get() > 0) {
+          builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(EntityInit.BEETLE_ENTITY.get(),
+                  RoRConfig.SERVER.BEETLE_NETHER_SPAWN_RATE.get(), RoRConfig.SERVER.BEETLE_MIN_GROUP_SIZE.get(), RoRConfig.SERVER.BEETLE_MAX_GROUP_SIZE.get()));
+        }
+        /* Lemurians */
+        if (RoRConfig.SERVER.LEMURIAN_NETHER_SPAWN_RATE.get() > 0) {
           builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(EntityInit.LEMURIAN_ENTITY.get(),
                   RoRConfig.SERVER.LEMURIAN_NETHER_SPAWN_RATE.get(), RoRConfig.SERVER.LEMURIAN_MIN_GROUP_SIZE.get(), RoRConfig.SERVER.LEMURIAN_MAX_GROUP_SIZE.get()));
         }
-      }
-      /* Stone Golems */
-      if (RoRConfig.SERVER.STONE_GOLEM_NETHER_SPAWN_RATE.get() > 0) {
-        if (!biome.is(Biomes.WARPED_FOREST)) {
+        /* Stone Golems */
+        if (RoRConfig.SERVER.STONE_GOLEM_NETHER_SPAWN_RATE.get() > 0) {
           builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(EntityInit.STONE_GOLEM_ENTITY.get(),
                   RoRConfig.SERVER.STONE_GOLEM_NETHER_SPAWN_RATE.get(), RoRConfig.SERVER.STONE_GOLEM_MIN_GROUP_SIZE.get(), RoRConfig.SERVER.STONE_GOLEM_MAX_GROUP_SIZE.get()));
         }
