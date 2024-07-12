@@ -3,6 +3,7 @@ package io.github.colochampre.riskofrain_mobs.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.BeetleModel;
+import io.github.colochampre.riskofrain_mobs.client.renderer.layers.BeetleEyesLayer;
 import io.github.colochampre.riskofrain_mobs.entities.BeetleEntity;
 import io.github.colochampre.riskofrain_mobs.events.ModClientEvents;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,8 +19,8 @@ public class BeetleRenderer extends MobRenderer<BeetleEntity, BeetleModel<Beetle
   private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/beetle/beetle_default.png");
 
   public BeetleRenderer(EntityRendererProvider.Context context) {
-    super(context, new BeetleModel<>(context.bakeLayer(ModClientEvents.BEETLE_LAYER)), 0.6F);
-    //this.addLayer(new BeetleEyesLayer(this));
+    super(context, new BeetleModel<>(context.bakeLayer(ModClientEvents.BEETLE_LAYER)), 0.66F);
+    this.addLayer(new BeetleEyesLayer(this));
   }
 
   @Override
@@ -28,11 +29,11 @@ public class BeetleRenderer extends MobRenderer<BeetleEntity, BeetleModel<Beetle
   }
 
   @Override
-  public void render(BeetleEntity p_115455_, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+  public void render(BeetleEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
     poseStack.pushPose();
     float scale = 0.90F;
     poseStack.scale(scale, scale, scale);
-    super.render(p_115455_, entityYaw, partialTicks, poseStack, buffer, packedLight);
+    super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     poseStack.popPose();
   }
 
