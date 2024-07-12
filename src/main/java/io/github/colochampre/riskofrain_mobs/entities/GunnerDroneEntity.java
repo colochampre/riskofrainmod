@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
+import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerDroneAttackGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -62,10 +63,6 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
             .add(Attributes.FOLLOW_RANGE, 16.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.0D);
-  }
-
-  public float getWalkTargetValue(@NotNull BlockPos pos, LevelReader level) {
-    return level.getBlockState(pos).isAir() ? 20.0F : 0.0F;
   }
 
   @Override

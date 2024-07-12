@@ -8,6 +8,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -38,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 
 public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
+  private static final EntityDataAccessor<Integer> DATA_PRICE = SynchedEntityData.defineId(AbstractFlyingDroneEntity.class, EntityDataSerializers.INT);
   private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
   private final FloatGoal floatGoal = new FloatGoal(this);
@@ -47,7 +51,6 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   private float rollAmountO;
   private int flyingSound;
   private int underWaterTicks;
-  private int goldCount = this.setGoldCount();
 
   public AbstractFlyingDroneEntity(EntityType<? extends AbstractFlyingDroneEntity> type, Level level) {
     super(type, level);
@@ -75,6 +78,28 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
 
   public float getWalkTargetValue(@NotNull BlockPos pos, LevelReader level) {
     return level.getBlockState(pos).isAir() ? 20.0F : 0.0F;
+  }
+
+  @Override
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    Difficulty difficulty = this.level().getDifficulty();
+    int initialGold = difficulty == Difficulty.HARD ? 54 : 36;
+    this.entityData.define(DATA_PRICE, initialGold);
+  }
+
+  @Override
+  public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.putByte("GoldPrice", (byte) this.getGoldPrice());
+  }
+
+  @Override
+  public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    if (tag.contains("GoldPrice", 99)) {
+      this.setGoldPrice(tag.getInt("GoldPrice"));
+    }
   }
 
   @Override
@@ -153,7 +178,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
 
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
-    String price = String.valueOf(this.goldCount);
+    String price = String.valueOf(this.getGoldPrice());
     Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
     this.setCustomName(component);
     this.setCustomNameVisible(true);
@@ -207,18 +232,18 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
         }
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundInit.COIN_PROC.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         if (itemstack.getItem().equals(Items.GOLD_INGOT)) {
-          goldCount -= 9;
+          this.setGoldPrice(this.getGoldPrice() - 9);
         } else if (itemstack.getItem().equals(Items.RAW_GOLD)) {
-          goldCount -= 6;
+          this.setGoldPrice(this.getGoldPrice() - 6);
         } else {
-          goldCount--;
+          this.setGoldPrice(this.getGoldPrice() - 1);
         }
-        String price = String.valueOf(this.goldCount);
+        String price = String.valueOf(this.getGoldPrice());
         Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
         this.setCustomName(component);
         this.setCustomNameVisible(true);
         if (!this.level().isClientSide) {
-          if (this.goldCount <= 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+          if (this.getGoldPrice() <= 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
             this.tame(player);
             this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.6F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
             this.level().broadcastEntityEvent(this, (byte) 7);
@@ -256,19 +281,12 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
   }
 
-  /*
-  public int getGoldCount() {
-    return goldCount;
+  public int getGoldPrice() {
+    return this.entityData.get(DATA_PRICE);
   }
-  */
-  private int setGoldCount() {
-    Difficulty difficulty = this.level().getDifficulty();
-    if (difficulty == Difficulty.HARD) {
-      goldCount = 54;
-    } else {
-      goldCount = 36;
-    }
-    return goldCount;
+
+  public void setGoldPrice(int i) {
+    this.entityData.set(DATA_PRICE, i);
   }
 
   public float getRollAmount(float pitch) {

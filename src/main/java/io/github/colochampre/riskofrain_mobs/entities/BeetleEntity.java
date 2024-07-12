@@ -26,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 public class BeetleEntity extends Monster {
 
   private int attackTick;
+  private static double attackDamage = 2.5D;
+  private static double maxHealth = 20.0D;
 
   public BeetleEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
@@ -50,10 +52,15 @@ public class BeetleEntity extends Monster {
   public static AttributeSupplier.Builder createAttributes() {
     return Monster.createMonsterAttributes()
             .add(Attributes.ARMOR, 2.0D)
-            .add(Attributes.ATTACK_DAMAGE, 2.5D)
+            .add(Attributes.ATTACK_DAMAGE, attackDamage)
             .add(Attributes.FOLLOW_RANGE, 32.0D)
-            .add(Attributes.MAX_HEALTH, 20.0D)
+            .add(Attributes.MAX_HEALTH, maxHealth)
             .add(Attributes.MOVEMENT_SPEED, 0.21D);
+  }
+
+  public static void updateAttributesFromConfig() {
+    attackDamage = RoRConfig.SERVER.BEETLE_ATTACK_DAMAGE.get();
+    maxHealth = RoRConfig.SERVER.BEETLE_MAX_HEALTH.get();
   }
 
   @Override
@@ -97,7 +104,8 @@ public class BeetleEntity extends Monster {
   }
 
   public float getAttackDamage() {
-    return this.level().getDifficulty() == Difficulty.HARD ? (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 2 : (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    double d0 = RoRConfig.SERVER.BEETLE_ATTACK_DAMAGE.get();
+    return this.level().getDifficulty() == Difficulty.HARD ? (float) d0 * 2 : (float) d0;
   }
 
   public int getAttackTick() {

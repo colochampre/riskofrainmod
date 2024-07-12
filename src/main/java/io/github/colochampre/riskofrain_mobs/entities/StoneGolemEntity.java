@@ -69,7 +69,7 @@ public class StoneGolemEntity extends Monster {
   public static AttributeSupplier.Builder createAttributes() {
     return Monster.createMonsterAttributes()
             .add(Attributes.ARMOR, 2.0D)
-            .add(Attributes.ATTACK_DAMAGE, 12.0D)
+            .add(Attributes.ATTACK_DAMAGE, 24.0D)
             .add(Attributes.ATTACK_KNOCKBACK, 2.0D)
             .add(Attributes.FOLLOW_RANGE, 24.0D)
             .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)

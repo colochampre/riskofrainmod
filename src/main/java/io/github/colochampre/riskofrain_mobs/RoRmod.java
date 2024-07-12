@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs;
 
+import io.github.colochampre.riskofrain_mobs.events.ModCommonEvents;
 import io.github.colochampre.riskofrain_mobs.init.BiomeModifierInit;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.ItemInit;
@@ -26,17 +27,13 @@ public class RoRmod {
   public static final Logger LOGGER = LogManager.getLogger();
   public static final String MODID = "riskofrain_mobs";
   private static final String PROTOCOL_VERSION = "1";
-  public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-          new ResourceLocation(MODID, "main"),
-          () -> PROTOCOL_VERSION,
-          PROTOCOL_VERSION::equals,
-          PROTOCOL_VERSION::equals
-  );
+  public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, "main"),
+          () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
   public RoRmod() {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-    bus.addListener(this::addItemsToTabs);
     bus.addListener(this::setup);
+    bus.addListener(this::addItemsToTabs);
 
     SoundInit.SOUNDS.register(bus);
     ItemInit.ITEMS.register(bus);

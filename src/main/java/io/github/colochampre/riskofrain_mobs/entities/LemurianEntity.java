@@ -157,7 +157,8 @@ public class LemurianEntity extends Monster {
   }
 
   public float getAttackDamage() {
-    return this.level().getDifficulty() == Difficulty.HARD ? (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 2 : (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    double d0 = RoRConfig.SERVER.LEMURIAN_ATTACK_DAMAGE.get();
+    return this.level().getDifficulty() == Difficulty.HARD ? (float) d0 * 2 : (float) d0;
   }
 
   public int getAttackTick() {

@@ -15,14 +15,20 @@ public class RoRConfig {
   }
 
   public static class ServerConfig {
+    public final ForgeConfigSpec.DoubleValue GUNNER_DRONE_MAX_HEALTH;
+    public final ForgeConfigSpec.DoubleValue GUNNER_DRONE_ATTACK_DAMAGE;
     public final ForgeConfigSpec.IntValue DRONES_SPAWN_RATE;
 
+    public final ForgeConfigSpec.DoubleValue BEETLE_MAX_HEALTH;
+    public final ForgeConfigSpec.DoubleValue BEETLE_ATTACK_DAMAGE;
     public final ForgeConfigSpec.IntValue BEETLE_OVERWORLD_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue BEETLE_NETHER_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue BEETLE_MIN_GROUP_SIZE;
     public final ForgeConfigSpec.IntValue BEETLE_MAX_GROUP_SIZE;
     public final ForgeConfigSpec.BooleanValue BEETLES_DESPAWN;
 
+    public final ForgeConfigSpec.DoubleValue LEMURIAN_MAX_HEALTH;
+    public final ForgeConfigSpec.DoubleValue LEMURIAN_ATTACK_DAMAGE;
     public final ForgeConfigSpec.IntValue LEMURIAN_OVERWORLD_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue LEMURIAN_NETHER_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue LEMURIAN_MIN_GROUP_SIZE;
@@ -31,6 +37,8 @@ public class RoRConfig {
     public final ForgeConfigSpec.BooleanValue ENABLE_FIREBALL_ATTACK;
     public final ForgeConfigSpec.BooleanValue ENABLE_FIREBALL_GRIEF;
 
+    public final ForgeConfigSpec.DoubleValue STONE_GOLEM_MAX_HEALTH;
+    public final ForgeConfigSpec.DoubleValue STONE_GOLEM_ATTACK_DAMAGE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_OVERWORLD_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_NETHER_SPAWN_RATE;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_MIN_GROUP_SIZE;
@@ -47,12 +55,24 @@ public class RoRConfig {
 
     public ServerConfig(ForgeConfigSpec.Builder builder) {
       builder.comment("Entity spawn configs").push("Drones");
+      GUNNER_DRONE_MAX_HEALTH = builder
+              .comment("Gunner Drones max health")
+              .defineInRange("gunnerDroneMaxHealth", 20.0D, 1.0D, 999.9D);
+      GUNNER_DRONE_ATTACK_DAMAGE = builder
+              .comment("Gunner Drones attack damage")
+              .defineInRange("gunnerDroneAttackDamage", 1.0D, 1.0D, 999.9D);
       DRONES_SPAWN_RATE = builder
               .comment("Drones spawn rate")
               .defineInRange("droneSpawnWeight", 1, 0, 100);
       builder.pop();
 
       builder.push("Beetles");
+      BEETLE_MAX_HEALTH = builder
+              .comment("Beetles max health")
+              .defineInRange("beetleMaxHealth", 20.0D, 1.0D, 999.9D);
+      BEETLE_ATTACK_DAMAGE = builder
+              .comment("Beetles attack damage")
+              .defineInRange("beetleAttackDamage", 2.5D, 1.0D, 999.9D);
       BEETLE_OVERWORLD_SPAWN_RATE = builder
               .comment("Beetles overworld spawn rate. Set this to 0 to disable spawns")
               .defineInRange("beetleOverworldSpawnWeight", 66, 0, 100);
@@ -71,6 +91,12 @@ public class RoRConfig {
       builder.pop();
 
       builder.push("Lemurians");
+      LEMURIAN_MAX_HEALTH = builder
+              .comment("Lemurians max health")
+              .defineInRange("lemurianMaxHealth", 20.0D, 1.0D, 999.9D);
+      LEMURIAN_ATTACK_DAMAGE = builder
+              .comment("Lemurians attack damage")
+              .defineInRange("lemurianAttackDamage", 2.5D, 1.0D, 999.9D);
       LEMURIAN_OVERWORLD_SPAWN_RATE = builder
               .comment("Lemurians overworld spawn rate. Set this to 0 to disable spawns")
               .defineInRange("lemurianOverworldSpawnWeight", 66, 0, 100);
@@ -95,6 +121,12 @@ public class RoRConfig {
       builder.pop();
 
       builder.push("Stone Golems");
+      STONE_GOLEM_MAX_HEALTH = builder
+              .comment("Stone Golems max health")
+              .defineInRange("stoneGolemMaxHealth", 100.0D, 1.0D, 999.9D);
+      STONE_GOLEM_ATTACK_DAMAGE = builder
+              .comment("Stone Golems attack damage")
+              .defineInRange("stoneGolemAttackDamage", 24.0D, 1.0D, 999.9D);
       STONE_GOLEM_OVERWORLD_SPAWN_RATE = builder
               .comment("Stone Golems overworld spawn rate. Set this to 0 to disable spawns")
               .defineInRange("stoneGolemOverworldSpawnWeight", 10, 0, 100);
