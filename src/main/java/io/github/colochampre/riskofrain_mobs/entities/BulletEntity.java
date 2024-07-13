@@ -1,5 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
+import io.github.colochampre.riskofrain_mobs.RoRConfig;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -47,7 +49,8 @@ public class BulletEntity extends EntityMobProjectile {
 
   @Override
   protected float getDamage() {
-    return 1 + random.nextInt(3);
+    double d0 = RoRConfig.SERVER.BULLETS_DAMAGE.get();
+    return (float) d0;
   }
 
   @Override

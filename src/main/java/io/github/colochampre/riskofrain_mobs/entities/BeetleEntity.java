@@ -3,9 +3,11 @@ package io.github.colochampre.riskofrain_mobs.entities;
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -22,12 +24,11 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BeetleEntity extends Monster {
 
   private int attackTick;
-  private static double attackDamage = 2.5D;
-  private static double maxHealth = 20.0D;
 
   public BeetleEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
@@ -52,15 +53,10 @@ public class BeetleEntity extends Monster {
   public static AttributeSupplier.Builder createAttributes() {
     return Monster.createMonsterAttributes()
             .add(Attributes.ARMOR, 2.0D)
-            .add(Attributes.ATTACK_DAMAGE, attackDamage)
+            .add(Attributes.ATTACK_DAMAGE, 2.5D)
             .add(Attributes.FOLLOW_RANGE, 32.0D)
-            .add(Attributes.MAX_HEALTH, maxHealth)
+            .add(Attributes.MAX_HEALTH, 20.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.21D);
-  }
-
-  public static void updateAttributesFromConfig() {
-    attackDamage = RoRConfig.SERVER.BEETLE_ATTACK_DAMAGE.get();
-    maxHealth = RoRConfig.SERVER.BEETLE_MAX_HEALTH.get();
   }
 
   @Override
@@ -78,6 +74,30 @@ public class BeetleEntity extends Monster {
     }
   }
 
+  @Nullable
+  @Override
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor server, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
+    this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(RoRConfig.SERVER.BEETLE_ATTACK_DAMAGE.get());
+    this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(RoRConfig.SERVER.BEETLE_MAX_HEALTH.get());
+    this.setHealth(this.getMaxHealth());
+    return super.finalizeSpawn(server, difficulty, type, groupData, tag);
+  }
+
+  @Override
+  public boolean doHurtTarget(Entity entity) {
+    this.attackTick = 16;
+    this.level().broadcastEntityEvent(this, (byte) 4);
+    float f = this.getAttackDamage();
+    boolean flag = entity.hurt(this.damageSources().mobAttack(this), f);
+    this.playSound(this.getAttackSound(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+    return flag;
+  }
+
+  public float getAttackDamage() {
+    double d0 = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    return this.level().getDifficulty() == Difficulty.HARD ? (float) d0 * 2 : (float) d0;
+  }
+
   protected boolean isImmobile() {
     return super.isImmobile() || this.attackTick > 0;
   }
@@ -93,21 +113,6 @@ public class BeetleEntity extends Monster {
     return super.causeFallDamage(p_147187_, p_147188_, p_147189_);
   }
 
-  @Override
-  public boolean doHurtTarget(Entity entity) {
-    this.attackTick = 16;
-    this.level().broadcastEntityEvent(this, (byte) 4);
-    float f = this.getAttackDamage();
-    boolean flag = entity.hurt(this.damageSources().mobAttack(this), f);
-    this.playSound(SoundInit.BEETLE_ATTACK.get(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-    return flag;
-  }
-
-  public float getAttackDamage() {
-    double d0 = RoRConfig.SERVER.BEETLE_ATTACK_DAMAGE.get();
-    return this.level().getDifficulty() == Difficulty.HARD ? (float) d0 * 2 : (float) d0;
-  }
-
   public int getAttackTick() {
     return this.attackTick;
   }
@@ -116,7 +121,6 @@ public class BeetleEntity extends Monster {
   public void handleEntityEvent(byte b) {
     if (b == 4) {
       this.attackTick = 16;
-      this.playSound(SoundInit.BEETLE_ATTACK.get(), 1.0F, 1.0F);
     } else {
       super.handleEntityEvent(b);
     }

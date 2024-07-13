@@ -58,7 +58,6 @@ public abstract class EntityMobProjectile extends Entity {
 
   @Override
   protected void defineSynchedData() {
-
   }
 
   public void tick() {
@@ -132,18 +131,15 @@ public abstract class EntityMobProjectile extends Entity {
     if (this.ownerUUID != null) {
       compound.putUUID("Owner", this.ownerUUID);
     }
-
     if (this.leftOwner) {
       compound.putBoolean("LeftOwner", true);
     }
-
   }
 
   protected void readAdditionalSaveData(CompoundTag compound) {
     if (compound.hasUUID("Owner")) {
       this.ownerUUID = compound.getUUID("Owner");
     }
-
     this.leftOwner = compound.getBoolean("LeftOwner");
   }
 
@@ -158,7 +154,6 @@ public abstract class EntityMobProjectile extends Entity {
         }
       }
     }
-
     return true;
   }
 
@@ -181,9 +176,6 @@ public abstract class EntityMobProjectile extends Entity {
     this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.onGround() ? 0.0D : vector3d.y, vector3d.z));
   }
 
-  /**
-   * Called when this EntityFireball hits a block or entity.
-   */
   protected void onImpact(HitResult result) {
     HitResult.Type raytraceresult$type = result.getType();
     if (raytraceresult$type == HitResult.Type.ENTITY) {
@@ -204,7 +196,6 @@ public abstract class EntityMobProjectile extends Entity {
       this.yRotO = this.getYRot();
       this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
     }
-
   }
 
   protected boolean canHitEntity(Entity inQuestion) {

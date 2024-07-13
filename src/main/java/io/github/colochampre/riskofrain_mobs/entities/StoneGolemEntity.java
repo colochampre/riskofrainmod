@@ -201,9 +201,12 @@ public class StoneGolemEntity extends Monster {
   @Nullable
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+    this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_ATTACK_DAMAGE.get());
+    this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_MAX_HEALTH.get());
+    this.setHealth(this.getMaxHealth());
     double d0 = RoRConfig.SERVER.STONE_GOLEM_SPAWN_VOLUME.get();
     if (d0 > 0) {
-      this.playSound(this.getSpawnSound(), (float) ((d0 * 4) / 100), 1.0F);
+      this.playSound(this.getSpawnSound(), (float) ((d0 * 3) / 100), 1.0F);
     }
     return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
   }

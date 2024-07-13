@@ -30,7 +30,7 @@ public final class SoundInit {
   public static final RegistryObject<SoundEvent> DRONE_DEATH2 = registerSoundEvent("entity.drone.death2");
   public static final RegistryObject<SoundEvent> DRONE_FLYING = registerSoundEvent("entity.drone.flying");
   public static final RegistryObject<SoundEvent> DRONE_REPAIR = registerSoundEvent("entity.drone.repair");
-  public static final RegistryObject<SoundEvent> GUNNER_DRONE_SHOOT = registerSoundEvent("entity.gunner_drone.shoot");
+  public static final RegistryObject<SoundEvent> GUNNER_DRONE_SHOOT = registerSoundEvent("entity.drone.bullet_shoot");
 
   public static final RegistryObject<SoundEvent> LEMURIAN_AMBIENT = registerSoundEvent("entity.lemurian.ambient");
   public static final RegistryObject<SoundEvent> LEMURIAN_ATTACK = registerSoundEvent("entity.lemurian.attack");

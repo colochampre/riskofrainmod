@@ -16,7 +16,7 @@ public class RoRConfig {
 
   public static class ServerConfig {
     public final ForgeConfigSpec.DoubleValue GUNNER_DRONE_MAX_HEALTH;
-    public final ForgeConfigSpec.DoubleValue GUNNER_DRONE_ATTACK_DAMAGE;
+    public final ForgeConfigSpec.DoubleValue BULLETS_DAMAGE;
     public final ForgeConfigSpec.IntValue DRONES_SPAWN_RATE;
 
     public final ForgeConfigSpec.DoubleValue BEETLE_MAX_HEALTH;
@@ -58,9 +58,9 @@ public class RoRConfig {
       GUNNER_DRONE_MAX_HEALTH = builder
               .comment("Gunner Drones max health")
               .defineInRange("gunnerDroneMaxHealth", 20.0D, 1.0D, 999.9D);
-      GUNNER_DRONE_ATTACK_DAMAGE = builder
+      BULLETS_DAMAGE = builder
               .comment("Gunner Drones attack damage")
-              .defineInRange("gunnerDroneAttackDamage", 1.0D, 1.0D, 999.9D);
+              .defineInRange("bulletsDamage", 2.0D, 1.0D, 999.9D);
       DRONES_SPAWN_RATE = builder
               .comment("Drones spawn rate")
               .defineInRange("droneSpawnWeight", 1, 0, 100);

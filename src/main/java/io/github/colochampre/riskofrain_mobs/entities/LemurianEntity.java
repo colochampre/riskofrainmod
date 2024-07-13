@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.goals.LemurianAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
@@ -130,6 +131,9 @@ public class LemurianEntity extends Monster {
 
   @Override
   public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, SpawnGroupData groupData, CompoundTag nbt) {
+    this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(RoRConfig.SERVER.LEMURIAN_ATTACK_DAMAGE.get());
+    this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(RoRConfig.SERVER.LEMURIAN_MAX_HEALTH.get());
+    this.setHealth(this.getMaxHealth());
     Holder<Biome> holder = level.getBiome(this.blockPosition());
     LemurianEntity.Type lemurian$type = LemurianEntity.Type.byBiome(holder);
     this.setLemurianType(lemurian$type);
@@ -157,7 +161,7 @@ public class LemurianEntity extends Monster {
   }
 
   public float getAttackDamage() {
-    double d0 = RoRConfig.SERVER.LEMURIAN_ATTACK_DAMAGE.get();
+    double d0 = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
     return this.level().getDifficulty() == Difficulty.HARD ? (float) d0 * 2 : (float) d0;
   }
 

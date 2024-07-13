@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.entities;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
+import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerDroneAttackGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +10,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -32,8 +34,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements RangedAttackMob {
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
@@ -58,7 +62,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   public static AttributeSupplier.Builder createAttributes() {
     return Mob.createMobAttributes()
             .add(Attributes.ARMOR, 2.0D)
-            .add(Attributes.ATTACK_DAMAGE, 1.0D)
+            .add(Attributes.ATTACK_DAMAGE, 2.0D)
             .add(Attributes.FLYING_SPEED, 1.0D)
             .add(Attributes.FOLLOW_RANGE, 16.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
@@ -96,6 +100,14 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     if (tag.contains("BodyColor", 99)) {
       this.setBodyColor(DyeColor.byId(tag.getInt("BodyColor")));
     }
+  }
+
+  @Override
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+    this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(RoRConfig.SERVER.BULLETS_DAMAGE.get());
+    this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(RoRConfig.SERVER.GUNNER_DRONE_MAX_HEALTH.get());
+    this.setHealth(this.getMaxHealth());
+    return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
   }
 
   @Override

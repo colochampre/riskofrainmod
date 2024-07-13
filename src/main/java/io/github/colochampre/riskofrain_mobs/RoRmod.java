@@ -34,6 +34,7 @@ public class RoRmod {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::setup);
     bus.addListener(this::addItemsToTabs);
+    ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, RoRConfig.SERVER_SPEC);
 
     SoundInit.SOUNDS.register(bus);
     ItemInit.ITEMS.register(bus);
@@ -41,10 +42,9 @@ public class RoRmod {
     BiomeModifierInit.BIOME_MODIFIER_SERIALIZERS.register(bus);
 
     MinecraftForge.EVENT_BUS.register(this);
-    ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, RoRConfig.SERVER_SPEC);
   }
 
-  private void setup(FMLCommonSetupEvent event) {
+  private void setup(final FMLCommonSetupEvent event) {
     CHANNEL.registerMessage(0, DifficultyChangeSoundPacket.class, DifficultyChangeSoundPacket::encode, DifficultyChangeSoundPacket::decode, DifficultyChangeSoundPacket::handle);
   }
 
