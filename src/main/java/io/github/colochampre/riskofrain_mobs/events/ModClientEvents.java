@@ -1,10 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.events;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
-import io.github.colochampre.riskofrain_mobs.client.models.BeetleModel;
-import io.github.colochampre.riskofrain_mobs.client.models.GunnerDroneModel;
-import io.github.colochampre.riskofrain_mobs.client.models.LemurianModel;
-import io.github.colochampre.riskofrain_mobs.client.models.StoneGolemModel;
+import io.github.colochampre.riskofrain_mobs.client.models.*;
 import io.github.colochampre.riskofrain_mobs.client.renderer.*;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -19,6 +16,7 @@ public class ModClientEvents {
   public static final ModelLayerLocation BEETLE_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "beetle_entity"), "main");
   public static final ModelLayerLocation LEMURIAN_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "lemurian_entity"), "main");
   public static final ModelLayerLocation STONE_GOLEM_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "stone_golem_entity"), "main");
+  public static final ModelLayerLocation WISP_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "wisp_entity"), "main");
   public static final ModelLayerLocation GUNNER_DRONE_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "gunner_drone_entity"), "main");
 
   @SubscribeEvent
@@ -26,6 +24,7 @@ public class ModClientEvents {
     event.registerEntityRenderer(EntityInit.BEETLE_ENTITY.get(), BeetleRenderer::new);
     event.registerEntityRenderer(EntityInit.LEMURIAN_ENTITY.get(), LemurianRenderer::new);
     event.registerEntityRenderer(EntityInit.STONE_GOLEM_ENTITY.get(), StoneGolemRenderer::new);
+    event.registerEntityRenderer(EntityInit.WISP_ENTITY.get(), WispRenderer::new);
     event.registerEntityRenderer(EntityInit.GUNNER_DRONE_ENTITY.get(), GunnerDroneRenderer::new);
     event.registerEntityRenderer(EntityInit.DRONE_BULLET_ENTITY.get(), BulletRenderer::new);
   }
@@ -35,6 +34,7 @@ public class ModClientEvents {
     events.registerLayerDefinition(BEETLE_LAYER, BeetleModel::createBodyLayer);
     events.registerLayerDefinition(LEMURIAN_LAYER, LemurianModel::createBodyLayer);
     events.registerLayerDefinition(STONE_GOLEM_LAYER, StoneGolemModel::createBodyLayer);
+    events.registerLayerDefinition(WISP_LAYER, WispModel::createBodyLayer);
     events.registerLayerDefinition(GUNNER_DRONE_LAYER, GunnerDroneModel::createBodyLayer);
   }
 }

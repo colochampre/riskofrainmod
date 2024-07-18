@@ -29,7 +29,7 @@ public class BeetleRenderer extends MobRenderer<BeetleEntity, BeetleModel<Beetle
   }
 
   @Override
-  public void render(BeetleEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+  public void render(@NotNull BeetleEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight) {
     poseStack.pushPose();
     float scale = 0.90F;
     poseStack.scale(scale, scale, scale);

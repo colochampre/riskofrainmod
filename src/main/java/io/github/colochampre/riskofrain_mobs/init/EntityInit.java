@@ -27,14 +27,17 @@ public class EntityInit {
   public static final RegistryObject<EntityType<StoneGolemEntity>> STONE_GOLEM_ENTITY = ENTITY_TYPES.register("stone_golem_entity",
           () -> EntityType.Builder.of(StoneGolemEntity::new, MobCategory.MONSTER).sized(1.66F, 3.95F).build(RoRmod.MODID + ":stone_golem_entity"));
 
+  public static final RegistryObject<EntityType<WispEntity>> WISP_ENTITY = ENTITY_TYPES.register("wisp_entity",
+          () -> EntityType.Builder.of(WispEntity::new, MobCategory.MONSTER).sized(0.5625F, 0.75F).build(RoRmod.MODID + ":wisp_entity"));
+
   public static final RegistryObject<EntityType<GunnerDroneEntity>> GUNNER_DRONE_ENTITY = ENTITY_TYPES.register("gunner_drone_entity",
           () -> EntityType.Builder.of(GunnerDroneEntity::new, MobCategory.CREATURE).sized(0.75F, 1.15F).build(RoRmod.MODID + ":gunner_drone_entity"));
 
   public static final RegistryObject<EntityType<BulletEntity>> DRONE_BULLET_ENTITY = ENTITY_TYPES.register("drone_bullet_entity",
           () -> registerEntity(EntityType.Builder.of(BulletEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setCustomClientFactory(BulletEntity::new).fireImmune(), "drone_bullet_entity"));
 
-  private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
-    return (EntityType) builder.build(entityName);
+  private static EntityType registerEntity(EntityType.Builder builder, String entityName) {
+    return builder.build(entityName);
   }
 
   @SubscribeEvent
@@ -43,6 +46,7 @@ public class EntityInit {
       SpawnPlacements.register(EntityInit.BEETLE_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, BeetleEntity::canSpawn);
       SpawnPlacements.register(EntityInit.LEMURIAN_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, LemurianEntity::canSpawn);
       SpawnPlacements.register(EntityInit.STONE_GOLEM_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, StoneGolemEntity::canSpawn);
+      SpawnPlacements.register(EntityInit.WISP_ENTITY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WispEntity::canSpawn);
       SpawnPlacements.register(EntityInit.GUNNER_DRONE_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, GunnerDroneEntity::checkDroneSpawnRules);
     });
   }
@@ -52,6 +56,7 @@ public class EntityInit {
     event.put(EntityInit.BEETLE_ENTITY.get(), BeetleEntity.createAttributes().build());
     event.put(EntityInit.LEMURIAN_ENTITY.get(), LemurianEntity.createAttributes().build());
     event.put(EntityInit.STONE_GOLEM_ENTITY.get(), StoneGolemEntity.createAttributes().build());
+    event.put(EntityInit.WISP_ENTITY.get(), WispEntity.createAttributes().build());
     event.put(EntityInit.GUNNER_DRONE_ENTITY.get(), GunnerDroneEntity.createAttributes().build());
   }
 }

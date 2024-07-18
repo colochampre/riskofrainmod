@@ -325,14 +325,14 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Override
-  public boolean isInvulnerableTo(@NotNull DamageSource src) {
-    return src == this.damageSources().freeze() ||
-            src == this.damageSources().hotFloor() ||
-            src == this.damageSources().inWall() ||
-            src == this.damageSources().inFire() ||
-            src == this.damageSources().lava() ||
-            src == this.damageSources().onFire() ||
-            super.isInvulnerableTo(src);
+  public boolean isInvulnerableTo(@NotNull DamageSource source) {
+    return source == this.damageSources().freeze() ||
+            source == this.damageSources().hotFloor() ||
+            source == this.damageSources().inWall() ||
+            source == this.damageSources().inFire() ||
+            source == this.damageSources().lava() ||
+            source == this.damageSources().onFire() ||
+            super.isInvulnerableTo(source);
   }
 
   public static boolean isMoving(LivingEntity entity) {
