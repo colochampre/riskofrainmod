@@ -74,11 +74,9 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     if (this.isTame()) {
       this.goalSelector.addGoal(2, this.attackGoal);
     }
-    /*
-    if (this.attackTimer > 0) {
+    /*if (this.attackTimer > 0) {
       --this.attackTimer;
-    }
-    */
+    }*/
     super.aiStep();
   }
 

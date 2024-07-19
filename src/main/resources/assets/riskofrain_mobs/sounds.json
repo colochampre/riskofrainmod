@@ -455,6 +455,142 @@
       }
     ]
   },
+  "entity.wisp.ambient": {
+    "category": "entity",
+    "subtitle": "Wisp energy",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_ambient_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_ambient_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_ambient_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_ambient_04",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.attack_charge": {
+    "category": "entity",
+    "subtitle": "Wisp charging attack",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_charge_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_charge_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_charge_03",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.attack_fire": {
+    "category": "entity",
+    "subtitle": "Wisp fires attack",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_fire_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_fire_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_fire_03",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.hurt": {
+    "category": "entity",
+    "subtitle": "Wisp impact",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_05",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_06",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.loop": {
+    "category": "entity",
+    "subtitle": "Wisp flying",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_05",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.spawn": {
+    "category": "entity",
+    "subtitle": "Wisp spawns",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_spawn_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_spawn_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_spawn_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_spawn_04",
+        "stream": true
+      }
+    ]
+  },
   "event.advancement": {
     "category": "event",
     "subtitle": "Advancement",

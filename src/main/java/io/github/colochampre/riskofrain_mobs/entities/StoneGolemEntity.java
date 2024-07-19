@@ -287,7 +287,7 @@ public class StoneGolemEntity extends Monster {
   }
 
   protected SoundEvent getSpawnSound() {
-    return (SoundEvent) SoundInit.STONE_GOLEM_SPAWN.get();
+    return SoundInit.STONE_GOLEM_SPAWN.get();
   }
 
   protected SoundEvent getStepSound() {

@@ -3,7 +3,6 @@ package io.github.colochampre.riskofrain_mobs.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.WispModel;
-import io.github.colochampre.riskofrain_mobs.entities.BeetleEntity;
 import io.github.colochampre.riskofrain_mobs.entities.WispEntity;
 import io.github.colochampre.riskofrain_mobs.events.ModClientEvents;
 import net.minecraft.client.renderer.MultiBufferSource;

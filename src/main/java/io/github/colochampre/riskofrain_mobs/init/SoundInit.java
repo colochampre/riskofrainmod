@@ -48,6 +48,13 @@ public final class SoundInit {
   public static final RegistryObject<SoundEvent> STONE_GOLEM_SPAWN = registerSoundEvent("entity.stone_golem.spawn");
   public static final RegistryObject<SoundEvent> STONE_GOLEM_STEP = registerSoundEvent("entity.stone_golem.step");
 
+  public static final RegistryObject<SoundEvent> WISP_AMBIENT = registerSoundEvent("entity.wisp.ambient");
+  public static final RegistryObject<SoundEvent> WISP_ATTACK_CHARGE = registerSoundEvent("entity.wisp.attack_charge");
+  public static final RegistryObject<SoundEvent> WISP_ATTACK_FIRE = registerSoundEvent("entity.wisp.attack_fire");
+  public static final RegistryObject<SoundEvent> WISP_HURT = registerSoundEvent("entity.wisp.hurt");
+  public static final RegistryObject<SoundEvent> WISP_LOOP = registerSoundEvent("entity.wisp.loop");
+  public static final RegistryObject<SoundEvent> WISP_SPAWN = registerSoundEvent("entity.wisp.spawn");
+
   private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
     return SOUNDS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(RoRmod.MODID, soundName)));
   }

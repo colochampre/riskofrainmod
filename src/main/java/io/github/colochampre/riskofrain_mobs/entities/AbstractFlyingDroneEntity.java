@@ -126,11 +126,10 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     if (!this.isTame() || this.onGround() || this.isInSittingPose() || this.isOrderedToSit()) {
       flyingSound = 0;
     } else {
-      ++flyingSound;
+      flyingSound = (flyingSound % 30) + 1;
     }
-    if (flyingSound == 1 || flyingSound == 31) {
+    if (flyingSound == 1) {
       this.playSound(this.getFlyingSound(), 0.05F, 1.0F);
-      flyingSound = 1;
     }
   }
 
@@ -316,7 +315,6 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
       if (!this.level().isClientSide) {
         this.setOrderedToSit(false);
       }
-
       if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
         damage = (damage + 1.0F) / 2.0F;
       }
