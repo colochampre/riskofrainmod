@@ -19,6 +19,9 @@ public class ItemInit {
   public static final RegistryObject<ForgeSpawnEggItem> STONE_GOLEM_SPAWN_EGG = ITEMS.register("stone_golem_spawn_egg",
           () -> new ForgeSpawnEggItem(EntityInit.STONE_GOLEM_ENTITY, 0x38364E, 0x2B273D, props()));
 
+  public static final RegistryObject<ForgeSpawnEggItem> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
+          () -> new ForgeSpawnEggItem(EntityInit.WISP_ENTITY, 0x210502, 0xDE6B2C, props()));
+
   public static final RegistryObject<ForgeSpawnEggItem> GUNNER_DRONE_SPAWN_EGG = ITEMS.register("gunner_drone_spawn_egg",
           () -> new ForgeSpawnEggItem(EntityInit.GUNNER_DRONE_ENTITY, 0x007ada, 0x202f51, props()));
 

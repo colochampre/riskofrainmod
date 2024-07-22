@@ -1,4 +1,4 @@
-package io.github.colochampre.riskofrain_mobs.entities;
+package io.github.colochampre.riskofrain_mobs.entities.projectiles;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import net.minecraft.core.BlockPos;

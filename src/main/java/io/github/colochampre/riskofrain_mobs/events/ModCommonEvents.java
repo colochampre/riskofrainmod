@@ -2,7 +2,7 @@ package io.github.colochampre.riskofrain_mobs.events;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
-import io.github.colochampre.riskofrain_mobs.entities.*;
+import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractFlyingDroneEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.network.packets.DifficultyChangeSoundPacket;
 import net.minecraft.client.Minecraft;

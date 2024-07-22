@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.StoneGolemModel;
 import io.github.colochampre.riskofrain_mobs.client.renderer.layers.StoneGolemEyeLayer;
-import io.github.colochampre.riskofrain_mobs.entities.StoneGolemEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.StoneGolemEntity;
 import io.github.colochampre.riskofrain_mobs.events.ModClientEvents;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -38,51 +38,50 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
   }
 
   protected StoneGolemRenderer(EntityRendererProvider.Context context, ModelLayerLocation layerLocation, float shadow) {
-    super(context, new StoneGolemModel(context.bakeLayer(layerLocation)), shadow);
+    super(context, new StoneGolemModel<>(context.bakeLayer(layerLocation)), shadow);
   }
 
-  public boolean shouldRender(StoneGolemEntity golem, Frustum frustum, double p_114838_, double p_114839_, double p_114840_) {
-    if (super.shouldRender(golem, frustum, p_114838_, p_114839_, p_114840_)) {
+  public boolean shouldRender(@NotNull StoneGolemEntity entity, @NotNull Frustum frustum, double p_114838_, double p_114839_, double p_114840_) {
+    if (super.shouldRender(entity, frustum, p_114838_, p_114839_, p_114840_)) {
       return true;
     } else {
-      if (golem.hasActiveAttackTarget()) {
-        LivingEntity livingentity = golem.getActiveAttackTarget();
-        if (livingentity != null) {
-          Vec3 vec3 = this.getPosition(livingentity, (double) livingentity.getBbHeight() * 0.5D, 1.0F);
-          Vec3 vec31 = this.getPosition(golem, (double) golem.getEyeHeight(), 1.0F);
+      if (entity.isAlive() && entity.hasActiveAttackTarget()) {
+        LivingEntity target = entity.getActiveAttackTarget();
+        if (target != null) {
+          Vec3 vec3 = this.getPosition(target, (double) target.getBbHeight() * 0.5D, 1.0F);
+          Vec3 vec31 = this.getPosition(entity, entity.getEyeHeight(), 1.0F);
           return frustum.isVisible(new AABB(vec31.x, vec31.y, vec31.z, vec3.x, vec3.y, vec3.z));
         }
       }
-
       return false;
     }
   }
 
   private Vec3 getPosition(LivingEntity entity, double p_114804_, float p_114805_) {
-    double d0 = Mth.lerp((double) p_114805_, entity.xOld, entity.getX());
-    double d1 = Mth.lerp((double) p_114805_, entity.yOld, entity.getY()) + p_114804_;
-    double d2 = Mth.lerp((double) p_114805_, entity.zOld, entity.getZ());
+    double d0 = Mth.lerp(p_114805_, entity.xOld, entity.getX());
+    double d1 = Mth.lerp(p_114805_, entity.yOld, entity.getY()) + p_114804_;
+    double d2 = Mth.lerp(p_114805_, entity.zOld, entity.getZ());
     return new Vec3(d0, d1, d2);
   }
 
-  public void render(StoneGolemEntity entity, float p_114830_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-    super.render(entity, p_114830_, partialTicks, poseStack, bufferSource, packedLight);
+  public void render(@NotNull StoneGolemEntity entity, float p_114830_, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
     renderLaser(entity, partialTicks, poseStack, bufferSource);
+    super.render(entity, p_114830_, partialTicks, poseStack, bufferSource, packedLight);
   }
 
   private void renderLaser(StoneGolemEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource) {
-    LivingEntity livingentity = entity.getActiveAttackTarget();
-    if (livingentity != null) {
+    LivingEntity target = entity.getActiveAttackTarget();
+    if (target != null) {
       float f = entity.getAttackAnimationScale(partialTicks);
       float f1 = (float) entity.level().getGameTime() + partialTicks;
       float f2 = f1 * 0.5F % 1.0F;
       float f3 = entity.getEyeHeight();
       poseStack.pushPose();
       poseStack.translate(0.0F, f3, 0.0F);
-      Vec3 vec3 = this.getPosition(livingentity, (double) livingentity.getBbHeight() * 0.5D, partialTicks);
-      Vec3 vec31 = this.getPosition(entity, (double) f3, partialTicks);
+      Vec3 vec3 = this.getPosition(target, (double) target.getBbHeight() * 0.5D, partialTicks);
+      Vec3 vec31 = this.getPosition(entity, f3, partialTicks);
       Vec3 vec32 = vec3.subtract(vec31);
-      float f4 = (float) (vec32.length() + 1.0D);
+      float f4 = (float) (vec32.length());
       vec32 = vec32.normalize();
       float f5 = (float) Math.acos(vec32.y);
       float f6 = (float) Math.atan2(vec32.z, vec32.x);
@@ -135,12 +134,18 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
     }
   }
 
-  private static void vertex(VertexConsumer vertexConsumer, Matrix4f matrix4f, Matrix3f matrix3f, float p_253994_, float p_254492_, float p_254474_, int p_254080_, int p_253655_, int p_254133_, float p_254233_, float p_253939_) {
-    vertexConsumer.vertex(matrix4f, p_253994_, p_254492_, p_254474_).color(250, 90, 90, 255).uv(p_254233_, p_253939_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+  private static void vertex(VertexConsumer vertexConsumer, Matrix4f matrix4f, Matrix3f matrix3f, float f1, float f2, float f3, int red, int green, int blue, float f4, float f5) {
+    vertexConsumer.vertex(matrix4f, f1, f2, f3)
+            .color(250, 10, 10, 255) // Rojo
+            .uv(f4, f5)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(15728880) // Iluminación máxima
+            .normal(matrix3f, 0.0F, 1.0F, 0.0F)
+            .endVertex();
   }
 
   @Override
-  public @NotNull ResourceLocation getTextureLocation(StoneGolemEntity entity) {
+  public @NotNull ResourceLocation getTextureLocation(@NotNull StoneGolemEntity entity) {
     return DEFAULT_TEXTURE;
   }
 }

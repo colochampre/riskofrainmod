@@ -3,7 +3,7 @@ package io.github.colochampre.riskofrain_mobs.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import io.github.colochampre.riskofrain_mobs.entities.BulletEntity;
+import io.github.colochampre.riskofrain_mobs.entities.projectiles.BulletEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -23,9 +23,9 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
   // code from AlexsMod MudBall
   public void render(@NotNull BulletEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
     poseStack.pushPose();
-    poseStack.scale(0.7F, 0.7F, 0.7F);
+    poseStack.scale(0.4F, 0.4F, 0.4F);
     poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+    poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
     PoseStack.Pose $$6 = poseStack.last();
     Matrix4f $$7 = $$6.pose();
     Matrix3f $$8 = $$6.normal();

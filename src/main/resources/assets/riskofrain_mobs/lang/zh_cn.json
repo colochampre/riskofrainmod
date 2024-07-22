@@ -1,13 +1,15 @@
 {
   "entity.riskofrain_mobs.beetle_entity": "Beetle",
-  "entity.riskofrain_mobs.gunner_drone_entity": "炮塔无人机",
   "entity.riskofrain_mobs.lemurian_entity":	 "月光石",
   "entity.riskofrain_mobs.stone_golem_entity":  "石魔像",
+  "entity.riskofrain_mobs.wisp_entity":  "Wisp",
+  "entity.riskofrain_mobs.gunner_drone_entity": "炮塔无人机",
 
   "item.riskofrain_mobs.beetle_spawn_egg": "Beetle Spawn Egg",
-  "item.riskofrain_mobs.gunner_drone_spawn_egg": "Gunner Drone Spawn Egg",
   "item.riskofrain_mobs.lemurian_spawn_egg": "月光石刷怪蛋",
   "item.riskofrain_mobs.stone_golem_spawn_egg": "石傀儡刷怪蛋",
+  "item.riskofrain_mobs.wisp_spawn_egg": "Wisp Spawn Egg",
+  "item.riskofrain_mobs.gunner_drone_spawn_egg": "Gunner Drone Spawn Egg",
 
   "message.riskofrain_mobs.not_gold": "NOT GOLD!"
 }

@@ -1,4 +1,4 @@
-package io.github.colochampre.riskofrain_mobs.entities;
+package io.github.colochampre.riskofrain_mobs.entities.enemies;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
@@ -61,9 +61,9 @@ public class StoneGolemEntity extends Monster {
     this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.6D));
     this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
     this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-    this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, WanderingTrader.class, true));
+    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+    this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, WanderingTrader.class, true));
   }
 
   public static AttributeSupplier.Builder createAttributes() {
@@ -77,6 +77,20 @@ public class StoneGolemEntity extends Monster {
             .add(Attributes.MOVEMENT_SPEED, 0.25D);
   }
 
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
+  }
+
+  @Override
+  public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> accessor) {
+    super.onSyncedDataUpdated(accessor);
+    if (DATA_ID_ATTACK_TARGET.equals(accessor)) {
+      this.clientSideAttackTime = 0;
+      this.clientSideCachedAttackTarget = null;
+    }
+  }
+
   @Override
   public void aiStep() {
     super.aiStep();
@@ -88,7 +102,7 @@ public class StoneGolemEntity extends Monster {
       }
       LivingEntity target = this.getTarget();
       if (target == null) {
-        this.goalSelector.addGoal(3, this.hurtByTargetGoal);
+        this.goalSelector.addGoal(1, this.hurtByTargetGoal);
       }
       if (this.attackTick > 0) {
         --this.attackTick;
@@ -112,11 +126,6 @@ public class StoneGolemEntity extends Monster {
 
   protected int decreaseAirSupply(int air) {
     return air;
-  }
-
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
   }
 
   private void destroyLeavesBlocks() {
@@ -160,12 +169,10 @@ public class StoneGolemEntity extends Monster {
   private void doLaserParticleEffects() {
     if (this.isAlive()) {
       if (this.level().isClientSide) {
-
         if (this.hasActiveAttackTarget()) {
           if (this.clientSideAttackTime < this.getAttackDuration()) {
             ++this.clientSideAttackTime;
           }
-
           LivingEntity livingentity = this.getActiveAttackTarget();
           if (livingentity != null) {
             this.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
@@ -179,7 +186,6 @@ public class StoneGolemEntity extends Monster {
             d1 /= d3;
             d2 /= d3;
             double d4 = this.random.nextDouble();
-
             while (d4 < d3) {
               d4 += 1.8D - d5 + this.random.nextDouble() * (1.7D - d5);
               this.level().addParticle(ParticleTypes.SMOKE, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
@@ -244,12 +250,12 @@ public class StoneGolemEntity extends Monster {
     return ((float) this.clientSideAttackTime + scale) / (float) this.getAttackDuration();
   }
 
-  public float getAttackDamage() {
-    return this.level().getDifficulty() == Difficulty.HARD ? (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F : (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-  }
-
   public int getAttackDuration() {
     return 75;
+  }
+
+  public float getAttackDamage() {
+    return this.level().getDifficulty() == Difficulty.HARD ? (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F : (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
   }
 
   public int getAttackTick() {
@@ -279,7 +285,6 @@ public class StoneGolemEntity extends Monster {
     this.playSound(this.getDeathVoiceSound(), 1.5F, 1.0F);
     super.die(src);
   }
-
 
   @Override
   protected SoundEvent getHurtSound(@NotNull DamageSource source) {
@@ -346,15 +351,6 @@ public class StoneGolemEntity extends Monster {
 
   public boolean isPushedByFluid() {
     return false;
-  }
-
-  @Override
-  public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> accessor) {
-    super.onSyncedDataUpdated(accessor);
-    if (DATA_ID_ATTACK_TARGET.equals(accessor)) {
-      this.clientSideAttackTime = 0;
-      this.clientSideCachedAttackTarget = null;
-    }
   }
 
   @Override

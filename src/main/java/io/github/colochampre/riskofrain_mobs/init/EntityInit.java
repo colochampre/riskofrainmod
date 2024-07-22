@@ -1,7 +1,12 @@
 package io.github.colochampre.riskofrain_mobs.init;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
-import io.github.colochampre.riskofrain_mobs.entities.*;
+import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.BeetleEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.StoneGolemEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.WispEntity;
+import io.github.colochampre.riskofrain_mobs.entities.projectiles.BulletEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;

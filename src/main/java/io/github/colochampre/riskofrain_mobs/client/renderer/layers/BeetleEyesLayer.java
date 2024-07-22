@@ -2,7 +2,7 @@ package io.github.colochampre.riskofrain_mobs.client.renderer.layers;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.BeetleModel;
-import io.github.colochampre.riskofrain_mobs.entities.BeetleEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.BeetleEntity;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;

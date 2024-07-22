@@ -2,7 +2,7 @@ package io.github.colochampre.riskofrain_mobs.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
+import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.ModelUtils;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T> {
+
   protected final ModelPart core;
   protected ModelPart eye;
   protected ModelPart eye_ring;
@@ -49,7 +50,9 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
   protected ModelPart gun_pitch_axis;
   protected ModelPart gun_pitch;
   protected ModelPart gun_pitch_2;
+
   private float bodyPitch;
+  private boolean activeGun;
 
   public GunnerDroneModel(ModelPart root) {
     this.core = root.getChild("core");
@@ -136,41 +139,73 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
   }
 
   @Override
-  public void setupAnim(GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+  public void prepareMobModel(GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+    this.bodyPitch = entity.getRollAmount(ageInTicks);
+  }
+
+  @Override
+  public void setupAnim(@NotNull GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
     this.core.xRot = 0.0F;
     this.core.zRot = 0.0F;
     this.eye.xRot = 0.0F;
-    this.gun_pitch_axis.xRot = headPitch * ((float) Mth.PI / 180F);
-    this.gun_yaw.yRot = netHeadYaw * ((float) Mth.PI / 180F);
+    float partialTicks = ageInTicks - entity.tickCount;
+    getLookAnim(headYaw, headPitch);
+    getGroundPosition(entity);
+    getPropellerAnim(entity, partialTicks);
+    getFlyingAnim(entity, ageInTicks);
+    getGunAnim(entity, partialTicks);
+  }
 
-    if (entity.isTame() && entity.isFlying() && !entity.isInSittingPose()) {
-      float f1 = ageInTicks * (float) Mth.PI * -0.3F;
+  private void getLookAnim(float headYaw, float headPitch) {
+    this.gun_pitch_axis.xRot = headPitch * (Mth.PI / 180F);
+    this.gun_yaw.yRot = headYaw * (Mth.PI / 180F);
+  }
+
+  private void getFlyingAnim(GunnerDroneEntity entity, float ageInTicks) {
+    if (entity.isTame() && entity.isFlying() && !entity.isInSittingPose()) { // Up and down movement
       this.eye.y = (Mth.cos(ageInTicks * 0.18F) * 0.9F);
-      this.propeller_rod.yRot = f1;
     } else if (entity.onGround()) {
       this.eye.y = 0;
-      this.propeller_rod.yRot = 0.7853981633974483F;
     }
-    //Buried position
-    if (this.bodyPitch > 0.0F && !entity.isTame()) {
-      this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.2617993877991494F, this.bodyPitch);
-      this.core.xRot = ModelUtils.rotlerpRad(this.core.zRot, -0.2617993877991494F, this.bodyPitch);
-      this.core.y = (float) 23.5;
-    } else if (entity.onGround() && entity.isTame()) {
-      this.core.y = 18.75F;
-    } else {
-      this.core.y = 15.0F;
-    }
-    //Moving inclination
-    if (this.bodyPitch > 0.0F && entity.isDroneMoving()) {
+    if (this.bodyPitch > 0.0F && entity.isDroneMoving()) { // Moving inclination
       float f1 = Mth.cos(ageInTicks * 0.18F);
       this.eye.xRot = 0.1F + f1 * (float) Math.PI * 0.025F;
     }
   }
 
-  @Override
-  public void prepareMobModel(GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    //super.prepareMobModel(entity, limbSwing, limbSwingAmount, ageInTicks);
-    this.bodyPitch = entity.getRollAmount(ageInTicks);
+  private void getGroundPosition(GunnerDroneEntity entity) {
+    if (this.bodyPitch > 0.0F && !entity.isTame()) {
+      this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.2617993877991494F, this.bodyPitch);
+      this.core.xRot = ModelUtils.rotlerpRad(this.core.zRot, -0.2617993877991494F, this.bodyPitch);
+      this.core.y = 23.5F;
+    } else if (entity.onGround() && entity.isTame()) {
+      this.core.y = 18.75F;
+    } else {
+      this.core.y = 15.0F;
+    }
+  }
+
+  private void getGunAnim(GunnerDroneEntity entity, float partialTicks) {
+    float speed = entity.getGunSpeed();
+    float angle = entity.getGunAngle();
+    float prevAngle = entity.getPrevGunAngle();
+    float interpolatedAngle = prevAngle + (angle - prevAngle) * partialTicks;
+    if (speed == 0) {
+      this.gun_pitch.zRot = 0.7854F + angle;
+    } else {
+      this.gun_pitch.zRot = 0.7854F + interpolatedAngle;
+    }
+  }
+
+  private void getPropellerAnim(GunnerDroneEntity entity, float partialTicks) {
+    float speed = entity.getPropellerSpeed();
+    float angle = entity.getPropellerAngle();
+    float prevAngle = entity.getPrevPropellerAngle();
+    float interpolatedAngle = prevAngle + (angle - prevAngle) * partialTicks;
+    if (speed == 0) {
+      this.propeller_rod.yRot = 0.7854F - angle;
+    } else {
+      this.propeller_rod.yRot = 0.7854F - interpolatedAngle;
+    }
   }
 }

@@ -3,7 +3,7 @@ package io.github.colochampre.riskofrain_mobs.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.GunnerDroneModel;
-import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
+import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;

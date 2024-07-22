@@ -46,6 +46,14 @@ public class RoRConfig {
     public final ForgeConfigSpec.BooleanValue STONE_GOLEM_DESPAWN;
     public final ForgeConfigSpec.IntValue STONE_GOLEM_SPAWN_VOLUME;
 
+    public final ForgeConfigSpec.DoubleValue WISP_MAX_HEALTH;
+    public final ForgeConfigSpec.DoubleValue WISP_ATTACK_DAMAGE;
+    public final ForgeConfigSpec.IntValue WISP_OVERWORLD_SPAWN_RATE;
+    public final ForgeConfigSpec.IntValue WISP_NETHER_SPAWN_RATE;
+    public final ForgeConfigSpec.IntValue WISP_MIN_GROUP_SIZE;
+    public final ForgeConfigSpec.IntValue WISP_MAX_GROUP_SIZE;
+    public final ForgeConfigSpec.BooleanValue WISP_DESPAWN;
+
     public final ForgeConfigSpec.IntValue ADVANCEMENT;
     public final ForgeConfigSpec.IntValue CHAT_MESSAGE;
     public final ForgeConfigSpec.IntValue PLAYER_DEATH_SOUND;
@@ -143,8 +151,32 @@ public class RoRConfig {
               .comment("Despawn stone golems when they are far away")
               .define("enableStoneGolemDespawn", false);
       STONE_GOLEM_SPAWN_VOLUME = builder
-              .comment("Sstone Golems spawn volume. Set this to 0 to disable")
+              .comment("Stone Golems spawn volume. Set this to 0 to disable")
               .defineInRange("stoneGolemSpawnVolume", 100, 0, 100);
+      builder.pop();
+
+      builder.push("Wisps");
+      WISP_MAX_HEALTH = builder
+              .comment("Wisps max health")
+              .defineInRange("wispMaxHealth", 10.0D, 1.0D, 999.9D);
+      WISP_ATTACK_DAMAGE = builder
+              .comment("Wisps attack damage")
+              .defineInRange("wispAttackDamage", 1.0D, 1.0D, 999.9D);
+      WISP_OVERWORLD_SPAWN_RATE = builder
+              .comment("Wisps overworld spawn rate. Set this to 0 to disable spawns")
+              .defineInRange("wispOverworldSpawnWeight", 50, 0, 100);
+      WISP_NETHER_SPAWN_RATE = builder
+              .comment("Wisps nether spawn rate (Sensitive). Set this to 0 to disable spawns")
+              .defineInRange("wispNetherSpawnWeight", 10, 0, 100);
+      WISP_MIN_GROUP_SIZE = builder
+              .comment("Wisps minimum group size on spawn. Set this equal or lower than max group size")
+              .defineInRange("wispMinGroupSize", 1, 1, 8);
+      WISP_MAX_GROUP_SIZE = builder
+              .comment("Wisps maximum group size on spawn. Set this equal or higher than min group size")
+              .defineInRange("wispMaxGroupSize", 3, 1, 8);
+      WISP_DESPAWN = builder
+              .comment("Despawn wisps when they are far away")
+              .define("wispBeetleDespawn", true);
       builder.pop();
 
       builder.push("Sound effects from Risk of Rain");

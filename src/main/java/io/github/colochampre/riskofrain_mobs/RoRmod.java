@@ -34,7 +34,7 @@ public class RoRmod {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::setup);
     bus.addListener(this::addItemsToTabs);
-    ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, RoRConfig.SERVER_SPEC);
+    ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, RoRConfig.SERVER_SPEC);
 
     SoundInit.SOUNDS.register(bus);
     ItemInit.ITEMS.register(bus);
@@ -53,6 +53,7 @@ public class RoRmod {
       event.accept(ItemInit.BEETLE_SPAWN_EGG);
       event.accept(ItemInit.LEMURIAN_SPAWN_EGG);
       event.accept(ItemInit.STONE_GOLEM_SPAWN_EGG);
+      event.accept(ItemInit.WISP_SPAWN_EGG);
       event.accept(ItemInit.GUNNER_DRONE_SPAWN_EGG);
     }
   }

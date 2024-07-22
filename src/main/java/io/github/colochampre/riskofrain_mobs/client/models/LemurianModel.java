@@ -2,7 +2,7 @@ package io.github.colochampre.riskofrain_mobs.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.LemurianEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -257,7 +257,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     this.tail_3_axis.zRot = Mth.cos(limbSwing * 0.75F) * 0.33F * limbSwingAmount;
   }
 
-  private void getAttackAnim(LemurianEntity entity, int i, float ageInTicks) {
+  private void getAttackAnim(LemurianEntity entity, int attackTick, float ageInTicks) {
     int random = RandomSource.create().nextIntBetweenInclusive(1, 3);
     if (entity.getIsSelectedHand()) {
       this.rightHandSelected = entity.getIsRightHandSelected();
@@ -267,7 +267,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     if (this.rightHandSelected) {
       //switch(random) {
       //case 1:
-      rightPunch(i, ageInTicks);
+      rightPunch(attackTick, ageInTicks);
       //break;
       //case 2:
       //break;
@@ -278,7 +278,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     } else {
       //switch(random) {
       //case 1:
-      leftPunch(i, ageInTicks);
+      leftPunch(attackTick, ageInTicks);
       //break;
       //case 2:
       //break;

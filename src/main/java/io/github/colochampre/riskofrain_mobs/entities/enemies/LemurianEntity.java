@@ -1,7 +1,6 @@
-package io.github.colochampre.riskofrain_mobs.entities;
+package io.github.colochampre.riskofrain_mobs.entities.enemies;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.goals.LemurianAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
@@ -56,12 +55,6 @@ public class LemurianEntity extends Monster {
   }
 
   @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_TYPE_ID, 0);
-  }
-
-  @Override
   protected void registerGoals() {
     this.goalSelector.addGoal(1, new FloatGoal(this));
     this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolem.class, 8.0F, 0.8D, 1.0D));
@@ -82,6 +75,24 @@ public class LemurianEntity extends Monster {
             .add(Attributes.FOLLOW_RANGE, 32.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.26D);
+  }
+
+  @Override
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    this.entityData.define(DATA_TYPE_ID, 0);
+  }
+
+  @Override
+  public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
+    super.addAdditionalSaveData(nbt);
+    nbt.putString("Type", this.getLemurianType().getName());
+  }
+
+  @Override
+  public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
+    super.readAdditionalSaveData(nbt);
+    this.setLemurianType(LemurianEntity.Type.byName(nbt.getString("Type")));
   }
 
   @Override
@@ -146,18 +157,6 @@ public class LemurianEntity extends Monster {
 
   private void setLemurianType(LemurianEntity.Type type) {
     this.entityData.set(DATA_TYPE_ID, type.getId());
-  }
-
-  @Override
-  public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
-    super.addAdditionalSaveData(nbt);
-    nbt.putString("Type", this.getLemurianType().getName());
-  }
-
-  @Override
-  public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
-    super.readAdditionalSaveData(nbt);
-    this.setLemurianType(LemurianEntity.Type.byName(nbt.getString("Type")));
   }
 
   public float getAttackDamage() {

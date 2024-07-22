@@ -1,4 +1,4 @@
-package io.github.colochampre.riskofrain_mobs.entities;
+package io.github.colochampre.riskofrain_mobs.entities.allies;
 
 import com.google.common.collect.Sets;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
@@ -42,11 +42,13 @@ import java.util.Set;
 
 public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
   private static final EntityDataAccessor<Integer> DATA_PRICE = SynchedEntityData.defineId(AbstractFlyingDroneEntity.class, EntityDataSerializers.INT);
+  private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(AbstractFlyingDroneEntity.class, EntityDataSerializers.INT);
   private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
   private final FloatGoal floatGoal = new FloatGoal(this);
   private final DroneFollowOwnerGoal followOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, true);
   private final WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
+  private LivingEntity clientSideCachedAttackTarget;
   private float rollAmount;
   private float rollAmountO;
   private int flyingSound;
@@ -86,6 +88,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     Difficulty difficulty = this.level().getDifficulty();
     int initialGold = difficulty == Difficulty.HARD ? 54 : 36;
     this.entityData.define(DATA_PRICE, initialGold);
+    this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
   }
 
   @Override
@@ -103,22 +106,30 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
   }
 
   @Override
+  public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> accessor) {
+    super.onSyncedDataUpdated(accessor);
+    if (DATA_ID_ATTACK_TARGET.equals(accessor)) {
+      this.clientSideCachedAttackTarget = null;
+    }
+  }
+
+  @Override
   public void aiStep() {
     if (this.isTame()) {
       this.goalSelector.addGoal(3, this.followOwnerGoal);
       this.goalSelector.addGoal(4, this.randomFlyingGoal);
       this.goalSelector.addGoal(6, this.floatGoal);
     }
-    this.landIfSitting();
+    this.doFlyingSound();
+    this.landIfOrderedToSit();
+    this.updateRollAmount();
     super.aiStep();
   }
 
   @Override
   public void tick() {
-    this.doFlyingSound();
     this.smokeIfLowHealth();
     this.waterDamage();
-    this.updateRollAmount();
     super.tick();
   }
 
@@ -133,7 +144,7 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
     }
   }
 
-  private void landIfSitting() {
+  private void landIfOrderedToSit() {
     Vec3 vec3 = this.getDeltaMovement();
     if (this.isTame() && this.isOrderedToSit()) {
       this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F - vec3.y), 0.0D));
@@ -256,6 +267,35 @@ public abstract class AbstractFlyingDroneEntity extends TamableAnimal implements
       }
     }
     return super.mobInteract(player, hand);
+  }
+
+  @Nullable
+  public LivingEntity getActiveAttackTarget() {
+    if (!this.hasActiveAttackTarget()) {
+      return null;
+    } else if (this.level().isClientSide) {
+      if (this.clientSideCachedAttackTarget != null) {
+        return this.clientSideCachedAttackTarget;
+      } else {
+        Entity entity = this.level().getEntity(this.entityData.get(DATA_ID_ATTACK_TARGET));
+        if (entity instanceof LivingEntity) {
+          this.clientSideCachedAttackTarget = (LivingEntity) entity;
+          return this.clientSideCachedAttackTarget;
+        } else {
+          return null;
+        }
+      }
+    } else {
+      return this.getTarget();
+    }
+  }
+
+  public void setActiveAttackTarget(int id) {
+    this.entityData.set(DATA_ID_ATTACK_TARGET, id);
+  }
+
+  public boolean hasActiveAttackTarget() {
+    return this.entityData.get(DATA_ID_ATTACK_TARGET) != 0;
   }
 
   @Override

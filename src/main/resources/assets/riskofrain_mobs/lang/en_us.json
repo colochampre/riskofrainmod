@@ -1,13 +1,15 @@
 {
   "entity.riskofrain_mobs.beetle_entity": "Beetle",
-  "entity.riskofrain_mobs.gunner_drone_entity": "Gunner Drone",
   "entity.riskofrain_mobs.lemurian_entity":	 "Lemurian",
   "entity.riskofrain_mobs.stone_golem_entity":  "Stone Golem",
+  "entity.riskofrain_mobs.wisp_entity":  "Wisp",
+  "entity.riskofrain_mobs.gunner_drone_entity": "Gunner Drone",
 
   "item.riskofrain_mobs.beetle_spawn_egg": "Beetle Spawn Egg",
-  "item.riskofrain_mobs.gunner_drone_spawn_egg": "Gunner Drone Spawn Egg",
   "item.riskofrain_mobs.lemurian_spawn_egg": "Lemurian Spawn Egg",
   "item.riskofrain_mobs.stone_golem_spawn_egg": "Stone Golem Spawn Egg",
+  "item.riskofrain_mobs.wisp_spawn_egg": "Wisp Spawn Egg",
+  "item.riskofrain_mobs.gunner_drone_spawn_egg": "Gunner Drone Spawn Egg",
 
   "message.riskofrain_mobs.not_gold": "NOT GOLD!"
 }

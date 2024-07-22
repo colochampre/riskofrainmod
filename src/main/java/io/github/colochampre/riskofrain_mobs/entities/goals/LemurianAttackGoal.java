@@ -1,12 +1,11 @@
 package io.github.colochampre.riskofrain_mobs.entities.goals;
 
-import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
-import io.github.colochampre.riskofrain_mobs.entities.LemurianFireballEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.entities.projectiles.LemurianFireballEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -53,16 +52,16 @@ public class LemurianAttackGoal extends Goal {
     LivingEntity livingentity = this.lemurian.getTarget();
     if (livingentity != null) {
       double d0 = this.lemurian.distanceToSqr(livingentity);
-      boolean flag = this.lemurian.getSensing().hasLineOfSight(livingentity);
-      if (flag) {
+      boolean canSee = this.lemurian.getSensing().hasLineOfSight(livingentity);
+      if (canSee) {
         ++this.lastSeen;
       } else {
         --this.lastSeen;
       }
       /* Strafing */
-      this.strafingTick(livingentity, d0, flag);
+      this.strafingTick(livingentity, d0, canSee);
       /* Fireball attack */
-      this.fireballAttackTick(livingentity, d0, flag);
+      this.fireballAttackTick(livingentity, d0, canSee);
       super.tick();
     }
   }
@@ -102,7 +101,7 @@ public class LemurianAttackGoal extends Goal {
   }
 
   private void fireballAttackTick(LivingEntity entity, double distance, boolean canSee) {
-    if (((distance > this.maxAttackDistance * 0.3) || (this.lemurian.getNavigation().isDone())) && (distance < (double) this.maxAttackDistance) && canSee) {
+    if ((this.lemurian.getNavigation().isStuck() || distance > this.maxAttackDistance * 0.3) && distance < (double) this.maxAttackDistance && canSee) {
       if (this.attackTime <= 0) {
         ++this.attackStep;
         if (this.attackStep == 1) {

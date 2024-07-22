@@ -4,7 +4,7 @@ import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.GunnerDroneModel;
 import io.github.colochampre.riskofrain_mobs.client.renderer.layers.GunnerDroneBodyLayer;
 import io.github.colochampre.riskofrain_mobs.client.renderer.layers.GunnerDroneEyeLayer;
-import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
+import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.events.ModClientEvents;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
