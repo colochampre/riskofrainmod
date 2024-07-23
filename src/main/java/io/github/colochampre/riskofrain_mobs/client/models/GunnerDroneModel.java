@@ -52,7 +52,8 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
   protected ModelPart gun_pitch_2;
 
   private float bodyPitch;
-  private boolean activeGun;
+  private float bodyXRot;
+  private float bodyZRot;
 
   public GunnerDroneModel(ModelPart root) {
     this.core = root.getChild("core");
@@ -139,7 +140,9 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
   }
 
   @Override
-  public void prepareMobModel(GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+  public void prepareMobModel(@NotNull GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+    this.bodyXRot = entity.getBodyXRot();
+    this.bodyZRot = entity.getBodyZRot();
     this.bodyPitch = entity.getRollAmount(ageInTicks);
   }
 
@@ -148,12 +151,13 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
     this.core.xRot = 0.0F;
     this.core.zRot = 0.0F;
     this.eye.xRot = 0.0F;
+    this.eye.zRot = 0.0F;
     float partialTicks = ageInTicks - entity.tickCount;
-    getLookAnim(headYaw, headPitch);
-    getGroundPosition(entity);
-    getPropellerAnim(entity, partialTicks);
-    getFlyingAnim(entity, ageInTicks);
-    getGunAnim(entity, partialTicks);
+    this.getLookAnim(headYaw, headPitch);
+    this.getFlyingAnim(entity, ageInTicks);
+    this.getPropellerAnim(entity, partialTicks);
+    this.getGunAnim(entity, partialTicks);
+    this.getBuriedPosition(entity);
   }
 
   private void getLookAnim(float headYaw, float headPitch) {
@@ -162,18 +166,18 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
   }
 
   private void getFlyingAnim(GunnerDroneEntity entity, float ageInTicks) {
-    if (entity.isTame() && entity.isFlying() && !entity.isInSittingPose()) { // Up and down movement
+    if (entity.isTame() && entity.isFlying() && !entity.isInSittingPose()) {
+      // Up and down movement
       this.eye.y = (Mth.cos(ageInTicks * 0.18F) * 0.9F);
+      // Forward-backward and sides inclination
+      this.eye.xRot = -this.bodyXRot;
+      this.eye.zRot = -this.bodyZRot;
     } else if (entity.onGround()) {
       this.eye.y = 0;
     }
-    if (this.bodyPitch > 0.0F && entity.isDroneMoving()) { // Moving inclination
-      float f1 = Mth.cos(ageInTicks * 0.18F);
-      this.eye.xRot = 0.1F + f1 * (float) Math.PI * 0.025F;
-    }
   }
 
-  private void getGroundPosition(GunnerDroneEntity entity) {
+  private void getBuriedPosition(GunnerDroneEntity entity) {
     if (this.bodyPitch > 0.0F && !entity.isTame()) {
       this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.2617993877991494F, this.bodyPitch);
       this.core.xRot = ModelUtils.rotlerpRad(this.core.zRot, -0.2617993877991494F, this.bodyPitch);
@@ -182,18 +186,6 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
       this.core.y = 18.75F;
     } else {
       this.core.y = 15.0F;
-    }
-  }
-
-  private void getGunAnim(GunnerDroneEntity entity, float partialTicks) {
-    float speed = entity.getGunSpeed();
-    float angle = entity.getGunAngle();
-    float prevAngle = entity.getPrevGunAngle();
-    float interpolatedAngle = prevAngle + (angle - prevAngle) * partialTicks;
-    if (speed == 0) {
-      this.gun_pitch.zRot = 0.7854F + angle;
-    } else {
-      this.gun_pitch.zRot = 0.7854F + interpolatedAngle;
     }
   }
 
@@ -206,6 +198,18 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
       this.propeller_rod.yRot = 0.7854F - angle;
     } else {
       this.propeller_rod.yRot = 0.7854F - interpolatedAngle;
+    }
+  }
+
+  private void getGunAnim(GunnerDroneEntity entity, float partialTicks) {
+    float speed = entity.getGunSpeed();
+    float angle = entity.getGunAngle();
+    float prevAngle = entity.getPrevGunAngle();
+    float interpolatedAngle = prevAngle + (angle - prevAngle) * partialTicks;
+    if (speed == 0) {
+      this.gun_pitch.zRot = 0.7854F + angle;
+    } else {
+      this.gun_pitch.zRot = 0.7854F + interpolatedAngle;
     }
   }
 }

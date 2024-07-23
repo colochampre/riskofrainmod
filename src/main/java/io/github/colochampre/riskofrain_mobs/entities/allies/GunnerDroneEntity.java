@@ -107,31 +107,8 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     super.aiStep();
   }
 
-  private void updatePropeller() {
-    this.prevPropellerAngle = this.propellerAngle;
-    if (this.isFlying() && !this.isInSittingPose()) {
-      this.propellerSpeed = Math.min(this.propellerSpeed + ROTATION_ACCELERATION, MAX_ROTATION_SPEED);
-    } else if (this.onGround()) {
-      this.propellerSpeed = Math.max(this.propellerSpeed - ROTATION_DECELERATION, 0.0F);
-      if (this.propellerSpeed == 0) {
-        propellerAngle = normalizeAngle(this.propellerAngle);
-      }
-    }
-    this.propellerAngle += this.propellerSpeed;
-  }
-
-  private void updateGun() {
-    LivingEntity target = this.getActiveAttackTarget();
-    this.prevGunAngle = this.gunAngle;
-    if (target != null) {
-      this.gunSpeed = Math.min(this.gunSpeed + ROTATION_ACCELERATION, MAX_ROTATION_SPEED);
-    } else {
-      this.gunSpeed = Math.max(this.gunSpeed - ROTATION_DECELERATION, 0.0F);
-      if (this.gunSpeed == 0) {
-        gunAngle = normalizeAngle(this.gunAngle);
-      }
-    }
-    this.gunAngle += this.gunSpeed;
+  public static boolean checkDroneSpawnRules(EntityType<GunnerDroneEntity> drone, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource randomSource) {
+    return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
   }
 
   @Override
@@ -158,61 +135,6 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
       }
     }
     return super.mobInteract(player, hand);
-  }
-
-  public float getGunAngle() {
-    return this.gunAngle;
-  }
-
-  public float getPrevGunAngle() {
-    return this.prevGunAngle;
-  }
-
-  public float getGunSpeed() {
-    return this.gunSpeed;
-  }
-
-  public float getPropellerAngle() {
-    return this.propellerAngle;
-  }
-
-  public float getPrevPropellerAngle() {
-    return this.prevPropellerAngle;
-  }
-
-  public float getPropellerSpeed() {
-    return this.propellerSpeed;
-  }
-
-  private float normalizeAngle(float angle) {
-    angle = angle % (2 * (float) Math.PI);
-    if (angle > Math.PI) {
-      angle -= 2 * (float) Math.PI;
-    } else if (angle < -Math.PI) {
-      angle += 2 * (float) Math.PI;
-    }
-    return angle;
-  }
-
-  public DyeColor getBodyColor() {
-    return DyeColor.byId(this.entityData.get(DATA_BODY_COLOR));
-  }
-
-  public void setBodyColor(DyeColor color) {
-    this.entityData.set(DATA_BODY_COLOR, color.getId());
-  }
-
-  public static boolean checkDroneSpawnRules(EntityType<GunnerDroneEntity> drone, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource randomSource) {
-    return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
-  }
-
-  @Override
-  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
-    return 0.055F;
-  }
-
-  public @NotNull Vec3 getLeashOffset() {
-    return new Vec3(0.0D, (double) (0.6F * this.getEyeHeight()), (double) (this.getBbWidth() * 0.2F));
   }
 
   @Override
@@ -245,5 +167,73 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
     } else {
       return false;
     }
+  }
+
+  private void updatePropeller() {
+    this.prevPropellerAngle = this.propellerAngle;
+    if (this.isFlying() && !this.isInSittingPose()) {
+      this.propellerSpeed = Math.min(this.propellerSpeed + ROTATION_ACCELERATION, MAX_ROTATION_SPEED);
+    } else if (this.onGround()) {
+      this.propellerSpeed = Math.max(this.propellerSpeed - ROTATION_DECELERATION, 0.0F);
+      if (this.propellerSpeed == 0) {
+        propellerAngle = this.normalizeAngle(this.propellerAngle);
+      }
+    }
+    this.propellerAngle += this.propellerSpeed;
+  }
+
+  private void updateGun() {
+    LivingEntity target = this.getActiveAttackTarget();
+    this.prevGunAngle = this.gunAngle;
+    if (target != null) {
+      this.gunSpeed = Math.min(this.gunSpeed + ROTATION_ACCELERATION, MAX_ROTATION_SPEED);
+    } else {
+      this.gunSpeed = Math.max(this.gunSpeed - ROTATION_DECELERATION, 0.0F);
+      if (this.gunSpeed == 0) {
+        gunAngle = normalizeAngle(this.gunAngle);
+      }
+    }
+    this.gunAngle += this.gunSpeed;
+  }
+
+  public float getGunAngle() {
+    return this.gunAngle;
+  }
+
+  public float getPrevGunAngle() {
+    return this.prevGunAngle;
+  }
+
+  public float getGunSpeed() {
+    return this.gunSpeed;
+  }
+
+  public float getPropellerAngle() {
+    return this.propellerAngle;
+  }
+
+  public float getPrevPropellerAngle() {
+    return this.prevPropellerAngle;
+  }
+
+  public float getPropellerSpeed() {
+    return this.propellerSpeed;
+  }
+
+  public DyeColor getBodyColor() {
+    return DyeColor.byId(this.entityData.get(DATA_BODY_COLOR));
+  }
+
+  public void setBodyColor(DyeColor color) {
+    this.entityData.set(DATA_BODY_COLOR, color.getId());
+  }
+
+  @Override
+  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
+    return 0.055F;
+  }
+
+  public @NotNull Vec3 getLeashOffset() {
+    return new Vec3(0.0D, (double) (0.6F * this.getEyeHeight()), (double) (this.getBbWidth() * 0.2F));
   }
 }

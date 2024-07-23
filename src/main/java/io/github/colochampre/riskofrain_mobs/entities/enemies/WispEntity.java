@@ -152,7 +152,7 @@ public class WispEntity extends Monster implements FlyingAnimal {
             d1 /= d3;
             d2 /= d3;
             double d4 = this.random.nextDouble();
-            while (d4 < d3) {
+            while (d4 < d3 - 2) {
               d4 += 1.8D - d5 + this.random.nextDouble() * (1.7D - d5);
               this.level().addParticle(ParticleTypes.SMOKE, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
             }
