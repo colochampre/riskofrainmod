@@ -11,5 +11,6 @@
   "item.riskofrain_mobs.wisp_spawn_egg": "Wisp Spawn Egg",
   "item.riskofrain_mobs.gunner_drone_spawn_egg": "Gunner Drone Spawn Egg",
 
-  "message.riskofrain_mobs.not_gold": "NOT GOLD!"
+  "message.riskofrain_mobs.not_gold": "NOT GOLD!",
+  "message.riskofrain_mobs.smaller_gold": "SMALLER GOLD!"
 }

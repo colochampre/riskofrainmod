@@ -242,12 +242,8 @@ public class LemurianEntity extends Monster {
     EVOLVED(1, "evolved"),
     GOLDEN_ARMOR(2, "golden_armor");
 
-    private static final LemurianEntity.Type[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(LemurianEntity.Type::getId)).toArray((p_28822_) -> {
-      return new LemurianEntity.Type[p_28822_];
-    });
-    private static final Map<String, Type> BY_NAME = Arrays.stream(values()).collect(Collectors.toMap(LemurianEntity.Type::getName, (p_28815_) -> {
-      return p_28815_;
-    }));
+    private static final LemurianEntity.Type[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(LemurianEntity.Type::getId)).toArray(Type[]::new);
+    private static final Map<String, Type> BY_NAME = Arrays.stream(values()).collect(Collectors.toMap(LemurianEntity.Type::getName, (p_28815_) -> p_28815_));
     private final int id;
     private final String name;
 

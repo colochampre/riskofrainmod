@@ -1,7 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities.allies;
 
 import com.google.common.collect.Sets;
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.entities.goals.DroneFollowOwnerGoal;
 import net.minecraft.ChatFormatting;
@@ -22,7 +21,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -34,21 +32,23 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAnimal {
-  private static final EntityDataAccessor<Integer> DATA_PRICE = SynchedEntityData.defineId(AbstractFlyingDroneEntity.class, EntityDataSerializers.INT);
-  private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(AbstractFlyingDroneEntity.class, EntityDataSerializers.INT);
+public abstract class AbstractDroneEntity extends TamableAnimal implements FlyingAnimal {
+  public static final int TYPE_LAND = 0;
+  public static final int TYPE_FLYING = 1;
+  private static final EntityDataAccessor<Integer> DATA_PRICE = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
+  private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
   private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
-  private final FloatGoal floatGoal = new FloatGoal(this);
-  private final DroneFollowOwnerGoal followOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, true);
+  private final DroneFollowOwnerGoal landFollowOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, false);
+  private final DroneFollowOwnerGoal flyingFollowOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, true);
   private final WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
+  private final WaterAvoidingRandomStrollGoal randomStrollGoal = new WaterAvoidingRandomStrollGoal(this, 0.6D);
   private LivingEntity clientSideCachedAttackTarget;
   private float currentBodyXRot;
   private float currentBodyZRot;
@@ -59,32 +59,79 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   private int flyingSound;
   private int underWaterTicks;
 
-  public AbstractFlyingDroneEntity(EntityType<? extends AbstractFlyingDroneEntity> type, Level level) {
+  public AbstractDroneEntity(EntityType<? extends AbstractDroneEntity> type, Level level) {
     super(type, level);
-    this.moveControl = new FlyingMoveControl(this, 16, true);
-    this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
+  }
+
+  protected abstract int getDroneType();
+
+
+  @Override
+  public void setTame(boolean tamed) {
+    super.setTame(tamed);
+    int type = this.getDroneType();
+    this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+    if (type == TYPE_LAND) {
+      this.addLandGoals();
+    }
+    if (type == TYPE_FLYING) {
+      this.addFlyingGoals();
+    }
+  }
+
+  private void addLandGoals() {
+    this.goalSelector.addGoal(3, this.landFollowOwnerGoal);
+    this.goalSelector.addGoal(4, this.randomStrollGoal);
+  }
+
+  private void addFlyingGoals() {
+    this.goalSelector.addGoal(3, this.flyingFollowOwnerGoal);
+    this.goalSelector.addGoal(4, this.randomFlyingGoal);
+  }
+
+  @Override
+  public void aiStep() {
+    super.aiStep();
+    if (this.isTame()) {
+      this.smokeIfLowHealth();
+      this.waterDamage();
+      if (this.getDroneType() == TYPE_FLYING) {
+        this.doFlyingSound();
+        this.landIfOrderedToSit();
+      }
+    }
+  }
+
+  @Override
+  public void tick() {
+    super.tick();
+    this.detectMovementDirection();
+    this.interpolateInclinations();
+    this.updateRollAmount();
   }
 
   protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
-    FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
-      public boolean isStableDestination(BlockPos pos) {
-        return !this.level.getBlockState(pos.below()).isAir();
-      }
-    };
-    flyingpathnavigation.setCanOpenDoors(false);
-    flyingpathnavigation.setCanFloat(false);
-    flyingpathnavigation.setCanPassDoors(true);
-    return flyingpathnavigation;
+    if (this.getDroneType() == TYPE_FLYING) {
+      FlyingPathNavigation flyingPathNavigation = new FlyingPathNavigation(this, level) {
+        public boolean isStableDestination(BlockPos pos) {
+          return !this.level.getBlockState(pos.below()).isAir();
+        }
+      };
+      flyingPathNavigation.setCanOpenDoors(false);
+      flyingPathNavigation.setCanFloat(false);
+      flyingPathNavigation.setCanPassDoors(true);
+      return flyingPathNavigation;
+    } else {
+      return super.createNavigation(level);
+    }
   }
 
-  public float getWalkTargetValue(@NotNull BlockPos pos, LevelReader level) {
-    return level.getBlockState(pos).isAir() ? 20.0F : 0.0F;
+  public float getWalkTargetValue(@NotNull BlockPos pos, @NotNull LevelReader level) {
+    if (this.getDroneType() == TYPE_FLYING) {
+      return level.getBlockState(pos).isAir() ? 20.0F : 0.0F;
+    } else {
+      return super.getWalkTargetValue(pos, level);
+    }
   }
 
   @Override
@@ -118,30 +165,6 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     }
   }
 
-  @Override
-  public void aiStep() {
-    super.aiStep();
-    if (this.isTame()) {
-      this.goalSelector.addGoal(3, this.followOwnerGoal);
-      this.goalSelector.addGoal(4, this.randomFlyingGoal);
-      this.goalSelector.addGoal(6, this.floatGoal);
-    }
-    this.doFlyingSound();
-    this.landIfOrderedToSit();
-  }
-
-  @Override
-  public void tick() {
-    super.tick();
-    if (this.isTame()) {
-      this.smokeIfLowHealth();
-      this.waterDamage();
-      this.detectMovementDirection();
-      this.interpolateInclinations();
-    }
-    this.updateRollAmount();
-  }
-
   private void doFlyingSound() {
     if (!this.isTame() || this.onGround() || this.isInSittingPose() || this.isOrderedToSit()) {
       flyingSound = 0;
@@ -155,7 +178,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
 
   private void landIfOrderedToSit() {
     Vec3 vec3 = this.getDeltaMovement();
-    if (this.isTame() && this.isOrderedToSit()) {
+    if (this.isOrderedToSit()) {
       this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F - vec3.y), 0.0D));
       this.hasImpulse = true;
     } else {
@@ -190,10 +213,13 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   }
 
   public boolean causeFallDamage(float p_149683_, float p_149684_, @NotNull DamageSource source) {
-    return false;
+    return this.getDroneType() != TYPE_FLYING;
   }
 
-  protected void checkFallDamage(double p_218316_, boolean p_218317_, @NotNull BlockState state, @NotNull BlockPos pos) {
+  protected void checkFallDamage(double fallDistance, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
+    if (this.getDroneType() != TYPE_FLYING) {
+      super.checkFallDamage(fallDistance, onGround, state, pos);
+    }
   }
 
   protected int decreaseAirSupply(int air) {
@@ -242,11 +268,12 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     } else if (!this.isTame()) {
       // Not gold
       if (!TAME_ITEMS.contains(itemstack.getItem())) {
-        Component notGold = Component.translatable("message.riskofrain_mobs.not_gold").withStyle(ChatFormatting.YELLOW);
+        Component goldMessage = itemstack.getItem().equals(Items.GOLD_BLOCK) || itemstack.getItem().equals(Items.RAW_GOLD_BLOCK)
+                ? Component.translatable("message.riskofrain_mobs.smaller_gold").withStyle(ChatFormatting.YELLOW)
+                : Component.translatable("message.riskofrain_mobs.not_gold").withStyle(ChatFormatting.YELLOW);
         this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.INSUFFICIENT_FOUNDS_PROC.get(), this.getSoundSource(), 0.5F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         if (!this.level().isClientSide) {
-          // this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.CHAT_MESSAGE.get(), this.getSoundSource(), 1.0F, 1.0F);
-          player.sendSystemMessage(notGold);
+          player.sendSystemMessage(goldMessage);
         }
         return InteractionResult.SUCCESS;
         // Taming
@@ -263,8 +290,8 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
           this.setGoldPrice(this.getGoldPrice() - 1);
         }
         String price = String.valueOf(this.getGoldPrice());
-        Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
-        this.setCustomName(component);
+        Component priceName = Component.literal(price).withStyle(ChatFormatting.YELLOW);
+        this.setCustomName(priceName);
         this.setCustomNameVisible(true);
         if (!this.level().isClientSide) {
           if (this.getGoldPrice() <= 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
@@ -273,6 +300,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
             this.level().broadcastEntityEvent(this, (byte) 7);
             this.setCustomName(null);
             this.setCustomNameVisible(false);
+            this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
           } else {
             this.level().broadcastEntityEvent(this, (byte) 6);
           }
@@ -331,7 +359,15 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
     return SoundInit.DRONE_FLYING.get();
   }
 
+  protected SoundEvent getStepSound() {
+    //return SoundInit.DRONE_STEP.get();
+    return null;
+  }
+
   protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
+    if (this.getDroneType() == TYPE_LAND) {
+      //this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
   }
 
   public int getGoldPrice() {
@@ -343,20 +379,24 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
   }
 
   public void detectMovementDirection() {
-    Vec3 motion = this.getDeltaMovement(); // Vector de movimiento actual
-    float yaw = this.getYRot(); // Orientación del dron (yaw)
-    Vec3 lookVec = Vec3.directionFromRotation(0, yaw); // Convertir la orientación del dron en un vector
-    Vec3 normalizedMotion = motion.normalize(); // Normalizar el vector de movimiento
-    double dotForward = normalizedMotion.dot(lookVec); // Calcular el producto punto para determinar la dirección relativa del movimiento
-    double dotRight = normalizedMotion.dot(new Vec3(-lookVec.z, 0, lookVec.x)); // Vector a la derecha
-    // Determinar la inclinación en base al producto punto
-    this.targetBodyXRot = (float) -dotForward * (float) Math.PI / 8; // Inclinación adelante/atrás
-    this.targetBodyZRot = (float) dotRight * (float) Math.PI / 8; // Inclinación a los costados
+    if (this.isTame()) {
+      Vec3 motion = this.getDeltaMovement(); // Vector de movimiento actual
+      float yaw = this.getYRot(); // Orientación del dron (yaw)
+      Vec3 lookVec = Vec3.directionFromRotation(0, yaw); // Convertir la orientación del dron en un vector
+      Vec3 normalizedMotion = motion.normalize(); // Normalizar el vector de movimiento
+      double dotForward = normalizedMotion.dot(lookVec); // Calcular el producto punto para determinar la dirección relativa del movimiento
+      double dotRight = normalizedMotion.dot(new Vec3(-lookVec.z, 0, lookVec.x)); // Vector a la derecha
+      // Determinar la inclinación en base al producto punto
+      this.targetBodyXRot = (float) -dotForward * (float) Math.PI / 8; // Inclinación adelante/atrás
+      this.targetBodyZRot = (float) dotRight * (float) Math.PI / 8; // Inclinación a los costados
+    }
   }
 
   private void interpolateInclinations() {
-    this.currentBodyXRot = Mth.lerp(0.2f, this.currentBodyXRot, this.targetBodyXRot);
-    this.currentBodyZRot = Mth.lerp(0.2f, this.currentBodyZRot, this.targetBodyZRot);
+    if (this.isTame()) {
+      this.currentBodyXRot = Mth.lerp(0.2f, this.currentBodyXRot, this.targetBodyXRot);
+      this.currentBodyZRot = Mth.lerp(0.2f, this.currentBodyZRot, this.targetBodyZRot);
+    }
   }
 
   public float getBodyXRot() {
@@ -417,7 +457,7 @@ public class AbstractFlyingDroneEntity extends TamableAnimal implements FlyingAn
 
   @Override
   public boolean isFlying() {
-    return !this.onGround();
+    return this.getDroneType() == TYPE_FLYING && !this.onGround();
   }
 
   @Override

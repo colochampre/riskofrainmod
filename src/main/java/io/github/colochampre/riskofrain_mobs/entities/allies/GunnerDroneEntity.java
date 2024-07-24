@@ -17,6 +17,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -35,11 +36,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements RangedAttackMob {
+public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAttackMob {
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
   private final GunnerDroneAttackGoal attackGoal = new GunnerDroneAttackGoal(this, 16.0F);
   private static final float MAX_ROTATION_SPEED = Mth.PI * 0.3F;
@@ -52,19 +54,32 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
   private float gunAngle;
   private float prevGunAngle;
 
-  public GunnerDroneEntity(EntityType<? extends GunnerDroneEntity> entity, Level level) {
+  public GunnerDroneEntity(EntityType<? extends AbstractDroneEntity> entity, Level level) {
     super(entity, level);
+    if (this.getDroneType() == TYPE_FLYING) {
+      this.moveControl = new FlyingMoveControl(this, 16, true);
+      this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
+    }
+  }
+
+  @Override
+  protected int getDroneType() {
+    return TYPE_FLYING;
   }
 
   @Override
   protected void registerGoals() {
-    this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
     this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
     this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
     this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-    this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (entity) -> {
-      return entity instanceof Enemy && !(entity instanceof Creeper);
-    }));
+    this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (entity)
+            -> entity instanceof Enemy && !(entity instanceof Creeper)));
   }
 
   public static AttributeSupplier.Builder createAttributes() {
@@ -74,7 +89,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
             .add(Attributes.FLYING_SPEED, 1.0D)
             .add(Attributes.FOLLOW_RANGE, 16.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
-            .add(Attributes.MOVEMENT_SPEED, 0.0D);
+            .add(Attributes.MOVEMENT_SPEED, 0.2D);
   }
 
   @Override
@@ -99,12 +114,19 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
 
   @Override
   public void aiStep() {
-    if (this.isAlive() && this.isTame()) {
-      this.goalSelector.addGoal(2, this.attackGoal);
+    super.aiStep();
+    if (this.isTame()) {
       this.updateGun();
       this.updatePropeller();
     }
-    super.aiStep();
+  }
+
+  @Override
+  public void setTame(boolean tamed) {
+    super.setTame(tamed);
+    if (tamed) {
+      this.goalSelector.addGoal(2, this.attackGoal);
+    }
   }
 
   public static boolean checkDroneSpawnRules(EntityType<GunnerDroneEntity> drone, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource randomSource) {
@@ -159,7 +181,7 @@ public class GunnerDroneEntity extends AbstractFlyingDroneEntity implements Rang
         return false;
       } else if (livingentity instanceof AbstractHorse && ((AbstractHorse) livingentity).isTamed()) {
         return false;
-      } else if (livingentity instanceof AbstractFlyingDroneEntity && ((AbstractFlyingDroneEntity) livingentity).isTame()) {
+      } else if (livingentity instanceof AbstractDroneEntity && ((AbstractDroneEntity) livingentity).isTame()) {
         return false;
       } else {
         return !(livingentity instanceof TamableAnimal) || !((TamableAnimal) livingentity).isTame();

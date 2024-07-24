@@ -2,7 +2,7 @@ package io.github.colochampre.riskofrain_mobs.events;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
-import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractFlyingDroneEntity;
+import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractDroneEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.network.packets.DifficultyChangeSoundPacket;
 import net.minecraft.client.Minecraft;
@@ -71,7 +71,7 @@ public class ModCommonEvents {
 
     @SubscribeEvent
     public static void immuneDrones(LivingAttackEvent event) {
-      if (event.getEntity() instanceof AbstractFlyingDroneEntity drone && event.getSource().getDirectEntity() instanceof LivingEntity) {
+      if (event.getEntity() instanceof AbstractDroneEntity drone && event.getSource().getDirectEntity() instanceof LivingEntity) {
         boolean isTamed = drone.isTame();
         if (isTamed) {
           return;
