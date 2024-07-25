@@ -5,6 +5,7 @@ import io.github.colochampre.riskofrain_mobs.entities.goals.WispAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -153,8 +154,10 @@ public class WispEntity extends Monster implements FlyingAnimal {
             d2 /= d3;
             double d4 = this.random.nextDouble();
             while (d4 < d3 - 2) {
-              d4 += 1.8D - d5 + this.random.nextDouble() * (1.7D - d5);
-              this.level().addParticle(ParticleTypes.SMOKE, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
+              float f0 = this.random.nextFloat();
+              SimpleParticleType particleType = f0 > 0.5 ? ParticleTypes.SMOKE : ParticleTypes.SMALL_FLAME;
+              d4 += (1.8D - d5 + this.random.nextDouble() * (1.7D - d5) * 1.5);
+              this.level().addParticle(particleType, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
             }
           }
         }

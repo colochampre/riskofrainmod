@@ -56,16 +56,6 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
 
   public GunnerDroneEntity(EntityType<? extends AbstractDroneEntity> entity, Level level) {
     super(entity, level);
-    if (this.getDroneType() == TYPE_FLYING) {
-      this.moveControl = new FlyingMoveControl(this, 16, true);
-      this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-      this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
-      this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-      this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, -1.0F);
-      this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
-      this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-      this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
-    }
   }
 
   @Override

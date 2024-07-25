@@ -2,8 +2,8 @@ package io.github.colochampre.riskofrain_mobs.entities.goals;
 
 import io.github.colochampre.riskofrain_mobs.entities.enemies.WispEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
@@ -96,6 +96,7 @@ public class WispAttackGoal extends Goal {
       this.wisp.playSound(this.getAttackFireSound(), 1.0F, 1.0F);
       target.playSound(this.getAttackFireSound(), 1.0F, 1.0F);
       target.hurt(wisp.damageSources().mobAttack(this.wisp), this.wisp.getAttackDamage());
+      this.wisp.level().addParticle(ParticleTypes.LAVA, this.wisp.getRandomX(0.5D), this.wisp.getRandomY(), this.wisp.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
       this.wisp.setTarget(null);
       this.hitScanCooldown = 80;
     }

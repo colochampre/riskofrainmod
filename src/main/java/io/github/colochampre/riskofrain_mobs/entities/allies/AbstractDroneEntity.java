@@ -21,6 +21,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -32,6 +33,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -61,10 +63,19 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
 
   public AbstractDroneEntity(EntityType<? extends AbstractDroneEntity> type, Level level) {
     super(type, level);
+    if (this.getDroneType() == TYPE_FLYING) {
+      this.moveControl = new FlyingMoveControl(this, 16, true);
+      this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+      this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
+    }
   }
 
   protected abstract int getDroneType();
-
 
   @Override
   public void setTame(boolean tamed) {
@@ -105,8 +116,9 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   @Override
   public void tick() {
     super.tick();
-    this.detectMovementDirection();
-    this.interpolateInclinations();
+    if (this.isTame()) {
+      this.detectMovementDirection();
+    }
     this.updateRollAmount();
   }
 
@@ -365,9 +377,9 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   }
 
   protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
-    if (this.getDroneType() == TYPE_LAND) {
-      //this.playSound(this.getStepSound(), 0.15F, 1.0F);
-    }
+    /*if (this.getDroneType() == TYPE_LAND) {
+      this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }*/
   }
 
   public int getGoldPrice() {
@@ -379,24 +391,18 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   }
 
   public void detectMovementDirection() {
-    if (this.isTame()) {
-      Vec3 motion = this.getDeltaMovement(); // Vector de movimiento actual
-      float yaw = this.getYRot(); // Orientación del dron (yaw)
-      Vec3 lookVec = Vec3.directionFromRotation(0, yaw); // Convertir la orientación del dron en un vector
-      Vec3 normalizedMotion = motion.normalize(); // Normalizar el vector de movimiento
-      double dotForward = normalizedMotion.dot(lookVec); // Calcular el producto punto para determinar la dirección relativa del movimiento
-      double dotRight = normalizedMotion.dot(new Vec3(-lookVec.z, 0, lookVec.x)); // Vector a la derecha
-      // Determinar la inclinación en base al producto punto
-      this.targetBodyXRot = (float) -dotForward * (float) Math.PI / 8; // Inclinación adelante/atrás
-      this.targetBodyZRot = (float) dotRight * (float) Math.PI / 8; // Inclinación a los costados
-    }
-  }
-
-  private void interpolateInclinations() {
-    if (this.isTame()) {
-      this.currentBodyXRot = Mth.lerp(0.2f, this.currentBodyXRot, this.targetBodyXRot);
-      this.currentBodyZRot = Mth.lerp(0.2f, this.currentBodyZRot, this.targetBodyZRot);
-    }
+    Vec3 motion = this.getDeltaMovement(); // Vector de movimiento actual
+    float yaw = this.getYRot(); // Orientación del dron (yaw)
+    Vec3 lookVec = Vec3.directionFromRotation(0, yaw); // Convertir la orientación del dron en un vector
+    Vec3 normalizedMotion = motion.normalize(); // Normalizar el vector de movimiento
+    double dotForward = normalizedMotion.dot(lookVec); // Calcular el producto punto para determinar la dirección relativa del movimiento
+    double dotRight = normalizedMotion.dot(new Vec3(-lookVec.z, 0, lookVec.x)); // Vector a la derecha
+    // Determinar la inclinación en base al producto punto
+    this.targetBodyXRot = (float) -dotForward * (float) Math.PI / 6; // Inclinación adelante/atrás
+    this.targetBodyZRot = (float) dotRight * (float) Math.PI / 4; // Inclinación a los costados
+    // Suavizar la trancisión a la inclinación
+    this.currentBodyXRot = Mth.lerp(0.1f, this.currentBodyXRot, this.targetBodyXRot);
+    this.currentBodyZRot = Mth.lerp(0.1f, this.currentBodyZRot, this.targetBodyZRot);
   }
 
   public float getBodyXRot() {

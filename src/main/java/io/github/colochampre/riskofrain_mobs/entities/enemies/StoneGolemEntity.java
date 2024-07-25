@@ -132,7 +132,6 @@ public class StoneGolemEntity extends Monster {
     if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
       boolean flag = false;
       AABB aabb = this.getBoundingBox().inflate(0.2D);
-
       for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
         BlockState blockstate = this.level().getBlockState(blockpos);
         Block block = blockstate.getBlock();
