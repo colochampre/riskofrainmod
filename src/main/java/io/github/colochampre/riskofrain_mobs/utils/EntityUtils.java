@@ -1,16 +1,34 @@
 package io.github.colochampre.riskofrain_mobs.utils;
 
+import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractDroneEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 public class EntityUtils {
+
+  public static void doParticlesAtEntity(LivingEntity entity, SimpleParticleType particle, int amount) {
+    if (entity.level().isClientSide) {
+      for (int i = 0; i < amount; ++i) {
+        double randomX = entity.getX((2.0D * ThreadLocalRandom.current().nextDouble() - 1.0D) * 0.5);
+        double randomY = entity.getY(ThreadLocalRandom.current().nextDouble());
+        double randomZ = entity.getZ((2.0D * ThreadLocalRandom.current().nextDouble() - 1.0D) * 0.5);
+        entity.level().addParticle(particle, randomX, randomY, randomZ, 0.0D, 0.0D, 0.0D);
+      }
+    }
+  }
 
   public static double getHeightAboveGround(LivingEntity entity) {
     Level level = entity.level();

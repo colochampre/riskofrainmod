@@ -1,8 +1,8 @@
 package io.github.colochampre.riskofrain_mobs.entities.enemies;
 
-import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.entities.goals.WispAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
+import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -21,6 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -37,15 +38,18 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class WispEntity extends Monster implements FlyingAnimal {
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(WispEntity.class, EntityDataSerializers.INT);
   private LivingEntity clientSideCachedAttackTarget;
   private int clientSideAttackTime;
+  private int underWaterTicks;
   private int loopSound;
 
   public WispEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
-    //this.moveControl = new FlyingMoveControl(this, 16, true);
+    this.moveControl = new FlyingMoveControl(this, 16, true);
     this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
     this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
@@ -60,8 +64,7 @@ public class WispEntity extends Monster implements FlyingAnimal {
   protected void registerGoals() {
     this.goalSelector.addGoal(2, new WispAttackGoal(this, 16.0F));
     this.goalSelector.addGoal(3, new WaterAvoidingRandomFlyingGoal(this, 0.5D));
-    this.goalSelector.addGoal(3, new WaterAvoidingRandomFlyingGoal(this, 0.5D));
-    this.goalSelector.addGoal(3, new FloatGoal(this));
+    this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, WanderingTrader.class, true));
@@ -107,22 +110,17 @@ public class WispEntity extends Monster implements FlyingAnimal {
   }
 
   @Override
-  public void tick() {
-    super.tick();
+  public void aiStep() {
+    super.aiStep();
+    this.doHitScanParticleEffects();
     this.doLoopSound();
     this.smokeIfWet();
-    this.doHitScanParticleEffects();
-    if (this.tickCount % 20 == 0) { // Generar partículas cada segundo
-      for (int i = 0; i < 3; ++i) {
-        double offsetX = this.getRandom().nextDouble() * 0.5D;
-        double offsetY = this.getRandom().nextDouble();
-        double offsetZ = this.getRandom().nextDouble() * 0.5D;
-        double particleX = this.getX() + offsetX;
-        double particleY = this.getY() + offsetY;
-        double particleZ = this.getZ() + offsetZ;
-        this.level().addParticle(ParticleTypes.SMOKE, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
-      }
-    }
+    this.waterDamage();
+  }
+
+  @Override
+  public void tick() {
+    super.tick();
   }
 
   public static boolean canSpawn(EntityType<WispEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -138,9 +136,7 @@ public class WispEntity extends Monster implements FlyingAnimal {
 
   private void smokeIfWet() {
     if (this.isInWaterRainOrBubble()) {
-      for (int i = 0; i < 2; ++i) {
-        this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
-      }
+      EntityUtils.doParticlesAtEntity(this, ParticleTypes.LARGE_SMOKE, 2);
     }
   }
 
@@ -164,14 +160,14 @@ public class WispEntity extends Monster implements FlyingAnimal {
               double d1 = target.getY(0.5D) - this.getEyeY();
               double d2 = target.getZ() - this.getZ();
               double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-              double d4 = this.random.nextDouble();
+              double d4 = ThreadLocalRandom.current().nextDouble();
               d0 /= d3;
               d1 /= d3;
               d2 /= d3;
               while (d4 < d3 - 2) {
-                float f0 = this.random.nextFloat();
-                SimpleParticleType particleType = f0 > 0.5 ? ParticleTypes.SMOKE : ParticleTypes.SMALL_FLAME;
-                d4 += (1.8D - d5 + this.random.nextDouble() * (1.7D - d5) * 1.5);
+                float f0 = ThreadLocalRandom.current().nextFloat();
+                SimpleParticleType particleType = f0 > 0.3 ? ParticleTypes.SMOKE : ParticleTypes.SMALL_FLAME;
+                d4 += (1.8D - d5 + ThreadLocalRandom.current().nextDouble() * (1.7D - d5) * 1.5);
                 this.level().addParticle(particleType, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
               }
             }
@@ -182,6 +178,10 @@ public class WispEntity extends Monster implements FlyingAnimal {
         this.setYRot(this.yHeadRot);
       }
     }
+  }
+
+  public void doHitScanParticles(LivingEntity target) {
+    EntityUtils.doParticlesAtEntity(target, ParticleTypes.LAVA, 3);
   }
 
   @Nullable
@@ -266,16 +266,37 @@ public class WispEntity extends Monster implements FlyingAnimal {
     return super.finalizeSpawn(level, difficulty, type, data, tag);
   }
 
+  @Override
+  public boolean hurt(@NotNull DamageSource source, float amount) {
+    boolean flag = super.hurt(source, amount);
+    EntityUtils.doParticlesAtEntity(this, ParticleTypes.LAVA, 3);
+    return flag;
+  }
+
   /*@Override
   public boolean doHurtTarget(@NotNull Entity target) {
     boolean flag = super.doHurtTarget(target);
-    if (flag && this.level().isClientSide) {
-      for (int i = 0; i < 3; ++i) {
-        this.level().addParticle(ParticleTypes.FALLING_LAVA, target.getRandomX(0.5D), target.getRandomY(), target.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+    if (this.level().isClientSide) {
+      if (flag) {
+        for (int i = 0; i < 3; ++i) {
+          this.level().addParticle(ParticleTypes.LAVA, target.getRandomX(0.5D), target.getRandomY(), target.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+        }
       }
     }
     return flag;
   }*/
+
+  private void waterDamage() {
+    if (this.isInWaterRainOrBubble()) {
+      ++this.underWaterTicks;
+    } else {
+      this.underWaterTicks = 0;
+    }
+    if (this.underWaterTicks > 20) {
+      this.hurt(this.damageSources().drown(), 1.0F);
+    }
+  }
+
 
   protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
   }
@@ -303,9 +324,5 @@ public class WispEntity extends Monster implements FlyingAnimal {
   @Override
   public boolean isOnFire() {
     return !this.isInWaterRainOrBubble();
-  }
-
-  public boolean isSensitiveToWater() {
-    return true;
   }
 }

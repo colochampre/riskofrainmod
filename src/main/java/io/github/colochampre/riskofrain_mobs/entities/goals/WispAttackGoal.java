@@ -1,9 +1,8 @@
 package io.github.colochampre.riskofrain_mobs.entities.goals;
 
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.enemies.WispEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
-import net.minecraft.core.particles.ParticleTypes;
+import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -73,8 +72,10 @@ public class WispAttackGoal extends Goal {
   private void doCombatMovements(LivingEntity target, double distance) {
     Vec3 vec3a = this.wisp.getDeltaMovement();
     Vec3 vec3b = this.wisp.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.05D).reverse();
+    double heightAboveGround = EntityUtils.getHeightAboveGround(this.wisp);
+    int maxHeightAllowed = 20;
     // Elevate above target
-    if (target.getEyeY() > this.wisp.getEyeY()) {
+    if (target.getEyeY() > this.wisp.getEyeY() && heightAboveGround < maxHeightAllowed) {
       this.wisp.setDeltaMovement(this.wisp.getDeltaMovement().add(0.0D, ((double) 0.2F - vec3a.y) * (double) 0.2F, 0.0D));
       this.wisp.hasImpulse = true;
     }
@@ -96,25 +97,10 @@ public class WispAttackGoal extends Goal {
     } else if (this.hitScanAttackTick >= this.wisp.getAttackDuration()) {
       this.wisp.playSound(this.getAttackFireSound(), 1.0F, 1.0F);
       target.playSound(this.getAttackFireSound(), 1.0F, 1.0F);
-      //if (this.wisp.level().isClientSide) {
-        this.doHitParticles(target);
-      //}
+      this.wisp.doHitScanParticles(target);
       target.hurt(wisp.damageSources().mobAttack(this.wisp), this.wisp.getAttackDamage());
       this.wisp.setTarget(null);
       this.hitScanCooldown = 80;
-    }
-  }
-
-  private void doHitParticles(LivingEntity target) {
-    for (int i = 0; i < 3; ++i) {
-      double offsetX = this.wisp.getRandom().nextDouble() * 0.5D;
-      double offsetY = this.wisp.getRandom().nextDouble();
-      double offsetZ = this.wisp.getRandom().nextDouble() * 0.5D;
-      double pX = target.getX() + offsetX;
-      double pY = target.getY() + offsetY;
-      double pZ = target.getZ() + offsetZ;
-      RoRmod.LOGGER.info("Generando partículas en: X={} Y={} Z={}", pX, pY, pZ);
-      this.wisp.level().addParticle(ParticleTypes.LAVA, pX, pY, pZ, 0.0D, 0.0D, 0.0D);
     }
   }
 

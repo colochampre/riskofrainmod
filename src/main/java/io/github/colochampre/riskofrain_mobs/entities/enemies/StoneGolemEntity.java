@@ -40,6 +40,8 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class StoneGolemEntity extends Monster {
   private static final ResourceLocation STONE_GOLEM_LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(StoneGolemEntity.class, EntityDataSerializers.INT);
@@ -176,7 +178,7 @@ public class StoneGolemEntity extends Monster {
           if (livingentity != null) {
             this.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
             this.getLookControl().tick();
-            double d5 = (double) this.getAttackAnimationScale(0.0F);
+            double d5 = this.getAttackAnimationScale(0.0F);
             double d0 = livingentity.getX() - this.getX();
             double d1 = livingentity.getY(0.5D) - this.getEyeY();
             double d2 = livingentity.getZ() - this.getZ();
@@ -184,9 +186,9 @@ public class StoneGolemEntity extends Monster {
             d0 /= d3;
             d1 /= d3;
             d2 /= d3;
-            double d4 = this.random.nextDouble();
+            double d4 = ThreadLocalRandom.current().nextDouble();
             while (d4 < d3 - 2) {
-              d4 += 1.8D - d5 + this.random.nextDouble() * (1.7D - d5);
+              d4 += 1.8D - d5 + ThreadLocalRandom.current().nextDouble() * (1.7D - d5);
               this.level().addParticle(ParticleTypes.SMOKE, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
             }
           }

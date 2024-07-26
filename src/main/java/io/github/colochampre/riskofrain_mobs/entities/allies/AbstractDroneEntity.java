@@ -6,7 +6,9 @@ import io.github.colochampre.riskofrain_mobs.entities.goals.DroneFollowOwnerGoal
 import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -40,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbstractDroneEntity extends TamableAnimal implements FlyingAnimal {
   public static final int TYPE_LAND = 0;
@@ -104,7 +107,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
     super.aiStep();
     if (this.isTame()) {
       this.smokeIfLowHealth();
-      this.waterDamage();
+      this.takeWaterDamage();
       if (this.getDroneType() == TYPE_FLYING) {
         this.doFlyingSound();
         this.landIfOrderedToSit();
@@ -200,19 +203,19 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   }
 
   private void smokeIfLowHealth() {
-    if (this.isLowHealth()) {
-      for (int i = 0; i < 2; ++i) {
-        this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
-      }
+    if (this.isLowHealth() && this.tickCount % 2 == 0) {
+      float f0 = ThreadLocalRandom.current().nextFloat();
+      SimpleParticleType particle = f0 > 0.1 ? ParticleTypes.SMOKE : ParticleTypes.ELECTRIC_SPARK;
+      EntityUtils.doParticlesAtEntity(this, particle, 2);
     }
   }
 
   public boolean isLowHealth() {
     double health = this.getHealth();
-    return health < this.getHealth() / 2;
+    return health < this.getMaxHealth() / 2;
   }
 
-  private void waterDamage() {
+  private void takeWaterDamage() {
     if (this.isInWaterOrBubble()) {
       ++this.underWaterTicks;
     } else {
@@ -320,6 +323,12 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
       }
     }
     return super.mobInteract(player, hand);
+  }
+
+  @Override
+  protected void spawnTamingParticles(boolean success) {
+    SimpleParticleType particle = success ? ParticleTypes.ELECTRIC_SPARK : ParticleTypes.SMOKE;
+    EntityUtils.doParticlesAtEntity(this, particle, 5);
   }
 
   @Nullable
