@@ -20,12 +20,12 @@ public class GunnerDroneRenderer extends MobRenderer<GunnerDroneEntity, GunnerDr
 
   public GunnerDroneRenderer(EntityRendererProvider.Context context) {
     super(context, new GunnerDroneModel<>(context.bakeLayer(ModClientEvents.GUNNER_DRONE_LAYER)), 0.3F);
-    this.addLayer(new GunnerDroneEyeLayer(this));
     this.addLayer(new GunnerDroneBodyLayer(this));
+    this.addLayer(new GunnerDroneEyeLayer(this));
   }
 
   @Override
-  public @NotNull ResourceLocation getTextureLocation(GunnerDroneEntity entity) {
+  public @NotNull ResourceLocation getTextureLocation(@NotNull GunnerDroneEntity entity) {
     return GunnerDroneRenderer.DEFAULT_TEXTURE;
   }
 }

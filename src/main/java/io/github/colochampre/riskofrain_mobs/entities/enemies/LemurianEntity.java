@@ -142,6 +142,7 @@ public class LemurianEntity extends Monster {
 
   @Override
   public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, SpawnGroupData groupData, CompoundTag nbt) {
+    this.playSound(this.getSpawnSound(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
     this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(RoRConfig.SERVER.LEMURIAN_ATTACK_DAMAGE.get());
     this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(RoRConfig.SERVER.LEMURIAN_MAX_HEALTH.get());
     this.setHealth(this.getMaxHealth());
@@ -198,7 +199,11 @@ public class LemurianEntity extends Monster {
   }
 
   protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-    this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    this.playSound(this.getStepSound(), 0.2F, 1.0F);
+  }
+
+  protected SoundEvent getSpawnSound() {
+    return SoundInit.LEMURIAN_SPAWN.get();
   }
 
   public boolean getIsSelectedHand() {

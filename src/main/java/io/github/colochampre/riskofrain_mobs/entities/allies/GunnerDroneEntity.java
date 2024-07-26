@@ -3,6 +3,7 @@ package io.github.colochampre.riskofrain_mobs.entities.allies;
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerDroneAttackGoal;
 import io.github.colochampre.riskofrain_mobs.entities.projectiles.BulletEntity;
+import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -188,7 +189,7 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
     } else if (this.onGround()) {
       this.propellerSpeed = Math.max(this.propellerSpeed - ROTATION_DECELERATION, 0.0F);
       if (this.propellerSpeed == 0) {
-        propellerAngle = this.normalizeAngle(this.propellerAngle);
+        propellerAngle = EntityUtils.normalizeAngle(this.propellerAngle);
       }
     }
     this.propellerAngle += this.propellerSpeed;
@@ -202,7 +203,7 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
     } else {
       this.gunSpeed = Math.max(this.gunSpeed - ROTATION_DECELERATION, 0.0F);
       if (this.gunSpeed == 0) {
-        gunAngle = normalizeAngle(this.gunAngle);
+        gunAngle = EntityUtils.normalizeAngle(this.gunAngle);
       }
     }
     this.gunAngle += this.gunSpeed;

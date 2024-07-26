@@ -1,10 +1,9 @@
 package io.github.colochampre.riskofrain_mobs.entities.goals;
 
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
+import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
@@ -36,7 +35,6 @@ public class GunnerDroneAttackGoal extends Goal {
   }
 
   public void stop() {
-    LivingEntity target = this.drone.getTarget();
     this.drone.setActiveAttackTarget(0);
     this.drone.setTarget(null);
     this.drone.setAggressive(false);
@@ -71,8 +69,10 @@ public class GunnerDroneAttackGoal extends Goal {
   private void doCombatMovements(LivingEntity target, double distance) {
     Vec3 vec3a = this.drone.getDeltaMovement();
     Vec3 vec3b = this.drone.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.05D).reverse();
+    double heightAboveGround = EntityUtils.getHeightAboveGround(this.drone);
+    int maxHeightAllowed = 20;
     // Elevate drone above target
-    if (target.getEyeY() > this.drone.getEyeY()) {
+    if (target.getEyeY() > this.drone.getEyeY() && heightAboveGround < maxHeightAllowed) {
       this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(0.0D, ((double) 0.2F - vec3a.y) * (double) 0.2F, 0.0D));
       this.drone.hasImpulse = true;
     }

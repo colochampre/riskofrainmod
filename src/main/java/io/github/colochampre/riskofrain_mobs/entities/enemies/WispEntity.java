@@ -40,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
 public class WispEntity extends Monster implements FlyingAnimal {
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(WispEntity.class, EntityDataSerializers.INT);
   private LivingEntity clientSideCachedAttackTarget;
-  public int clientSideAttackTime;
+  private int clientSideAttackTime;
   private int loopSound;
 
   public WispEntity(EntityType<? extends Monster> type, Level level) {
@@ -112,6 +112,17 @@ public class WispEntity extends Monster implements FlyingAnimal {
     this.doLoopSound();
     this.smokeIfWet();
     this.doHitScanParticleEffects();
+    if (this.tickCount % 20 == 0) { // Generar partículas cada segundo
+      for (int i = 0; i < 3; ++i) {
+        double offsetX = this.getRandom().nextDouble() * 0.5D;
+        double offsetY = this.getRandom().nextDouble();
+        double offsetZ = this.getRandom().nextDouble() * 0.5D;
+        double particleX = this.getX() + offsetX;
+        double particleY = this.getY() + offsetY;
+        double particleZ = this.getZ() + offsetZ;
+        this.level().addParticle(ParticleTypes.SMOKE, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
+      }
+    }
   }
 
   public static boolean canSpawn(EntityType<WispEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -142,22 +153,27 @@ public class WispEntity extends Monster implements FlyingAnimal {
           }
           LivingEntity target = this.getActiveAttackTarget();
           if (target != null) {
-            this.getLookControl().setLookAt(target, 90.0F, 90.0F);
-            this.getLookControl().tick();
-            double d5 = this.getAttackAnimationScale(0.0F);
-            double d0 = target.getX() - this.getX();
-            double d1 = target.getY(0.5D) - this.getEyeY();
-            double d2 = target.getZ() - this.getZ();
-            double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-            d0 /= d3;
-            d1 /= d3;
-            d2 /= d3;
-            double d4 = this.random.nextDouble();
-            while (d4 < d3 - 2) {
-              float f0 = this.random.nextFloat();
-              SimpleParticleType particleType = f0 > 0.5 ? ParticleTypes.SMOKE : ParticleTypes.SMALL_FLAME;
-              d4 += (1.8D - d5 + this.random.nextDouble() * (1.7D - d5) * 1.5);
-              this.level().addParticle(particleType, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
+            double distance = this.distanceToSqr(target);
+            boolean canSee = this.hasLineOfSight(target);
+            int maxAttackDistance = 16 * 16;
+            if (canSee && distance < maxAttackDistance) {
+              this.getLookControl().setLookAt(target, 90.0F, 90.0F);
+              this.getLookControl().tick();
+              double d5 = this.getAttackAnimationScale(0.0F);
+              double d0 = target.getX() - this.getX();
+              double d1 = target.getY(0.5D) - this.getEyeY();
+              double d2 = target.getZ() - this.getZ();
+              double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+              double d4 = this.random.nextDouble();
+              d0 /= d3;
+              d1 /= d3;
+              d2 /= d3;
+              while (d4 < d3 - 2) {
+                float f0 = this.random.nextFloat();
+                SimpleParticleType particleType = f0 > 0.5 ? ParticleTypes.SMOKE : ParticleTypes.SMALL_FLAME;
+                d4 += (1.8D - d5 + this.random.nextDouble() * (1.7D - d5) * 1.5);
+                this.level().addParticle(particleType, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
+              }
             }
           }
         }
@@ -222,7 +238,7 @@ public class WispEntity extends Monster implements FlyingAnimal {
 
   @Override
   protected SoundEvent getDeathSound() {
-    return SoundInit.WISP_HURT.get();
+    return SoundInit.WISP_DEATH.get();
   }
 
   @Override
@@ -246,9 +262,20 @@ public class WispEntity extends Monster implements FlyingAnimal {
   @Nullable
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-    this.playSound(this.getSpawnSound(), 0.5F, 1.0F);
+    this.playSound(this.getSpawnSound(), 0.6F, 1.0F);
     return super.finalizeSpawn(level, difficulty, type, data, tag);
   }
+
+  /*@Override
+  public boolean doHurtTarget(@NotNull Entity target) {
+    boolean flag = super.doHurtTarget(target);
+    if (flag && this.level().isClientSide) {
+      for (int i = 0; i < 3; ++i) {
+        this.level().addParticle(ParticleTypes.FALLING_LAVA, target.getRandomX(0.5D), target.getRandomY(), target.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+      }
+    }
+    return flag;
+  }*/
 
   protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
   }

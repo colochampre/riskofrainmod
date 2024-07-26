@@ -23,7 +23,7 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
   // code from AlexsMod MudBall
   public void render(@NotNull BulletEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
     poseStack.pushPose();
-    poseStack.scale(0.4F, 0.4F, 0.4F);
+    poseStack.scale(0.5F, 0.5F, 0.5F);
     poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
     poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
     PoseStack.Pose $$6 = poseStack.last();

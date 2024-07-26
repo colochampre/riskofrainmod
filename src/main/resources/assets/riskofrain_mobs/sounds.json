@@ -97,30 +97,30 @@
       }
     ]
   },
-  "entity.drone.death1": {
+  "entity.drone.breaks": {
     "category": "entity",
-    "subtitle": "Drone shuts down",
+    "subtitle": "Drone breaks",
     "sounds": [
       {
-        "name": "riskofrain_mobs:entity/drone/drone_death1_01",
+        "name": "riskofrain_mobs:entity/drone/drone_breaks_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/drone/drone_breaks_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/drone/drone_breaks_03",
         "stream": true
       }
     ]
   },
-  "entity.drone.death2": {
+  "entity.drone.death": {
     "category": "entity",
     "subtitle": "Drone shuts down",
     "sounds": [
       {
-        "name": "riskofrain_mobs:entity/drone/drone_death2_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/drone/drone_death2_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/drone/drone_death2_03",
+        "name": "riskofrain_mobs:entity/drone/drone_death_01",
         "stream": true
       }
     ]
@@ -311,6 +311,16 @@
       },
       {
         "name": "riskofrain_mobs:entity/lemurian/lemurian_step_04",
+        "stream": true
+      }
+    ]
+  },
+  "entity.lemurian.spawn": {
+    "category": "entity",
+    "subtitle": "Lemurian spawns",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/lemurian/lemurian_spawn_01",
         "stream": true
       }
     ]
@@ -509,6 +519,16 @@
       },
       {
         "name": "riskofrain_mobs:entity/wisp/wisp_attack_fire_03",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.death": {
+    "category": "entity",
+    "subtitle": "Wisp dies",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_death_01",
         "stream": true
       }
     ]

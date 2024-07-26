@@ -3,6 +3,7 @@ package io.github.colochampre.riskofrain_mobs.entities.allies;
 import com.google.common.collect.Sets;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.entities.goals.DroneFollowOwnerGoal;
+import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -54,8 +55,6 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   private LivingEntity clientSideCachedAttackTarget;
   private float currentBodyXRot;
   private float currentBodyZRot;
-  private float targetBodyXRot;
-  private float targetBodyZRot;
   private float rollAmount;
   private float rollAmountO;
   private int flyingSound;
@@ -117,7 +116,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   public void tick() {
     super.tick();
     if (this.isTame()) {
-      this.detectMovementDirection();
+      EntityUtils.updateMovementInclinations(this, this.currentBodyXRot, this.currentBodyZRot, newBodyXRot -> this.currentBodyXRot = newBodyXRot, newBodyZRot -> this.currentBodyZRot = newBodyZRot);
     }
     this.updateRollAmount();
   }
@@ -210,7 +209,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
 
   public boolean isLowHealth() {
     double health = this.getHealth();
-    return health < 10.0D;
+    return health < this.getHealth() / 2;
   }
 
   private void waterDamage() {
@@ -360,11 +359,11 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
 
   @Override
   protected SoundEvent getDeathSound() {
-    return SoundInit.DRONE_DEATH1.get();
+    return SoundInit.DRONE_DEATH.get();
   }
 
   protected SoundEvent getShutDownSound() {
-    return SoundInit.DRONE_DEATH2.get();
+    return SoundInit.DRONE_BREAKS.get();
   }
 
   protected SoundEvent getFlyingSound() {
@@ -390,21 +389,6 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
     this.entityData.set(DATA_PRICE, i);
   }
 
-  public void detectMovementDirection() {
-    Vec3 motion = this.getDeltaMovement(); // Vector de movimiento actual
-    float yaw = this.getYRot(); // Orientación del dron (yaw)
-    Vec3 lookVec = Vec3.directionFromRotation(0, yaw); // Convertir la orientación del dron en un vector
-    Vec3 normalizedMotion = motion.normalize(); // Normalizar el vector de movimiento
-    double dotForward = normalizedMotion.dot(lookVec); // Calcular el producto punto para determinar la dirección relativa del movimiento
-    double dotRight = normalizedMotion.dot(new Vec3(-lookVec.z, 0, lookVec.x)); // Vector a la derecha
-    // Determinar la inclinación en base al producto punto
-    this.targetBodyXRot = (float) -dotForward * (float) Math.PI / 6; // Inclinación adelante/atrás
-    this.targetBodyZRot = (float) dotRight * (float) Math.PI / 4; // Inclinación a los costados
-    // Suavizar la trancisión a la inclinación
-    this.currentBodyXRot = Mth.lerp(0.1f, this.currentBodyXRot, this.targetBodyXRot);
-    this.currentBodyZRot = Mth.lerp(0.1f, this.currentBodyZRot, this.targetBodyZRot);
-  }
-
   public float getBodyXRot() {
     return this.currentBodyXRot;
   }
@@ -424,16 +408,6 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
     } else {
       this.rollAmount = Math.max(0.0F, this.rollAmount - 0.24F);
     }
-  }
-
-  public float normalizeAngle(float angle) {
-    angle = angle % (2 * (float) Math.PI);
-    if (angle > Math.PI) {
-      angle -= 2 * (float) Math.PI;
-    } else if (angle < -Math.PI) {
-      angle += 2 * (float) Math.PI;
-    }
-    return angle;
   }
 
   @Override

@@ -18,10 +18,10 @@ public class GunnerDroneBodyLayer extends RenderLayer<GunnerDroneEntity, GunnerD
   }
 
   @Override
-  public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int p_117722_, GunnerDroneEntity drone, float p_117724_, float p_117725_, float p_117726_, float p_117727_, float p_117728_, float p_117729_) {
-    if (drone.isTame() && !drone.isInvisible() && !(drone.getBodyColor().getId() == 3)) {
-      float[] afloat = drone.getBodyColor().getTextureDiffuseColors();
-      renderColoredCutoutModel(this.getParentModel(), GUNNER_DRONE_BODY_COLOR, poseStack, bufferSource, p_117722_, drone, afloat[0], afloat[1], afloat[2]);
+  public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int p_117722_, GunnerDroneEntity entity, float p_117724_, float p_117725_, float p_117726_, float p_117727_, float p_117728_, float p_117729_) {
+    if (entity.isTame() && !entity.isInvisible() && !(entity.getBodyColor().getId() == 3)) {
+      float[] afloat = entity.getBodyColor().getTextureDiffuseColors();
+      renderColoredCutoutModel(this.getParentModel(), GUNNER_DRONE_BODY_COLOR, poseStack, bufferSource, p_117722_, entity, afloat[0], afloat[1], afloat[2]);
     }
   }
 }
