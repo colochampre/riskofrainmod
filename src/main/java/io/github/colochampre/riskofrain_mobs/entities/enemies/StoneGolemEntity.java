@@ -46,9 +46,9 @@ public class StoneGolemEntity extends Monster {
   private static final ResourceLocation STONE_GOLEM_LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(StoneGolemEntity.class, EntityDataSerializers.INT);
   private final HurtByTargetGoal hurtByTargetGoal = new HurtByTargetGoal(this);
-  private int attackTick;
-  public int clientSideAttackTime;
   private LivingEntity clientSideCachedAttackTarget;
+  public int clientSideAttackTime;
+  private int attackTick;
 
   public StoneGolemEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);

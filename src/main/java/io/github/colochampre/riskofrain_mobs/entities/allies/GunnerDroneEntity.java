@@ -18,8 +18,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
@@ -37,10 +35,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAttackMob {
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
@@ -126,8 +125,8 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
 
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
-    this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(RoRConfig.SERVER.BULLETS_DAMAGE.get());
-    this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(RoRConfig.SERVER.GUNNER_DRONE_MAX_HEALTH.get());
+    Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.BULLETS_DAMAGE.get());
+    Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.GUNNER_DRONE_MAX_HEALTH.get());
     this.setHealth(this.getMaxHealth());
     return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
   }
@@ -158,7 +157,7 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
     double d2 = d0 - projectile.getY();
     double d3 = target.getZ() - this.getZ();
     double d4 = Math.sqrt(Math.sqrt(d0)) * 0.25D;
-    projectile.shoot(d1, d2 + d4, d3, 4.0F, 1.0F);
+    projectile.shoot(d1, d2 + d4, d3, 6.0F, 1.0F);
     this.level().addFreshEntity(projectile);
   }
 
@@ -184,7 +183,7 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
 
   private void updatePropeller() {
     this.prevPropellerAngle = this.propellerAngle;
-    if (this.isFlying() && !this.isInSittingPose()) {
+    if (this.isFlying()) {
       this.propellerSpeed = Math.min(this.propellerSpeed + ROTATION_ACCELERATION, MAX_ROTATION_SPEED);
     } else if (this.onGround()) {
       this.propellerSpeed = Math.max(this.propellerSpeed - ROTATION_DECELERATION, 0.0F);

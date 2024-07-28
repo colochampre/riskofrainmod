@@ -47,8 +47,9 @@ public class GunnerDroneAttackGoal extends Goal {
 
   @Override
   public void tick() {
-    --this.attackTime;
+    super.tick();
     LivingEntity target = this.drone.getTarget();
+    --this.attackTime;
     if (target != null) {
       boolean canSee = this.drone.getSensing().hasLineOfSight(target);
       double distance = this.drone.distanceToSqr(target);
@@ -62,17 +63,16 @@ public class GunnerDroneAttackGoal extends Goal {
           shootTarget(target);
         }
       }
-      super.tick();
     }
   }
 
   private void doCombatMovements(LivingEntity target, double distance) {
     Vec3 vec3a = this.drone.getDeltaMovement();
     Vec3 vec3b = this.drone.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.05D).reverse();
-    double heightAboveGround = EntityUtils.getHeightAboveGround(this.drone);
-    int maxHeightAllowed = 20;
+    double heightAboveSurface = EntityUtils.getHeightAboveSurface(this.drone);
+    int maxHeightAllowed = 8;
     // Elevate drone above target
-    if (target.getEyeY() > this.drone.getEyeY() && heightAboveGround < maxHeightAllowed) {
+    if (target.getEyeY() > this.drone.getEyeY() && heightAboveSurface < maxHeightAllowed) {
       this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(0.0D, ((double) 0.2F - vec3a.y) * (double) 0.2F, 0.0D));
       this.drone.hasImpulse = true;
     }
@@ -83,7 +83,7 @@ public class GunnerDroneAttackGoal extends Goal {
     }
     // Get closer to target
     if (distance > (double) this.maxAttackDistance * 0.75 && !(distance < (double) this.maxAttackDistance * 0.5)) {
-      this.drone.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 0.8D);
+      this.drone.getMoveControl().setWantedPosition(target.getX(), this.drone.getY(), target.getZ(), 0.8D);
     }
   }
 
@@ -97,6 +97,7 @@ public class GunnerDroneAttackGoal extends Goal {
       } else {
         this.attackTime = 30;
         this.attackStep = 0;
+        this.drone.setActiveAttackTarget(0);
         this.drone.setTarget(null);
       }
       if (this.attackStep > 1) {

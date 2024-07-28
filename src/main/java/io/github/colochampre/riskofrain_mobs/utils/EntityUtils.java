@@ -1,16 +1,11 @@
 package io.github.colochampre.riskofrain_mobs.utils;
 
-import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractDroneEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -30,17 +25,17 @@ public class EntityUtils {
     }
   }
 
-  public static double getHeightAboveGround(LivingEntity entity) {
+  public static double getHeightAboveSurface(LivingEntity entity) {
     Level level = entity.level();
     Vec3 entityPos = entity.position();
     Vec3 rayStart = new Vec3(entityPos.x, entityPos.y, entityPos.z);
     Vec3 rayEnd = new Vec3(entityPos.x, entityPos.y - level.getMaxBuildHeight(), entityPos.z);
-    BlockHitResult blockHitResult = level.clip(new ClipContext(rayStart, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+    BlockHitResult blockHitResult = level.clip(new ClipContext(rayStart, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, entity));
     if (blockHitResult.getType() == BlockHitResult.Type.MISS) {
-      return 200; // If no block is detected, return a high value
+      return 64; // If no block is detected, return a high value
     }
-    BlockPos groundPos = blockHitResult.getBlockPos();
-    return entityPos.y - groundPos.getY();
+    BlockPos pos = blockHitResult.getBlockPos();
+    return entityPos.y - pos.getY();
   }
 
   public static void updateMovementInclinations(LivingEntity entity, float currentBodyXRot, float currentBodyZRot, Consumer<Float> bodyXRotSetter, Consumer<Float> bodyZRotSetter) {

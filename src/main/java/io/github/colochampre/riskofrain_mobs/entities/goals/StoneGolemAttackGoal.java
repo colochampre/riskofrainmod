@@ -109,6 +109,7 @@ public class StoneGolemAttackGoal extends Goal {
       this.golem.getLookControl().setLookAt(target, 90.0F, 90.0F);
       meleeAttackTick(target);
       if (!canSee) {
+        this.golem.setActiveAttackTarget(0);
         this.golem.setTarget(null);
       } else {
         laserTick(target);
@@ -171,7 +172,8 @@ public class StoneGolemAttackGoal extends Goal {
       target.hurt(golem.damageSources().indirectMagic(this.golem, this.golem), f);
       target.hurt(golem.damageSources().mobAttack(this.golem), this.golem.getAttackDamage() / 2);
       target.addDeltaMovement(vec3);
-      this.golem.setTarget((LivingEntity) null);
+      this.golem.setActiveAttackTarget(0);
+      this.golem.setTarget(null);
       this.laserCooldown = 85;
     }
   }

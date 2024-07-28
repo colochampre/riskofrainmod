@@ -6,7 +6,6 @@ import io.github.colochampre.riskofrain_mobs.entities.goals.DroneFollowOwnerGoal
 import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
@@ -41,12 +40,15 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbstractDroneEntity extends TamableAnimal implements FlyingAnimal {
   public static final int TYPE_LAND = 0;
   public static final int TYPE_FLYING = 1;
+  public static final int MIN_FLIGHT_HEIGHT = 3;
+  public static final int MAX_FLIGHT_HEIGHT = 8;
   private static final EntityDataAccessor<Integer> DATA_PRICE = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
   private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
@@ -107,7 +109,6 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
     super.aiStep();
     if (this.isTame()) {
       this.smokeIfLowHealth();
-      this.takeWaterDamage();
       if (this.getDroneType() == TYPE_FLYING) {
         this.doFlyingSound();
         this.landIfOrderedToSit();
@@ -119,6 +120,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   public void tick() {
     super.tick();
     if (this.isTame()) {
+      this.takeWaterDamage();
       EntityUtils.updateMovementInclinations(this, this.currentBodyXRot, this.currentBodyZRot, newBodyXRot -> this.currentBodyXRot = newBodyXRot, newBodyZRot -> this.currentBodyZRot = newBodyZRot);
     }
     this.updateRollAmount();
@@ -196,9 +198,20 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
       this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F - vec3.y), 0.0D));
       this.hasImpulse = true;
     } else {
-      if (this.onGround()) {
-        this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) 0.1F + vec3.y), 0.0D));
-      }
+      this.stayElevated();
+    }
+  }
+
+  private void stayElevated() {
+    LivingEntity target = this.getTarget();
+    double heightAboveGround = EntityUtils.getHeightAboveSurface(this);
+    Vec3 vec3a = this.getDeltaMovement();
+    if (heightAboveGround < MIN_FLIGHT_HEIGHT) {
+      this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) 0.2F - vec3a.y) * (double) 0.2F, 0.0D));
+      this.hasImpulse = true;
+    } else if (!(Objects.requireNonNull(this.getOwner()).getEyeY() > this.getEyeY()) && target == null && heightAboveGround > MAX_FLIGHT_HEIGHT) {
+      this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) -0.1F - vec3a.y), 0.0D));
+      this.hasImpulse = true;
     }
   }
 

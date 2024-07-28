@@ -5,6 +5,7 @@ import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 
@@ -61,27 +62,27 @@ public class WispAttackGoal extends Goal {
       if (!canSee) {
         this.wisp.setTarget(null);
       } else {
+        double followRange = this.wisp.getAttributeValue(Attributes.FOLLOW_RANGE);
+        double followRangeSqr = followRange * followRange;
+        if (distance < followRangeSqr && distance > (double) this.maxAttackDistance / 2) {
+          // Get closer to target
+          this.wisp.getMoveControl().setWantedPosition(target.getX(), this.wisp.getY(), target.getZ(), 0.8D);
+        }
+        doCombatMovements(target);
         if (distance < (double) this.maxAttackDistance) {
-          doCombatMovements(target, distance);
           hitScanTick(target);
         }
       }
     }
   }
 
-  private void doCombatMovements(LivingEntity target, double distance) {
-    Vec3 vec3a = this.wisp.getDeltaMovement();
-    Vec3 vec3b = this.wisp.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.05D).reverse();
-    double heightAboveGround = EntityUtils.getHeightAboveGround(this.wisp);
-    int maxHeightAllowed = 20;
+  private void doCombatMovements(LivingEntity target) {
     // Elevate above target
-    if (target.getEyeY() > this.wisp.getEyeY() && heightAboveGround < maxHeightAllowed) {
+    double heightAboveSurface = EntityUtils.getHeightAboveSurface(this.wisp);
+    int maxHeightAllowed = 7;
+    Vec3 vec3a = this.wisp.getDeltaMovement();
+    if (target.getEyeY() > this.wisp.getEyeY() && heightAboveSurface < maxHeightAllowed) {
       this.wisp.setDeltaMovement(this.wisp.getDeltaMovement().add(0.0D, ((double) 0.2F - vec3a.y) * (double) 0.2F, 0.0D));
-      this.wisp.hasImpulse = true;
-    }
-    // Get closer to target
-    if (distance > (double) this.maxAttackDistance * 0.75 && !(distance < (double) this.maxAttackDistance * 0.5)) {
-      this.wisp.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 0.8D);
     }
   }
 
