@@ -25,6 +25,9 @@ public class ItemInit {
   public static final RegistryObject<ForgeSpawnEggItem> GUNNER_DRONE_SPAWN_EGG = ITEMS.register("gunner_drone_spawn_egg",
           () -> new ForgeSpawnEggItem(EntityInit.GUNNER_DRONE_ENTITY, 0x007ada, 0x202f51, props()));
 
+  public static final RegistryObject<ForgeSpawnEggItem> GUNNER_TURRET_SPAWN_EGG = ITEMS.register("gunner_turret_spawn_egg",
+          () -> new ForgeSpawnEggItem(EntityInit.GUNNER_TURRET_ENTITY, 0x007ada, 0x202f51, props()));
+
   private static Item.Properties props() {
     return new Item.Properties();
   }

@@ -162,7 +162,7 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
   public void setupAnim(@NotNull BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
     getLookAnim(entity, headYaw, headPitch);
     getIdleAnim(entity, ageInTicks);
-    getWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
+    getWalkAnim(entity, limbSwing, limbSwingAmount);
   }
 
   private void getLookAnim(BeetleEntity entity, float headYaw, float headPitch) {
@@ -187,7 +187,7 @@ public class BeetleModel<T extends BeetleEntity> extends EntityModel<T> {
     }
   }
 
-  private void getWalkAnim(BeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+  private void getWalkAnim(BeetleEntity entity, float limbSwing, float limbSwingAmount) {
     this.core.y = 12 - Mth.cos(limbSwing) * 2.50F * limbSwingAmount;
     this.chest_shell_axis.xRot = 0 - Mth.cos(limbSwing) * 0.20F * limbSwingAmount;
     this.left_arm_axis.xRot = 0.0436F + Mth.cos(limbSwing) * 1.25F * limbSwingAmount;

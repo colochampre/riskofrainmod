@@ -49,17 +49,14 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   public static final int TYPE_FLYING = 1;
   public static final int MIN_FLIGHT_HEIGHT = 3;
   public static final int MAX_FLIGHT_HEIGHT = 8;
-  private static final EntityDataAccessor<Integer> DATA_PRICE = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
-  private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
+  public static final Set<EntityType<?>> DO_NOT_ATTACK = Sets.newHashSet(EntityType.CREEPER, EntityType.PIGLIN, EntityType.PIGLIN_BRUTE, EntityType.ZOMBIFIED_PIGLIN, EntityType.HOGLIN, EntityType.ZOGLIN);
   private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
-  private final DroneFollowOwnerGoal landFollowOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, false);
-  private final DroneFollowOwnerGoal flyingFollowOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, true);
-  private final WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
-  private final WaterAvoidingRandomStrollGoal randomStrollGoal = new WaterAvoidingRandomStrollGoal(this, 0.6D);
+  private static final EntityDataAccessor<Integer> DATA_PRICE = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
+  private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
   private LivingEntity clientSideCachedAttackTarget;
-  private float currentBodyXRot;
-  private float currentBodyZRot;
+  private float bodyXRot;
+  private float bodyZRot;
   private float rollAmount;
   private float rollAmountO;
   private int flyingSound;
@@ -85,7 +82,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   public void setTame(boolean tamed) {
     super.setTame(tamed);
     int type = this.getDroneType();
-    this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+    this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
     if (type == TYPE_LAND) {
       this.addLandGoals();
     }
@@ -95,13 +92,21 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   }
 
   private void addLandGoals() {
-    this.goalSelector.addGoal(3, this.landFollowOwnerGoal);
-    this.goalSelector.addGoal(4, this.randomStrollGoal);
+    DroneFollowOwnerGoal landFollowOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, false);
+    WaterAvoidingRandomStrollGoal randomStrollGoal = new WaterAvoidingRandomStrollGoal(this, 1.0D);
+    LookAtPlayerGoal lookAtPlayerGoal = new LookAtPlayerGoal(this, Player.class, 8.0F);
+    RandomLookAroundGoal randomLookAroundGoal = new RandomLookAroundGoal(this);
+    this.goalSelector.addGoal(4, landFollowOwnerGoal);
+    this.goalSelector.addGoal(5, randomStrollGoal);
+    this.goalSelector.addGoal(8, lookAtPlayerGoal);
+    this.goalSelector.addGoal(8, randomLookAroundGoal);
   }
 
   private void addFlyingGoals() {
-    this.goalSelector.addGoal(3, this.flyingFollowOwnerGoal);
-    this.goalSelector.addGoal(4, this.randomFlyingGoal);
+    DroneFollowOwnerGoal flyingFollowOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, true);
+    WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
+    this.goalSelector.addGoal(4, flyingFollowOwnerGoal);
+    this.goalSelector.addGoal(5, randomFlyingGoal);
   }
 
   @Override
@@ -121,7 +126,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
     super.tick();
     if (this.isTame()) {
       this.takeWaterDamage();
-      EntityUtils.updateMovementInclinations(this, this.currentBodyXRot, this.currentBodyZRot, newBodyXRot -> this.currentBodyXRot = newBodyXRot, newBodyZRot -> this.currentBodyZRot = newBodyZRot);
+      EntityUtils.updateMovementInclinations(this, this.bodyXRot, this.bodyZRot, newBodyXRot -> this.bodyXRot = newBodyXRot, newBodyZRot -> this.bodyZRot = newBodyZRot);
     }
     this.updateRollAmount();
   }
@@ -412,11 +417,11 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   }
 
   public float getBodyXRot() {
-    return this.currentBodyXRot;
+    return this.bodyXRot;
   }
 
   public float getBodyZRot() {
-    return this.currentBodyZRot;
+    return this.bodyZRot;
   }
 
   public float getRollAmount(float pitch) {

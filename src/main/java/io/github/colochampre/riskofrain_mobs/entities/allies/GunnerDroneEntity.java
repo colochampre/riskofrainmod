@@ -24,7 +24,6 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
@@ -43,7 +42,7 @@ import java.util.Objects;
 
 public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAttackMob {
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
-  private final GunnerDroneAttackGoal attackGoal = new GunnerDroneAttackGoal(this, 16.0F);
+  //private static final Set<EntityType<?>> DO_NOT_ATTACK = Sets.newHashSet(EntityType.CREEPER, EntityType.PIGLIN, EntityType.PIGLIN_BRUTE, EntityType.ZOMBIFIED_PIGLIN, EntityType.HOGLIN, EntityType.ZOGLIN);
   private static final float MAX_ROTATION_SPEED = Mth.PI * 0.3F;
   private static final float ROTATION_ACCELERATION = 0.16F;
   private static final float ROTATION_DECELERATION = 0.012F;
@@ -69,7 +68,7 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
     this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
     this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (entity)
-            -> entity instanceof Enemy && !(entity instanceof Creeper)));
+            -> entity instanceof Enemy && !(DO_NOT_ATTACK.contains(entity.getType()))));
   }
 
   public static AttributeSupplier.Builder createAttributes() {
@@ -79,7 +78,7 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
             .add(Attributes.FLYING_SPEED, 1.0D)
             .add(Attributes.FOLLOW_RANGE, 16.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
-            .add(Attributes.MOVEMENT_SPEED, 0.2D);
+            .add(Attributes.MOVEMENT_SPEED, 0.0D);
   }
 
   @Override
@@ -113,13 +112,14 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
 
   @Override
   public void setTame(boolean tamed) {
+    GunnerDroneAttackGoal attackGoal = new GunnerDroneAttackGoal(this, 16.0F);
     super.setTame(tamed);
     if (tamed) {
-      this.goalSelector.addGoal(2, this.attackGoal);
+      this.goalSelector.addGoal(3, attackGoal);
     }
   }
 
-  public static boolean checkDroneSpawnRules(EntityType<GunnerDroneEntity> drone, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource randomSource) {
+  public static boolean checkDroneSpawnRules(EntityType<GunnerDroneEntity> entity, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource randomSource) {
     return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
   }
 
@@ -163,21 +163,17 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
 
   @Override
   public boolean wantsToAttack(@NotNull LivingEntity livingentity, @NotNull LivingEntity owner) {
-    if (!(livingentity instanceof Creeper)) {
-      if (livingentity instanceof Wolf) {
-        Wolf wolf = (Wolf) livingentity;
-        return !wolf.isTame() || wolf.getOwner() != owner;
-      } else if (livingentity instanceof Player && owner instanceof Player && !((Player) owner).canHarmPlayer((Player) livingentity)) {
-        return false;
-      } else if (livingentity instanceof AbstractHorse && ((AbstractHorse) livingentity).isTamed()) {
-        return false;
-      } else if (livingentity instanceof AbstractDroneEntity && ((AbstractDroneEntity) livingentity).isTame()) {
-        return false;
-      } else {
-        return !(livingentity instanceof TamableAnimal) || !((TamableAnimal) livingentity).isTame();
-      }
-    } else {
+    if (livingentity instanceof Wolf) {
+      Wolf wolf = (Wolf) livingentity;
+      return !wolf.isTame() || wolf.getOwner() != owner;
+    } else if (livingentity instanceof Player && owner instanceof Player && !((Player) owner).canHarmPlayer((Player) livingentity)) {
       return false;
+    } else if (livingentity instanceof AbstractHorse && ((AbstractHorse) livingentity).isTamed()) {
+      return false;
+    } else if (livingentity instanceof AbstractDroneEntity && ((AbstractDroneEntity) livingentity).isTame()) {
+      return false;
+    } else {
+      return !(livingentity instanceof TamableAnimal) || !((TamableAnimal) livingentity).isTame();
     }
   }
 
@@ -246,6 +242,6 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
   }
 
   public @NotNull Vec3 getLeashOffset() {
-    return new Vec3(0.0D, (double) (0.6F * this.getEyeHeight()), (double) (this.getBbWidth() * 0.2F));
+    return new Vec3(0.0D, (0.6F * this.getEyeHeight()), (this.getBbWidth() * 0.2F));
   }
 }

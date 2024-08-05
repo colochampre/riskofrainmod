@@ -178,7 +178,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
   public void setupAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
     getLookAnim(headYaw, headPitch);
     getIdleAnim(entity, ageInTicks);
-    getWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
+    getWalkAnim(limbSwing, limbSwingAmount);
   }
 
   @Override
@@ -231,7 +231,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     }
   }
 
-  private void getWalkAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+  private void getWalkAnim(float limbSwing, float limbSwingAmount) {
     this.stomach_axis.y = 0 - Mth.cos(limbSwing * 2.0F) * 1.8F * limbSwingAmount;
     this.tail_1_axis.y = -1.0F - Mth.cos(limbSwing * 2.0F) * 1.8F * limbSwingAmount;
 

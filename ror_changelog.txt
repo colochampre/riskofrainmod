@@ -4,27 +4,32 @@ New
 - Wisp mob
 - Configurable max health and attack damage for all mobs
 - Lemurians wear golden armor in nether biomes
-- Sounds for advancements, chat, difficulty update and level up events (configurable)
+- Sounds for advancements, chat, difficulty changes and level up events (configurable)
 
 Improved
 - Default config values
 - Drone's eye layer only glows while being purchased and active
 - Drone's propeller and gun animations
-- Not purchased drones now remember their last price when saving and exit game
-- Stone golem's laser length should no longer pass through its target
+- Drone's flying behavior
+- Not purchased drones no longer reset gold count when saving and exit game
+- Removed mob spawns from warped forest
+- Stone golem's laser length no longer pass through its target
 - Walking animations for all mobs
 
----------------------------------------------------------------------------------------------------
+___________________________________________________________________________________________________
+
 v1.1.2
 New
 - Configs
 
----------------------------------------------------------------------------------------------------
+___________________________________________________________________________________________________
+
 v1.1.1
 Fixed
 - Stone Golem upstep
 
----------------------------------------------------------------------------------------------------
+___________________________________________________________________________________________________
+
 v1.1.0
 Improved
 - Drone wings now have angle of attack for a better immersion

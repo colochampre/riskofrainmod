@@ -158,10 +158,10 @@ public class RoRConfig {
       builder.push("Wisps");
       WISP_MAX_HEALTH = builder
               .comment("Wisps max health")
-              .defineInRange("wispMaxHealth", 10.0D, 1.0D, 999.9D);
+              .defineInRange("wispMaxHealth", 12.0D, 1.0D, 999.9D);
       WISP_ATTACK_DAMAGE = builder
               .comment("Wisps attack damage")
-              .defineInRange("wispAttackDamage", 1.0D, 1.0D, 999.9D);
+              .defineInRange("wispAttackDamage", 2.0D, 1.0D, 999.9D);
       WISP_OVERWORLD_SPAWN_RATE = builder
               .comment("Wisps overworld spawn rate. Set this to 0 to disable spawns")
               .defineInRange("wispOverworldSpawnWeight", 50, 0, 100);

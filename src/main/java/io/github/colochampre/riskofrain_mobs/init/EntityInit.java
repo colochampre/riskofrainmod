@@ -2,6 +2,7 @@ package io.github.colochampre.riskofrain_mobs.init;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
+import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerTurretEntity;
 import io.github.colochampre.riskofrain_mobs.entities.enemies.BeetleEntity;
 import io.github.colochampre.riskofrain_mobs.entities.enemies.LemurianEntity;
 import io.github.colochampre.riskofrain_mobs.entities.enemies.StoneGolemEntity;
@@ -38,6 +39,9 @@ public class EntityInit {
   public static final RegistryObject<EntityType<GunnerDroneEntity>> GUNNER_DRONE_ENTITY = ENTITY_TYPES.register("gunner_drone_entity",
           () -> EntityType.Builder.of(GunnerDroneEntity::new, MobCategory.CREATURE).sized(0.75F, 1.15F).build(RoRmod.MODID + ":gunner_drone_entity"));
 
+  public static final RegistryObject<EntityType<GunnerTurretEntity>> GUNNER_TURRET_ENTITY = ENTITY_TYPES.register("gunner_turret_entity",
+          () -> EntityType.Builder.of(GunnerTurretEntity::new, MobCategory.CREATURE).sized(0.8125F, 1.3125F).build(RoRmod.MODID + ":gunner_turret_entity"));
+
   public static final RegistryObject<EntityType<BulletEntity>> DRONE_BULLET_ENTITY = ENTITY_TYPES.register("drone_bullet_entity",
           () -> registerEntity(EntityType.Builder.of(BulletEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setCustomClientFactory(BulletEntity::new).fireImmune(), "drone_bullet_entity"));
 
@@ -53,6 +57,7 @@ public class EntityInit {
       SpawnPlacements.register(EntityInit.STONE_GOLEM_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, StoneGolemEntity::canSpawn);
       SpawnPlacements.register(EntityInit.WISP_ENTITY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WispEntity::canSpawn);
       SpawnPlacements.register(EntityInit.GUNNER_DRONE_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, GunnerDroneEntity::checkDroneSpawnRules);
+      SpawnPlacements.register(EntityInit.GUNNER_TURRET_ENTITY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, GunnerTurretEntity::checkDroneSpawnRules);
     });
   }
 
@@ -63,5 +68,6 @@ public class EntityInit {
     event.put(EntityInit.STONE_GOLEM_ENTITY.get(), StoneGolemEntity.createAttributes().build());
     event.put(EntityInit.WISP_ENTITY.get(), WispEntity.createAttributes().build());
     event.put(EntityInit.GUNNER_DRONE_ENTITY.get(), GunnerDroneEntity.createAttributes().build());
+    event.put(EntityInit.GUNNER_TURRET_ENTITY.get(), GunnerTurretEntity.createAttributes().build());
   }
 }

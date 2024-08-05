@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.entities.projectiles;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
+import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractDroneEntity;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -25,7 +26,7 @@ public class BulletEntity extends EntityMobProjectile {
     super(type, level);
   }
 
-  public BulletEntity(Level worldIn, GunnerDroneEntity drone) {
+  public BulletEntity(Level worldIn, AbstractDroneEntity drone) {
     super(EntityInit.DRONE_BULLET_ENTITY.get(), worldIn, drone);
     Vec3 vec3 = drone.position().add(calcOffsetVec(new Vec3(0, 0, 0.2F * drone.getScale()), 0F, drone.getYRot()));
     this.setPos(vec3.x, vec3.y, vec3.z);

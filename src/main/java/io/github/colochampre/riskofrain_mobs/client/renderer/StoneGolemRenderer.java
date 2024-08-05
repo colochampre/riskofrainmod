@@ -136,10 +136,10 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
 
   private static void vertex(VertexConsumer vertexConsumer, Matrix4f matrix4f, Matrix3f matrix3f, float f1, float f2, float f3, int red, int green, int blue, float f4, float f5) {
     vertexConsumer.vertex(matrix4f, f1, f2, f3)
-            .color(250, 10, 10, 255) // Rojo
+            .color(250, 10, 10, 255)
             .uv(f4, f5)
             .overlayCoords(OverlayTexture.NO_OVERLAY)
-            .uv2(15728880) // Iluminación máxima
+            .uv2(15728880)
             .normal(matrix3f, 0.0F, 1.0F, 0.0F)
             .endVertex();
   }

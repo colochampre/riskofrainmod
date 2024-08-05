@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities.goals;
 
+import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractDroneEntity;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
@@ -70,7 +71,7 @@ public class GunnerDroneAttackGoal extends Goal {
     Vec3 vec3a = this.drone.getDeltaMovement();
     Vec3 vec3b = this.drone.getLookAngle().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) 0.05D).reverse();
     double heightAboveSurface = EntityUtils.getHeightAboveSurface(this.drone);
-    int maxHeightAllowed = 8;
+    int maxHeightAllowed = AbstractDroneEntity.MAX_FLIGHT_HEIGHT;
     // Elevate drone above target
     if (target.getEyeY() > this.drone.getEyeY() && heightAboveSurface < maxHeightAllowed) {
       this.drone.setDeltaMovement(this.drone.getDeltaMovement().add(0.0D, ((double) 0.2F - vec3a.y) * (double) 0.2F, 0.0D));
@@ -113,6 +114,6 @@ public class GunnerDroneAttackGoal extends Goal {
   }
 
   protected SoundEvent getDroneShootSound() {
-    return SoundInit.GUNNER_DRONE_SHOOT.get();
+    return SoundInit.DRONE_SHOOT.get();
   }
 }

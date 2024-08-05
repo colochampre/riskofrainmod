@@ -22,7 +22,7 @@ public class GunnerDroneEyeLayer extends EyesLayer<GunnerDroneEntity, GunnerDron
   }
 
   @Override
-  public void render(PoseStack poseStack, MultiBufferSource source, int packedLight, GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+  public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource source, int packedLight, GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
     if (entity.isTame() && !entity.isInSittingPose()) {
       super.render(poseStack, source, packedLight, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
     }

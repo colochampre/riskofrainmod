@@ -18,6 +18,7 @@ public class ModClientEvents {
   public static final ModelLayerLocation STONE_GOLEM_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "stone_golem_entity"), "main");
   public static final ModelLayerLocation WISP_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "wisp_entity"), "main");
   public static final ModelLayerLocation GUNNER_DRONE_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "gunner_drone_entity"), "main");
+  public static final ModelLayerLocation GUNNER_TURRET_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "gunner_turret_entity"), "main");
 
   @SubscribeEvent
   public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -26,6 +27,7 @@ public class ModClientEvents {
     event.registerEntityRenderer(EntityInit.STONE_GOLEM_ENTITY.get(), StoneGolemRenderer::new);
     event.registerEntityRenderer(EntityInit.WISP_ENTITY.get(), WispRenderer::new);
     event.registerEntityRenderer(EntityInit.GUNNER_DRONE_ENTITY.get(), GunnerDroneRenderer::new);
+    event.registerEntityRenderer(EntityInit.GUNNER_TURRET_ENTITY.get(), GunnerTurretRenderer::new);
     event.registerEntityRenderer(EntityInit.DRONE_BULLET_ENTITY.get(), BulletRenderer::new);
   }
 
@@ -36,5 +38,6 @@ public class ModClientEvents {
     events.registerLayerDefinition(STONE_GOLEM_LAYER, StoneGolemModel::createBodyLayer);
     events.registerLayerDefinition(WISP_LAYER, WispModel::createBodyLayer);
     events.registerLayerDefinition(GUNNER_DRONE_LAYER, GunnerDroneModel::createBodyLayer);
+    events.registerLayerDefinition(GUNNER_TURRET_LAYER, GunnerTurretModel::createBodyLayer);
   }
 }

@@ -295,15 +295,15 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
   @Override
   public void setupAnim(@NotNull StoneGolemEntity entity, float limbSwing, float limbSwingAmmount, float ageInTicks, float headYaw, float headPitch) {
     getLookAnim(headYaw, headPitch);
-    getIdleAnim(entity, ageInTicks);
-    getWalkingAnim(entity, limbSwing, limbSwingAmmount);
+    getIdleAnim(ageInTicks);
+    getWalkingAnim(limbSwing, limbSwingAmmount);
   }
 
   @Override
   public void prepareMobModel(StoneGolemEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
     int i = entity.getAttackTick();
     if (i > 0) {
-      getAttackAnim(entity, i, ageInTicks);
+      getAttackAnim(i, ageInTicks);
     } else {
       this.left_shoulder_axis.xRot = Mth.cos(limbSwing * 0.50F) * 0.8F * limbSwingAmount;
       this.left_arm_1_axis.xRot = Mth.cos(limbSwing * 0.50F) * 0.8F * limbSwingAmount;
@@ -333,7 +333,7 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
     this.torso.yRot = headYaw * 0.005817764F;
   }
 
-  private void getIdleAnim(StoneGolemEntity entity, float ageInTicks) {
+  private void getIdleAnim(float ageInTicks) {
     this.neck.xRot = Mth.cos(ageInTicks * 0.06F) * 0.06F;
     this.torso.xRot = -Mth.cos(ageInTicks * 0.06F) * 0.06F;
     this.left_shoulder.xRot = -Mth.cos(ageInTicks * 0.06F) * 0.03F;
@@ -343,7 +343,7 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
   }
 
   // field_f = xRot | field_g = yRot | field_h = zRot
-  private void getWalkingAnim(StoneGolemEntity entity, float limbSwing, float limbSwingAmount) {
+  private void getWalkingAnim(float limbSwing, float limbSwingAmount) {
     this.torso_axis.y = -2.5F + Mth.cos(limbSwing) * 2.8F * limbSwingAmount;
     this.torso_axis.yRot = -Mth.cos(limbSwing * 0.5F) * 1.6F * limbSwingAmount;
     this.left_shoulder_axis.yRot = -0.08726646F - Mth.cos(limbSwing * 0.5F) * 0.4F * limbSwingAmount;
@@ -355,7 +355,7 @@ public class StoneGolemModel<T extends StoneGolemEntity> extends EntityModel<T> 
     this.right_leg_2_axis.xRot = 0.0F + Mth.cos(limbSwing) * 0.6F * limbSwingAmount;
   }
 
-  private void getAttackAnim(StoneGolemEntity entity, int i, float ageInTicks) {
+  private void getAttackAnim(int i, float ageInTicks) {
     if (i > 0) {
       this.torso_axis.xRot = -(-0.1F + 0.1F * Mth.triangleWave((float) i - ageInTicks, 15.0F));
       this.left_shoulder_axis.xRot = -0.75F + 0.75F * Mth.triangleWave((float) i - ageInTicks, 15.0F);

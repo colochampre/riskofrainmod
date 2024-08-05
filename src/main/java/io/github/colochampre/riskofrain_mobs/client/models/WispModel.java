@@ -61,11 +61,11 @@ public class WispModel<T extends WispEntity> extends EntityModel<T> {
   public void setupAnim(@NotNull WispEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
     this.mask.xRot = 0.0F;
     this.mask.zRot = 0.0F;
-    this.getLookAnim(entity, headYaw, headPitch);
+    this.getLookAnim(headYaw, headPitch);
     this.getFlyingAnim(entity, ageInTicks);
   }
 
-  private void getLookAnim(WispEntity entity, float headYaw, float headPitch) {
+  private void getLookAnim(float headYaw, float headPitch) {
     this.mask.xRot = headPitch * 0.023271058F / 2;
     this.mask.yRot = headYaw * 0.017453292F / 2;
   }

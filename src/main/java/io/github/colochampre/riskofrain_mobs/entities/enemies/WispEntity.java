@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities.enemies;
 
+import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.entities.goals.WispAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
@@ -43,8 +44,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class WispEntity extends Monster implements FlyingAnimal {
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(WispEntity.class, EntityDataSerializers.INT);
   private final HurtByTargetGoal hurtByTargetGoal = new HurtByTargetGoal(this);
-  private static final int MIN_FLIGHT_HEIGHT = 3;
-  private static final int MAX_FLIGHT_HEIGHT = 7;
+  public static final int MIN_FLIGHT_HEIGHT = 3;
+  public static final int MAX_FLIGHT_HEIGHT = 7;
   private LivingEntity clientSideCachedAttackTarget;
   private int clientSideAttackTime;
   private float currentBodyXRot;
@@ -134,7 +135,7 @@ public class WispEntity extends Monster implements FlyingAnimal {
   }
 
   public static boolean canSpawn(EntityType<WispEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-    return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
+    return !level.getLevel().isRainingAt(pos) && checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
   }
 
   private void doLoopSound() {
@@ -328,6 +329,11 @@ public class WispEntity extends Monster implements FlyingAnimal {
   }
 
   protected void checkFallDamage(double p_218316_, boolean p_218317_, @NotNull BlockState state, @NotNull BlockPos pos) {
+  }
+
+  @Override
+  public boolean removeWhenFarAway(double distance) {
+    return RoRConfig.SERVER.WISP_DESPAWN.get();
   }
 
   @Override

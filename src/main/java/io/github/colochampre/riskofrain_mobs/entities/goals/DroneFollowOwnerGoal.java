@@ -27,14 +27,14 @@ public class DroneFollowOwnerGoal extends Goal {
   private float oldWaterCost;
   private final boolean canFly;
 
-  public DroneFollowOwnerGoal(TamableAnimal drone, double speed, float start, float stop, boolean flies) {
+  public DroneFollowOwnerGoal(TamableAnimal drone, double speed, float start, float stop, boolean canFly) {
     this.tamable = drone;
     this.level = drone.level();
     this.speedModifier = speed;
     this.navigation = drone.getNavigation();
     this.startDistance = start;
     this.stopDistance = stop;
-    this.canFly = flies;
+    this.canFly = canFly;
     this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     if (!(drone.getNavigation() instanceof GroundPathNavigation) && !(drone.getNavigation() instanceof FlyingPathNavigation)) {
       throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");

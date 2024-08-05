@@ -79,7 +79,7 @@ public class WispAttackGoal extends Goal {
   private void doCombatMovements(LivingEntity target) {
     // Elevate above target
     double heightAboveSurface = EntityUtils.getHeightAboveSurface(this.wisp);
-    int maxHeightAllowed = 7;
+    int maxHeightAllowed = WispEntity.MAX_FLIGHT_HEIGHT;
     Vec3 vec3a = this.wisp.getDeltaMovement();
     if (target.getEyeY() > this.wisp.getEyeY() && heightAboveSurface < maxHeightAllowed) {
       this.wisp.setDeltaMovement(this.wisp.getDeltaMovement().add(0.0D, ((double) 0.2F - vec3a.y) * (double) 0.2F, 0.0D));
