@@ -12,6 +12,7 @@
   "item.riskofrain_mobs.wisp_spawn_egg": "Generar wisp",
   "item.riskofrain_mobs.gunner_drone_spawn_egg": "Generar dron artillero",
   "item.riskofrain_mobs.gunner_turret_spawn_egg": "Gunner torreta artillera",
+  "item.riskofrain_mobs.gunner_turret": "Torreta artillera",
 
   "message.riskofrain_mobs.not_gold": "NO ES ORO!",
   "message.riskofrain_mobs.smaller_gold": "MENOS ORO!"

@@ -78,34 +78,34 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
 
   protected abstract int getDroneType();
 
+  //protected abstract int getPrice();
+
   @Override
   public void setTame(boolean tamed) {
     super.setTame(tamed);
     int type = this.getDroneType();
     this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
     if (type == TYPE_LAND) {
-      this.addLandGoals();
+      this.addLandDroneGoals();
     }
     if (type == TYPE_FLYING) {
-      this.addFlyingGoals();
+      this.addFlyingDroneGoals();
     }
   }
 
-  private void addLandGoals() {
-    DroneFollowOwnerGoal landFollowOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, false);
-    WaterAvoidingRandomStrollGoal randomStrollGoal = new WaterAvoidingRandomStrollGoal(this, 1.0D);
-    LookAtPlayerGoal lookAtPlayerGoal = new LookAtPlayerGoal(this, Player.class, 8.0F);
+  private void addLandDroneGoals() {
+    //DroneFollowOwnerGoal followOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, false);
+    //WaterAvoidingRandomStrollGoal randomStrollGoal = new WaterAvoidingRandomStrollGoal(this, 1.0D);
     RandomLookAroundGoal randomLookAroundGoal = new RandomLookAroundGoal(this);
-    this.goalSelector.addGoal(4, landFollowOwnerGoal);
-    this.goalSelector.addGoal(5, randomStrollGoal);
-    this.goalSelector.addGoal(8, lookAtPlayerGoal);
+    //this.goalSelector.addGoal(4, followOwnerGoal);
+    //this.goalSelector.addGoal(5, randomStrollGoal);
     this.goalSelector.addGoal(8, randomLookAroundGoal);
   }
 
-  private void addFlyingGoals() {
-    DroneFollowOwnerGoal flyingFollowOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, true);
+  private void addFlyingDroneGoals() {
+    DroneFollowOwnerGoal followOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, true);
     WaterAvoidingRandomFlyingGoal randomFlyingGoal = new WaterAvoidingRandomFlyingGoal(this, 0.5D);
-    this.goalSelector.addGoal(4, flyingFollowOwnerGoal);
+    this.goalSelector.addGoal(4, followOwnerGoal);
     this.goalSelector.addGoal(5, randomFlyingGoal);
   }
 

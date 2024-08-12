@@ -179,8 +179,8 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
 
   private void getBuriedPosition(GunnerDroneEntity entity) {
     if (this.bodyPitch > 0.0F && !entity.isTame()) {
-      this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.2617993877991494F, this.bodyPitch);
-      this.core.xRot = ModelUtils.rotlerpRad(this.core.zRot, -0.2617993877991494F, this.bodyPitch);
+      this.core.xRot = ModelUtils.rotlerpRad(this.core.xRot, -0.261799F, this.bodyPitch);
+      this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.261799F, this.bodyPitch);
       this.core.y = 23.5F;
     } else if (entity.onGround() && entity.isTame()) {
       this.core.y = 18.75F;

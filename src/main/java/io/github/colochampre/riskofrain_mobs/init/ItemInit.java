@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.init;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
+import io.github.colochampre.riskofrain_mobs.items.GunnerTurretItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -26,7 +27,10 @@ public class ItemInit {
           () -> new ForgeSpawnEggItem(EntityInit.GUNNER_DRONE_ENTITY, 0x007ada, 0x202f51, props()));
 
   public static final RegistryObject<ForgeSpawnEggItem> GUNNER_TURRET_SPAWN_EGG = ITEMS.register("gunner_turret_spawn_egg",
-          () -> new ForgeSpawnEggItem(EntityInit.GUNNER_TURRET_ENTITY, 0x007ada, 0x202f51, props()));
+          () -> new ForgeSpawnEggItem(EntityInit.GUNNER_TURRET_ENTITY, 0x007ada, 0x363636, props()));
+
+  public static final RegistryObject<Item> GUNNER_TURRET_ITEM = ITEMS.register("gunner_turret",
+          () -> new GunnerTurretItem(new Item.Properties()));
 
   private static Item.Properties props() {
     return new Item.Properties();

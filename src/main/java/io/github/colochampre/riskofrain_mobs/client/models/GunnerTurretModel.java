@@ -192,7 +192,8 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
     if (!entity.isTame()) {
       this.getBuriedPosition();
     } else {
-      this.core.y = 8.0F;
+      this.resetBodyParts();
+
     }
     this.getWalkAnim(limbSwing, limbSwingAmount);
   }
@@ -203,18 +204,41 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
   }
 
   private void getWalkAnim(float limbSwing, float limbSwingAmount) {
-    this.leg_front_left_1.yRot = -0.7854F - Mth.cos(limbSwing) * 1.2F * limbSwingAmount;
-    this.leg_front_right_1.yRot = 0.7854F - Mth.cos(limbSwing) * 1.2F * limbSwingAmount;
-
-    this.leg_back_left_1.yRot = -2.3562F + Mth.cos(limbSwing) * 1.2F * limbSwingAmount;
-    this.leg_back_right_1.yRot = 2.3562F + Mth.cos(limbSwing) * 1.2F * limbSwingAmount;
+    this.leg_front_left_1.yRot = -0.7854F + Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
+    this.leg_front_right_1.yRot = 0.7854F + Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
+    this.leg_back_left_1.yRot = -2.3562F - Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
+    this.leg_back_right_1.yRot = 2.3562F - Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
   }
 
   private void getBuriedPosition() {
     if (this.bodyPitch > 0.0F) {
-      this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.2617993877991494F, this.bodyPitch);
-      this.core.xRot = ModelUtils.rotlerpRad(this.core.zRot, -0.2617993877991494F, this.bodyPitch);
+      this.core.xRot = ModelUtils.rotlerpRad(this.core.xRot, -0.261799F, this.bodyPitch);
+      this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.261799F, this.bodyPitch);
       this.core.y = 13.0F;
+      this.head_axis.xRot = ModelUtils.rotlerpRad(this.head_axis.xRot, 0.349066F, this.bodyPitch);
+      this.head_axis.yRot = ModelUtils.rotlerpRad(this.head_axis.yRot, -0.436332F, this.bodyPitch);
+      this.leg_front_left_1.xRot = ModelUtils.rotlerpRad(this.leg_front_left_1.xRot, -0.174533F, this.bodyPitch);
+      this.leg_front_left_2.zRot = ModelUtils.rotlerpRad(this.leg_front_left_2.zRot, 0.261799F, this.bodyPitch);
+      this.leg_front_right_1.xRot = ModelUtils.rotlerpRad(this.leg_front_right_1.xRot, 0.174533F, this.bodyPitch);
+      this.leg_back_left_2.xRot = ModelUtils.rotlerpRad(this.leg_back_left_2.xRot, -0.523599F, this.bodyPitch);
+      this.leg_back_left_3.zRot = ModelUtils.rotlerpRad(this.leg_back_left_3.zRot, 1.39626F, this.bodyPitch);
+      this.leg_back_right_1.xRot = ModelUtils.rotlerpRad(this.leg_back_right_1.xRot, -0.174533F, this.bodyPitch);
+      this.leg_back_right_2.zRot = ModelUtils.rotlerpRad(this.leg_back_right_2.xRot, -0.174533F, this.bodyPitch);
     }
+  }
+
+  private void resetBodyParts() {
+    this.core.y = 8.0F;
+    this.head_axis.xRot = 0;
+    this.head_axis.yRot = 0;
+    this.leg_front_left_1.xRot = 0.174533F;
+    this.leg_front_left_2.zRot = 0;
+    this.leg_front_right_1.xRot = 0;
+    this.leg_front_right_2.xRot = 0.174533F;
+    this.leg_back_left_2.xRot = 0.174533F;
+    this.leg_back_left_3.zRot = 0;
+    this.leg_back_right_1.xRot = 0;
+    this.leg_back_right_2.xRot = 0.174533F;
+    this.leg_back_right_2.zRot = 0;
   }
 }

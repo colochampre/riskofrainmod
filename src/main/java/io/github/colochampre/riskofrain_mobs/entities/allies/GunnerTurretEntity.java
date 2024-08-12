@@ -1,17 +1,26 @@
 package io.github.colochampre.riskofrain_mobs.entities.allies;
 
 import io.github.colochampre.riskofrain_mobs.entities.projectiles.BulletEntity;
+import io.github.colochampre.riskofrain_mobs.init.ItemInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAttackMob {
 
@@ -32,6 +41,11 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
             .add(Attributes.FOLLOW_RANGE, 16.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.23D);
+  }
+
+  @Override
+  protected void defineSynchedData() {
+    super.defineSynchedData();
   }
 
   @Override
@@ -59,6 +73,44 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
     this.level().addFreshEntity(projectile);
   }
 
+  public boolean hurt(@NotNull DamageSource source, float amount) {
+    if (this.isInvulnerableTo(source)) {
+      return false;
+    } else if (source.getEntity() instanceof Player && this.isTame()) {
+      if (!this.level().isClientSide && !this.isRemoved()) {
+        boolean isCreativeMode = ((Player) Objects.requireNonNull(source.getEntity())).getAbilities().instabuild;
+        if (isCreativeMode || amount > 1.0F) {
+          if (!isCreativeMode && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+            this.getDestroyed(source);
+          }
+          this.discard();
+        }
+      }
+      return true;
+    } else {
+      return super.hurt(source, amount);
+    }
+  }
+
+  protected void getDestroyed(DamageSource source) {
+    ItemStack stack = new ItemStack(getDropItem());
+    CompoundTag tag = new CompoundTag();
+    tag.putFloat("TurretHealth", this.getHealth());
+    if (this.getOwnerUUID() != null) {
+      tag.putUUID("OwnerUUID", this.getOwnerUUID());
+    }
+    stack.setTag(tag);
+    this.spawnAtLocation(stack);
+  }
+
+  private Item getDropItem() {
+    return ItemInit.GUNNER_TURRET_ITEM.get();
+  }
+
+  public ItemStack getPickResult() {
+    return new ItemStack(this.getDropItem());
+  }
+
   @Override
   protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
     return 1.075F;
@@ -66,5 +118,9 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
 
   public @NotNull Vec3 getLeashOffset() {
     return new Vec3(0.0D, (0.6F * this.getEyeHeight()), (this.getBbWidth() * 0.2F));
+  }
+
+  public boolean isPushable() {
+    return false;
   }
 }

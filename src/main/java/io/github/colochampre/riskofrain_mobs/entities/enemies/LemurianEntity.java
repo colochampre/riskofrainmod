@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.entities.enemies;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
+import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerTurretEntity;
 import io.github.colochampre.riskofrain_mobs.entities.goals.LemurianAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
@@ -66,6 +67,7 @@ public class LemurianEntity extends Monster {
     this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, WanderingTrader.class, true));
+    this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, GunnerTurretEntity.class, true));
   }
 
   public static AttributeSupplier.Builder createAttributes() {
