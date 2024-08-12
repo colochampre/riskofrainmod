@@ -63,6 +63,11 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
   }
 
   @Override
+  protected int getPrice() {
+    return 40;
+  }
+
+  @Override
   protected void registerGoals() {
     this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
     this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));

@@ -78,7 +78,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
 
   protected abstract int getDroneType();
 
-  //protected abstract int getPrice();
+  protected abstract int getPrice();
 
   @Override
   public void setTame(boolean tamed) {
@@ -159,7 +159,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   protected void defineSynchedData() {
     super.defineSynchedData();
     Difficulty difficulty = this.level().getDifficulty();
-    int initialGold = difficulty == Difficulty.HARD ? 54 : 36;
+    int initialGold = difficulty == Difficulty.HARD ? (int) (this.getPrice() * 1.5) : this.getPrice();
     this.entityData.define(DATA_PRICE, initialGold);
     this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
   }
@@ -402,11 +402,11 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
     return null;
   }
 
-  protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
-    /*if (this.getDroneType() == TYPE_LAND) {
+  /*protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
+    if (this.getDroneType() == TYPE_LAND) {
       this.playSound(this.getStepSound(), 0.15F, 1.0F);
-    }*/
-  }
+    }
+  }*/
 
   public int getGoldPrice() {
     return this.entityData.get(DATA_PRICE);

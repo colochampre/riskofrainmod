@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities.allies;
 
+import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerTurretAttackGoal;
 import io.github.colochampre.riskofrain_mobs.entities.projectiles.BulletEntity;
 import io.github.colochampre.riskofrain_mobs.init.ItemInit;
 import net.minecraft.core.BlockPos;
@@ -33,6 +34,11 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
     return TYPE_LAND;
   }
 
+  @Override
+  protected int getPrice() {
+    return 36;
+  }
+
   public static AttributeSupplier.Builder createAttributes() {
     return Mob.createMobAttributes()
             .add(Attributes.ARMOR, 2.0D)
@@ -50,10 +56,10 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
 
   @Override
   public void setTame(boolean tamed) {
-    //GunnerTurretAttackGoal attackGoal = new GunnerTurretAttackGoal(this, 16.0F);
+    GunnerTurretAttackGoal attackGoal = new GunnerTurretAttackGoal(this, 16.0F);
     super.setTame(tamed);
     if (tamed) {
-      //this.goalSelector.addGoal(3, attackGoal);
+      this.goalSelector.addGoal(3, attackGoal);
     }
   }
 
