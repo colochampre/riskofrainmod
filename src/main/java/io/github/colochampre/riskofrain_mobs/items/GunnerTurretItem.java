@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -50,12 +51,10 @@ public class GunnerTurretItem extends Item {
       }
       if (hitresult.getType() == HitResult.Type.BLOCK) {
         GunnerTurretEntity turret = new GunnerTurretEntity(EntityInit.GUNNER_TURRET_ENTITY.get(), level);
+        CompoundTag tag = itemstack.getTag();
         turret.moveTo(hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
         turret.setYRot(player.getYRot());
-        if (player.getAbilities().instabuild) {
-          turret.tame(player);
-        } else if (itemstack.hasTag()) {
-          CompoundTag tag = itemstack.getTag();
+        if (itemstack.hasTag()) {
           if (tag != null) {
             if (tag.contains("TurretHealth")) {
               float health = tag.getFloat("TurretHealth");
@@ -64,6 +63,12 @@ public class GunnerTurretItem extends Item {
             if (tag.contains("OwnerUUID")) {
               UUID ownerUUID = tag.getUUID("OwnerUUID");
               turret.tame(Objects.requireNonNull(level.getPlayerByUUID(ownerUUID)));
+            } else {
+              turret.tame(player);
+            }
+            if (tag.contains("BodyColor")) {
+              int colorId = tag.getInt("BodyColor");
+              turret.setBodyColor(DyeColor.byId(colorId));
             }
           }
         }

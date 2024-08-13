@@ -4,14 +4,9 @@ import com.mojang.serialization.Codec;
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.init.BiomeModifierInit;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -26,8 +21,10 @@ public class RoRBiomeModifier implements BiomeModifier {
   public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
     // Overworld
     if (phase == Phase.ADD && biome.containsTag(BiomeTags.IS_OVERWORLD) && !biome.is(Biomes.DEEP_DARK) && !biome.is(Tags.Biomes.IS_VOID)) {
-      if (RoRConfig.SERVER.DRONES_SPAWN_RATE.get() > 0) { // Gunner Drones
+      if (RoRConfig.SERVER.DRONES_SPAWN_RATE.get() > 0) { // Drones
         builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_DRONE_ENTITY.get(),
+                RoRConfig.SERVER.DRONES_SPAWN_RATE.get(), 1, 1));
+        builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_TURRET_ENTITY.get(),
                 RoRConfig.SERVER.DRONES_SPAWN_RATE.get(), 1, 1));
       }
       if (!biome.is(Tags.Biomes.IS_MUSHROOM)) {
@@ -70,10 +67,6 @@ public class RoRBiomeModifier implements BiomeModifier {
         }
       }
     }
-  }
-
-  private boolean canSpawnWisp(ServerLevelAccessor world, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-    return world.getLevel().isRainingAt(pos);
   }
 
   @Override

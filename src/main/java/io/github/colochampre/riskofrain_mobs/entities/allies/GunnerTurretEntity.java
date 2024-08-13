@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAttackMob {
-  private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
+  private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerTurretEntity.class, EntityDataSerializers.INT);
   private static final float MAX_ROTATION_SPEED = Mth.PI * 0.3F;
   private static final float ROTATION_ACCELERATION = 0.16F;
   private static final float ROTATION_DECELERATION = 0.012F;
@@ -176,7 +176,7 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
         boolean isCreativeMode = ((Player) Objects.requireNonNull(source.getEntity())).getAbilities().instabuild;
         if (isCreativeMode || amount > 1.0F) {
           if (!isCreativeMode && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
-            this.getDestroyed(source);
+            this.getDestroyed();
           }
           this.discard();
         }
@@ -187,23 +187,31 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
     }
   }
 
-  protected void getDestroyed(DamageSource source) {
+  protected void getDestroyed() {
     ItemStack stack = new ItemStack(getDropItem());
-    CompoundTag tag = new CompoundTag();
-    tag.putFloat("TurretHealth", this.getHealth());
-    if (this.getOwnerUUID() != null) {
-      tag.putUUID("OwnerUUID", this.getOwnerUUID());
-    }
-    stack.setTag(tag);
+    this.tagItemStack(stack);
     this.spawnAtLocation(stack);
+  }
+
+  public ItemStack getPickResult() {
+    ItemStack stack = new ItemStack(getDropItem());
+    this.tagItemStack(stack);
+    return stack;
   }
 
   private Item getDropItem() {
     return ItemInit.GUNNER_TURRET_ITEM.get();
   }
 
-  public ItemStack getPickResult() {
-    return new ItemStack(this.getDropItem());
+  private void tagItemStack(ItemStack stack) {
+    CompoundTag tag = new CompoundTag();
+    tag.putFloat("TurretHealth", this.getHealth());
+    if (this.getOwnerUUID() != null) {
+      tag.putUUID("OwnerUUID", this.getOwnerUUID());
+    }
+    int colorId = this.entityData.get(DATA_BODY_COLOR);
+    tag.putInt("BodyColor", colorId);
+    stack.setTag(tag);
   }
 
   private void updateGun() {
