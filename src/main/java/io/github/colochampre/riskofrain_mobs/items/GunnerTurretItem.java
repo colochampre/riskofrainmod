@@ -52,7 +52,9 @@ public class GunnerTurretItem extends Item {
         GunnerTurretEntity turret = new GunnerTurretEntity(EntityInit.GUNNER_TURRET_ENTITY.get(), level);
         turret.moveTo(hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
         turret.setYRot(player.getYRot());
-        if (itemstack.hasTag()) {
+        if (player.getAbilities().instabuild) {
+          turret.tame(player);
+        } else if (itemstack.hasTag()) {
           CompoundTag tag = itemstack.getTag();
           if (tag != null) {
             if (tag.contains("TurretHealth")) {

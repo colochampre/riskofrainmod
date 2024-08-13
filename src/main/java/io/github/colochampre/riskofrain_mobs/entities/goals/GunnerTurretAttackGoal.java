@@ -69,7 +69,7 @@ public class GunnerTurretAttackGoal extends Goal {
       if (this.attackStep == 1) {
         this.attackTime = 40;
       } else if (this.attackStep <= 40) {
-        this.attackTime = 4;
+        this.attackTime = 3;
       } else {
         this.attackTime = 40;
         this.attackStep = 0;
@@ -78,7 +78,7 @@ public class GunnerTurretAttackGoal extends Goal {
       }
       if (this.attackStep > 1) {
         if (!this.drone.isSilent()) {
-          this.drone.playSound(this.getShootSound(), 1.5F, 1.0F);
+          this.drone.playSound(this.getShootSound(), 1.5F, 1.5F);
         }
         for (int i = 0; i < 1; ++i) {
           this.drone.performRangedAttack(target, this.maxAttackDistance);

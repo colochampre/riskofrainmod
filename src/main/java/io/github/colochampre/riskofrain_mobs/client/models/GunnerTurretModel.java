@@ -2,6 +2,7 @@ package io.github.colochampre.riskofrain_mobs.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerTurretEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.ModelUtils;
@@ -186,24 +187,26 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
 
   @Override
   public void setupAnim(@NotNull GunnerTurretEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    float partialTicks = ageInTicks - entity.tickCount;
     this.core.xRot = 0.0F;
     this.core.zRot = 0.0F;
     this.getLookAnim(netHeadYaw, headPitch);
     if (!entity.isTame()) {
       this.getBuriedPosition();
     } else {
-      this.resetBodyParts();
-
+      this.resetBodyParts(entity);
+      this.getWalkAnim(limbSwing, limbSwingAmount);
+      this.getGunAnim(entity, partialTicks);
     }
-    this.getWalkAnim(limbSwing, limbSwingAmount);
   }
 
   private void getLookAnim(float headYaw, float headPitch) {
-    this.head.xRot = headPitch * 0.023271058F;
+    this.head.xRot = headPitch * 0.0139626348F;
     this.spout.yRot = headYaw * (Mth.PI / 180);
   }
 
   private void getWalkAnim(float limbSwing, float limbSwingAmount) {
+    this.spout.xRot = 0 + Mth.cos(limbSwing * 0.5F) * 1.0F * limbSwingAmount;
     this.leg_front_left_1.yRot = -0.7854F + Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
     this.leg_front_right_1.yRot = 0.7854F + Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
     this.leg_back_left_1.yRot = -2.3562F - Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
@@ -227,18 +230,40 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
     }
   }
 
-  private void resetBodyParts() {
-    this.core.y = 8.0F;
-    this.head_axis.xRot = 0;
+  private void getGunAnim(GunnerTurretEntity entity, float partialTicks) {
+    float speed = entity.getGunSpeed();
+    float angle = entity.getGunAngle();
+    float prevAngle = entity.getPrevGunAngle();
+    float interpolatedAngle = prevAngle + (angle - prevAngle) * partialTicks;
+    if (speed == 0) {
+      this.gun_2_axis.zRot = 0.785398F + angle;
+    } else {
+      this.gun_2_axis.zRot = 0.785398F + interpolatedAngle;
+    }
+  }
+
+  private void resetBodyParts(@NotNull GunnerTurretEntity entity) {
+    if (entity.isInSittingPose()) {
+      this.core.y = 9F;
+      this.head_axis.xRot = 0.523599F;
+      this.leg_front_left_2.xRot = 0;
+      this.leg_front_right_2.xRot = 0;
+      this.leg_back_left_2.xRot = 0;
+      this.leg_back_right_2.xRot = 0;
+    } else {
+      this.core.y = 7.5F;
+      this.head_axis.xRot = 0;
+      this.leg_front_left_2.xRot = 0.261799F;
+      this.leg_front_right_2.xRot = 0.261799F;
+      this.leg_back_left_2.xRot = 0.261799F;
+      this.leg_back_right_2.xRot = 0.261799F;
+    }
     this.head_axis.yRot = 0;
-    this.leg_front_left_1.xRot = 0.174533F;
+    this.leg_front_left_1.xRot = 0;
     this.leg_front_left_2.zRot = 0;
     this.leg_front_right_1.xRot = 0;
-    this.leg_front_right_2.xRot = 0.174533F;
-    this.leg_back_left_2.xRot = 0.174533F;
     this.leg_back_left_3.zRot = 0;
     this.leg_back_right_1.xRot = 0;
-    this.leg_back_right_2.xRot = 0.174533F;
     this.leg_back_right_2.zRot = 0;
   }
 }

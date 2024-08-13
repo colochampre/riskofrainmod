@@ -42,7 +42,6 @@ import java.util.Objects;
 
 public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAttackMob {
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
-  //private static final Set<EntityType<?>> DO_NOT_ATTACK = Sets.newHashSet(EntityType.CREEPER, EntityType.PIGLIN, EntityType.PIGLIN_BRUTE, EntityType.ZOMBIFIED_PIGLIN, EntityType.HOGLIN, EntityType.ZOGLIN);
   private static final float MAX_ROTATION_SPEED = Mth.PI * 0.3F;
   private static final float ROTATION_ACCELERATION = 0.16F;
   private static final float ROTATION_DECELERATION = 0.012F;

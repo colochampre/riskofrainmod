@@ -29,7 +29,7 @@ public class BulletEntity extends EntityMobProjectile {
   public BulletEntity(Level worldIn, AbstractDroneEntity drone) {
     super(EntityInit.DRONE_BULLET_ENTITY.get(), worldIn, drone);
     Vec3 vec3 = drone.position().add(calcOffsetVec(new Vec3(0, 0, 0.2F * drone.getScale()), 0F, drone.getYRot()));
-    this.setPos(vec3.x, vec3.y, vec3.z);
+    this.setPos(vec3.x, drone.getEyeY(), vec3.z);
   }
 
   public BulletEntity(PlayMessages.SpawnEntity entity, Level world) {

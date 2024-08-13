@@ -3,6 +3,7 @@ package io.github.colochampre.riskofrain_mobs.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.GunnerTurretModel;
+import io.github.colochampre.riskofrain_mobs.client.renderer.layers.GunnerTurretBodyLayer;
 import io.github.colochampre.riskofrain_mobs.client.renderer.layers.GunnerTurretEyeLayer;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerTurretEntity;
 import io.github.colochampre.riskofrain_mobs.events.ModClientEvents;
@@ -20,6 +21,7 @@ public class GunnerTurretRenderer extends MobRenderer<GunnerTurretEntity, Gunner
 
   public GunnerTurretRenderer(EntityRendererProvider.Context context) {
     super(context, new GunnerTurretModel<>(context.bakeLayer(ModClientEvents.GUNNER_TURRET_LAYER)), 0.40F);
+    this.addLayer(new GunnerTurretBodyLayer(this));
     this.addLayer(new GunnerTurretEyeLayer(this));
   }
 
