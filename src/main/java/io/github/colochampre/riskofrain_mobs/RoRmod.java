@@ -6,6 +6,7 @@ import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.ItemInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import io.github.colochampre.riskofrain_mobs.network.packets.DifficultyChangeSoundPacket;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,6 +15,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkRegistry;
@@ -33,6 +35,7 @@ public class RoRmod {
   public RoRmod() {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::setup);
+    bus.addListener(this::clientSetup);
     bus.addListener(this::addItemsToTabs);
     ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, RoRConfig.SERVER_SPEC);
 
@@ -46,6 +49,16 @@ public class RoRmod {
 
   private void setup(final FMLCommonSetupEvent event) {
     CHANNEL.registerMessage(0, DifficultyChangeSoundPacket.class, DifficultyChangeSoundPacket::encode, DifficultyChangeSoundPacket::decode, DifficultyChangeSoundPacket::handle);
+  }
+
+  private void clientSetup(final FMLClientSetupEvent event) {
+    ItemProperties.register(ItemInit.GUNNER_TURRET_ITEM.get(), new ResourceLocation("body_color"),
+            (stack, world, entity, seed) -> {
+              if (stack.hasTag() && stack.getTag().contains("BodyColor")) {
+                return stack.getTag().getInt("BodyColor");
+              }
+              return 3.0F;
+            });
   }
 
   private void addItemsToTabs(BuildCreativeModeTabContentsEvent event) {

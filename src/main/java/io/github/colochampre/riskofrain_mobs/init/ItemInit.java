@@ -30,7 +30,7 @@ public class ItemInit {
           () -> new ForgeSpawnEggItem(EntityInit.GUNNER_TURRET_ENTITY, 0x007ada, 0x363636, props()));
 
   public static final RegistryObject<Item> GUNNER_TURRET_ITEM = ITEMS.register("gunner_turret",
-          () -> new GunnerTurretItem(new Item.Properties()));
+          () -> new GunnerTurretItem(new Item.Properties().stacksTo(16)));
 
   private static Item.Properties props() {
     return new Item.Properties();

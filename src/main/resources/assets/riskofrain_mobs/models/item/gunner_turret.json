@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "riskofrain_items:item/gunner_turret"
+    "layer0": "riskofrain_mobs:item/gunner_turret"
   }
 }

@@ -2,7 +2,6 @@ package io.github.colochampre.riskofrain_mobs.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerTurretEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.ModelUtils;
@@ -206,18 +205,20 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
   }
 
   private void getWalkAnim(float limbSwing, float limbSwingAmount) {
-    this.spout.xRot = 0 + Mth.cos(limbSwing * 0.5F) * 1.0F * limbSwingAmount;
-    this.leg_front_left_1.yRot = -0.7854F + Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
-    this.leg_front_right_1.yRot = 0.7854F + Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
-    this.leg_back_left_1.yRot = -2.3562F - Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
-    this.leg_back_right_1.yRot = 2.3562F - Mth.cos(limbSwing) * 1.0F * limbSwingAmount;
+    this.spout.xRot = 0 + Mth.cos(limbSwing * 0.3F) * 1.0F * limbSwingAmount;
+    this.bandolier_left.zRot = 0 + Mth.cos(limbSwing * 0.3F) * 1.0F * limbSwingAmount;
+    this.bandolier_right.zRot = 0 - Mth.cos(limbSwing * 0.3F) * 1.0F * limbSwingAmount;
+    this.leg_front_left_1.yRot = -0.7854F + Mth.cos(limbSwing * 0.25F) * 1.0F * limbSwingAmount;
+    this.leg_front_right_1.yRot = 0.7854F + Mth.cos(limbSwing * 0.25F) * 1.0F * limbSwingAmount;
+    this.leg_back_left_1.yRot = -2.3562F - Mth.cos(limbSwing * 0.25F) * 1.0F * limbSwingAmount;
+    this.leg_back_right_1.yRot = 2.3562F - Mth.cos(limbSwing * 0.25F) * 1.0F * limbSwingAmount;
   }
 
   private void getBuriedPosition() {
     if (this.bodyPitch > 0.0F) {
+      this.core.y = 13.0F;
       this.core.xRot = ModelUtils.rotlerpRad(this.core.xRot, -0.261799F, this.bodyPitch);
       this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.261799F, this.bodyPitch);
-      this.core.y = 13.0F;
       this.head_axis.xRot = ModelUtils.rotlerpRad(this.head_axis.xRot, 0.349066F, this.bodyPitch);
       this.head_axis.yRot = ModelUtils.rotlerpRad(this.head_axis.yRot, -0.436332F, this.bodyPitch);
       this.leg_front_left_1.xRot = ModelUtils.rotlerpRad(this.leg_front_left_1.xRot, -0.174533F, this.bodyPitch);

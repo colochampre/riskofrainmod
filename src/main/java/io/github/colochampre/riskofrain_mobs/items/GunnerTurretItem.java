@@ -71,6 +71,8 @@ public class GunnerTurretItem extends Item {
               turret.setBodyColor(DyeColor.byId(colorId));
             }
           }
+        } else {
+          turret.tame(player);
         }
         if (!level.noCollision(turret, turret.getBoundingBox())) {
           return InteractionResultHolder.fail(itemstack);

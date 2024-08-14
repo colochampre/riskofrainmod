@@ -44,7 +44,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class AbstractDroneEntity extends TamableAnimal implements FlyingAnimal {
+public abstract class AbstractDroneEntity extends TamableAnimal {
   public static final int TYPE_LAND = 0;
   public static final int TYPE_FLYING = 1;
   public static final int MIN_FLIGHT_HEIGHT = 3;
@@ -245,7 +245,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
   }
 
   public boolean causeFallDamage(float p_149683_, float p_149684_, @NotNull DamageSource source) {
-    return this.getDroneType() != TYPE_FLYING;
+    return this.getDroneType() == TYPE_LAND;
   }
 
   protected void checkFallDamage(double fallDistance, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
@@ -462,7 +462,6 @@ public abstract class AbstractDroneEntity extends TamableAnimal implements Flyin
     return this.getX() != this.xOld || this.getY() != this.yOld || this.getZ() != this.zOld;
   }
 
-  @Override
   public boolean isFlying() {
     return this.getDroneType() == TYPE_FLYING && !this.onGround();
   }
