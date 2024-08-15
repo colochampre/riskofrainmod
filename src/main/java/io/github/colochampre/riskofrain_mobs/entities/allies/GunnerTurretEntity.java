@@ -75,7 +75,7 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
             .add(Attributes.ARMOR, 2.0D)
             .add(Attributes.ATTACK_DAMAGE, 2.0D)
             .add(Attributes.FLYING_SPEED, 1.0D)
-            .add(Attributes.FOLLOW_RANGE, 16.0D)
+            .add(Attributes.FOLLOW_RANGE, 24.0D)
             .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
             .add(Attributes.MAX_HEALTH, 20.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.23D);
@@ -111,7 +111,7 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
 
   @Override
   public void setTame(boolean tamed) {
-    GunnerTurretAttackGoal attackGoal = new GunnerTurretAttackGoal(this, 40.0F);
+    GunnerTurretAttackGoal attackGoal = new GunnerTurretAttackGoal(this, 24.0F);
     super.setTame(tamed);
     if (tamed) {
       this.goalSelector.addGoal(3, attackGoal);
@@ -200,7 +200,9 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   private Item getDropItem() {
-    return ItemInit.GUNNER_TURRET_ITEM.get();
+    int colorId = this.entityData.get(DATA_BODY_COLOR);
+    DyeColor color = DyeColor.byId(colorId);
+    return ItemInit.getItemForColor(color);
   }
 
   private void tagItemStack(ItemStack stack) {

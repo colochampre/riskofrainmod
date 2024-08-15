@@ -190,13 +190,9 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
     this.core.xRot = 0.0F;
     this.core.zRot = 0.0F;
     this.getLookAnim(netHeadYaw, headPitch);
-    if (!entity.isTame()) {
-      this.getBuriedPosition();
-    } else {
-      this.resetBodyParts(entity);
-      this.getWalkAnim(limbSwing, limbSwingAmount);
-      this.getGunAnim(entity, partialTicks);
-    }
+    this.getBuriedPosition(entity);
+    this.getWalkAnim(limbSwing, limbSwingAmount);
+    this.getGunAnim(entity, partialTicks);
   }
 
   private void getLookAnim(float headYaw, float headPitch) {
@@ -214,8 +210,8 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
     this.leg_back_right_1.yRot = 2.3562F - Mth.cos(limbSwing * 0.25F) * 1.0F * limbSwingAmount;
   }
 
-  private void getBuriedPosition() {
-    if (this.bodyPitch > 0.0F) {
+  private void getBuriedPosition(GunnerTurretEntity entity) {
+    if (this.bodyPitch > 0.0F && !entity.isTame()) {
       this.core.y = 13.0F;
       this.core.xRot = ModelUtils.rotlerpRad(this.core.xRot, -0.261799F, this.bodyPitch);
       this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.261799F, this.bodyPitch);
@@ -228,18 +224,29 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
       this.leg_back_left_3.zRot = ModelUtils.rotlerpRad(this.leg_back_left_3.zRot, 1.39626F, this.bodyPitch);
       this.leg_back_right_1.xRot = ModelUtils.rotlerpRad(this.leg_back_right_1.xRot, -0.174533F, this.bodyPitch);
       this.leg_back_right_2.zRot = ModelUtils.rotlerpRad(this.leg_back_right_2.xRot, -0.174533F, this.bodyPitch);
-    }
-  }
-
-  private void getGunAnim(GunnerTurretEntity entity, float partialTicks) {
-    float speed = entity.getGunSpeed();
-    float angle = entity.getGunAngle();
-    float prevAngle = entity.getPrevGunAngle();
-    float interpolatedAngle = prevAngle + (angle - prevAngle) * partialTicks;
-    if (speed == 0) {
-      this.gun_2_axis.zRot = 0.785398F + angle;
-    } else {
-      this.gun_2_axis.zRot = 0.785398F + interpolatedAngle;
+    } else if (entity.isTame()) {
+      if (entity.isInSittingPose()) {
+        this.core.y = 9F;
+        this.head_axis.xRot = 0.523599F;
+        this.leg_front_left_2.xRot = 0;
+        this.leg_front_right_2.xRot = 0;
+        this.leg_back_left_2.xRot = 0;
+        this.leg_back_right_2.xRot = 0;
+      } else {
+        this.core.y = 7.5F;
+        this.head_axis.xRot = 0;
+        this.leg_front_left_2.xRot = 0.261799F;
+        this.leg_front_right_2.xRot = 0.261799F;
+        this.leg_back_left_2.xRot = 0.261799F;
+        this.leg_back_right_2.xRot = 0.261799F;
+      }
+      this.head_axis.yRot = 0;
+      this.leg_front_left_1.xRot = 0;
+      this.leg_front_left_2.zRot = 0;
+      this.leg_front_right_1.xRot = 0;
+      this.leg_back_left_3.zRot = 0;
+      this.leg_back_right_1.xRot = 0;
+      this.leg_back_right_2.zRot = 0;
     }
   }
 
@@ -266,5 +273,17 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
     this.leg_back_left_3.zRot = 0;
     this.leg_back_right_1.xRot = 0;
     this.leg_back_right_2.zRot = 0;
+  }
+
+  private void getGunAnim(GunnerTurretEntity entity, float partialTicks) {
+    float speed = entity.getGunSpeed();
+    float angle = entity.getGunAngle();
+    float prevAngle = entity.getPrevGunAngle();
+    float interpolatedAngle = prevAngle + (angle - prevAngle) * partialTicks;
+    if (speed == 0) {
+      this.gun_2_axis.zRot = 0.785398F + angle;
+    } else {
+      this.gun_2_axis.zRot = 0.785398F + interpolatedAngle;
+    }
   }
 }
