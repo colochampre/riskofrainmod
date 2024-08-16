@@ -187,8 +187,8 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
   @Override
   public void setupAnim(@NotNull GunnerTurretEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     float partialTicks = ageInTicks - entity.tickCount;
-    this.core.xRot = 0.0F;
-    this.core.zRot = 0.0F;
+    this.resetBodyParts(entity);
+
     this.getLookAnim(netHeadYaw, headPitch);
     this.getBuriedPosition(entity);
     this.getWalkAnim(limbSwing, limbSwingAmount);
@@ -251,21 +251,9 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
   }
 
   private void resetBodyParts(@NotNull GunnerTurretEntity entity) {
-    if (entity.isInSittingPose()) {
-      this.core.y = 9F;
-      this.head_axis.xRot = 0.523599F;
-      this.leg_front_left_2.xRot = 0;
-      this.leg_front_right_2.xRot = 0;
-      this.leg_back_left_2.xRot = 0;
-      this.leg_back_right_2.xRot = 0;
-    } else {
-      this.core.y = 7.5F;
-      this.head_axis.xRot = 0;
-      this.leg_front_left_2.xRot = 0.261799F;
-      this.leg_front_right_2.xRot = 0.261799F;
-      this.leg_back_left_2.xRot = 0.261799F;
-      this.leg_back_right_2.xRot = 0.261799F;
-    }
+    this.core.xRot = 0;
+    this.core.zRot = 0;
+    this.head_axis.xRot = 0;
     this.head_axis.yRot = 0;
     this.leg_front_left_1.xRot = 0;
     this.leg_front_left_2.zRot = 0;

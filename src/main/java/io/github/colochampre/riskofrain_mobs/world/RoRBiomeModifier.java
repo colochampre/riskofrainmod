@@ -14,6 +14,10 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class RoRBiomeModifier implements BiomeModifier {
   public static final RoRBiomeModifier INSTANCE = new RoRBiomeModifier();
 
@@ -21,11 +25,14 @@ public class RoRBiomeModifier implements BiomeModifier {
   public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
     // Overworld
     if (phase == Phase.ADD && biome.containsTag(BiomeTags.IS_OVERWORLD) && !biome.is(Biomes.DEEP_DARK) && !biome.is(Tags.Biomes.IS_VOID)) {
-      if (RoRConfig.SERVER.DRONES_SPAWN_RATE.get() > 0) { // Drones
-        builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_DRONE_ENTITY.get(),
-                RoRConfig.SERVER.DRONES_SPAWN_RATE.get(), 1, 1));
-        builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_TURRET_ENTITY.get(),
-                RoRConfig.SERVER.DRONES_SPAWN_RATE.get(), 1, 1));
+      int droneSpawnRate = RoRConfig.SERVER.DRONES_SPAWN_RATE.get();
+      if (droneSpawnRate > 0) { // Drones
+        List<MobSpawnSettings.SpawnerData> droneList = Arrays.asList(
+                new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_DRONE_ENTITY.get(), droneSpawnRate, 1, 1),
+                new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_TURRET_ENTITY.get(), droneSpawnRate, 1, 1)
+        );
+        MobSpawnSettings.SpawnerData randomDrone = droneList.get(ThreadLocalRandom.current().nextInt(droneList.size()));
+        builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(randomDrone);
       }
       if (!biome.is(Tags.Biomes.IS_MUSHROOM)) {
         if (RoRConfig.SERVER.BEETLE_OVERWORLD_SPAWN_RATE.get() > 0) { // Beetles
