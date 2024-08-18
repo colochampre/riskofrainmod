@@ -1,6 +1,5 @@
 package io.github.colochampre.riskofrain_mobs.entities.goals;
 
-import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerTurretEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.sounds.SoundEvent;

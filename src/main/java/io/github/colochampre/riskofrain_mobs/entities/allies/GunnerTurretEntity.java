@@ -1,5 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities.allies;
 
+import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerTurretAttackGoal;
 import io.github.colochampre.riskofrain_mobs.entities.projectiles.BulletEntity;
 import io.github.colochampre.riskofrain_mobs.init.ItemInit;
@@ -12,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -34,12 +36,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAttackMob {
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerTurretEntity.class, EntityDataSerializers.INT);
+  private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(GunnerTurretEntity.class, EntityDataSerializers.INT);
+  private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(GunnerTurretEntity.class, EntityDataSerializers.INT);
+  private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(GunnerTurretEntity.class, EntityDataSerializers.FLOAT);
   private static final float MAX_ROTATION_SPEED = Mth.PI * 0.3F;
   private static final float ROTATION_ACCELERATION = 0.16F;
   private static final float ROTATION_DECELERATION = 0.012F;
@@ -57,7 +64,7 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   @Override
-  protected int getPrice() {
+  protected int getDronePrice() {
     return 36;
   }
 
@@ -72,12 +79,12 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
 
   public static AttributeSupplier.Builder createAttributes() {
     return Mob.createMobAttributes()
-            .add(Attributes.ARMOR, 2.0D)
+            .add(Attributes.ARMOR, 4.0D)
             .add(Attributes.ATTACK_DAMAGE, 2.0D)
             .add(Attributes.FLYING_SPEED, 1.0D)
             .add(Attributes.FOLLOW_RANGE, 24.0D)
             .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
-            .add(Attributes.MAX_HEALTH, 20.0D)
+            .add(Attributes.MAX_HEALTH, 26.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.23D);
   }
 
@@ -85,6 +92,9 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   protected void defineSynchedData() {
     super.defineSynchedData();
     this.entityData.define(DATA_BODY_COLOR, DyeColor.LIGHT_BLUE.getId());
+    this.entityData.define(DATA_ID_HURT, 0);
+    this.entityData.define(DATA_ID_HURTDIR, 1);
+    this.entityData.define(DATA_ID_DAMAGE, 0.0F);
   }
 
   @Override
@@ -110,6 +120,22 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   @Override
+  public void tick() {
+    if (this.getHurtTime() > 0) {
+      this.setHurtTime(this.getHurtTime() - 1);
+    }
+    if (this.getDamage() > 0.0F) {
+      this.setDamage(this.getDamage() - 1.0F);
+    }
+    if (this.getXRot() > 0.0F) {
+      this.setXRot(this.getXRot() - 0.25F);
+    } else if (this.getXRot() < 0.0F) {
+      this.setXRot(this.getXRot() + 0.25F);
+    }
+    super.tick();
+  }
+
+  @Override
   public void setTame(boolean tamed) {
     GunnerTurretAttackGoal attackGoal = new GunnerTurretAttackGoal(this, 24.0F);
     super.setTame(tamed);
@@ -120,6 +146,14 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
 
   public static boolean checkDroneSpawnRules(EntityType<GunnerTurretEntity> entity, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource randomSource) {
     return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
+  }
+
+  @Override
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+    Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.BULLETS_DAMAGE.get());
+    Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.GUNNER_TURRET_MAX_HEALTH.get());
+    this.setHealth(this.getMaxHealth());
+    return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
   }
 
   @Override
@@ -140,43 +174,19 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
     return super.mobInteract(player, hand);
   }
 
-  @Override
-  public void performRangedAttack(@NotNull LivingEntity target, float distanceFactor) {
-    BulletEntity projectile = new BulletEntity(this.level(), this);
-    double d0 = target.getEyeY() - (double) 0.75F;
-    double d1 = target.getX() - this.getX();
-    double d2 = d0 - projectile.getY();
-    double d3 = target.getZ() - this.getZ();
-    double d4 = Math.sqrt(Math.sqrt(d0)) * 0.25D;
-    projectile.shoot(d1, d2 + d4, d3, 6.0F, 1.0F);
-    this.level().addFreshEntity(projectile);
-  }
-
-  @Override
-  public boolean wantsToAttack(@NotNull LivingEntity livingentity, @NotNull LivingEntity owner) {
-    if (livingentity instanceof Wolf) {
-      Wolf wolf = (Wolf) livingentity;
-      return !wolf.isTame() || wolf.getOwner() != owner;
-    } else if (livingentity instanceof Player && owner instanceof Player && !((Player) owner).canHarmPlayer((Player) livingentity)) {
-      return false;
-    } else if (livingentity instanceof AbstractHorse && ((AbstractHorse) livingentity).isTamed()) {
-      return false;
-    } else if (livingentity instanceof AbstractDroneEntity && ((AbstractDroneEntity) livingentity).isTame()) {
-      return false;
-    } else {
-      return !(livingentity instanceof TamableAnimal) || !((TamableAnimal) livingentity).isTame();
-    }
-  }
-
   public boolean hurt(@NotNull DamageSource source, float amount) {
     if (this.isInvulnerableTo(source)) {
       return false;
-    } else if (source.getEntity() instanceof Player && this.isTame()) {
+    } else if (source.getDirectEntity() instanceof Player && this.isTame()) {
       if (!this.level().isClientSide && !this.isRemoved()) {
+        this.setHurtDir((int) -this.getHurtDir());
+        this.setHurtTime(10);
+        this.setDamage(this.getDamage() + amount * 10.0F);
+        this.setXRot(this.getXRot() + (this.getHurtDir() == 1 ? this.getDamage() * 2 : -this.getDamage() * 2)); // Forward-backward inclination
         boolean isCreativeMode = ((Player) Objects.requireNonNull(source.getEntity())).getAbilities().instabuild;
-        if (isCreativeMode || amount > 1.0F) {
+        if (isCreativeMode || this.getDamage() > 40.0F) {
           if (!isCreativeMode && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
-            this.getDestroyed();
+            this.dropAsItem();
           }
           this.discard();
         }
@@ -187,7 +197,7 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
     }
   }
 
-  protected void getDestroyed() {
+  protected void dropAsItem() {
     ItemStack stack = new ItemStack(getDropItem());
     this.tagItemStack(stack);
     this.spawnAtLocation(stack);
@@ -216,6 +226,36 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
     stack.setTag(tag);
   }
 
+  public void setDamage(float damage) {
+    this.entityData.set(DATA_ID_DAMAGE, damage);
+  }
+
+  public float getDamage() {
+    return this.entityData.get(DATA_ID_DAMAGE);
+  }
+
+  public void animateHurt(float p_265761_) {
+    this.setHurtDir((int) -this.getHurtDir());
+    this.setHurtTime(10);
+    this.setDamage(this.getDamage() * 11.0F);
+  }
+
+  private void setHurtTime(int time) {
+    this.entityData.set(DATA_ID_HURT, time);
+  }
+
+  public int getHurtTime() {
+    return this.entityData.get(DATA_ID_HURT);
+  }
+
+  public void setHurtDir(int dir) {
+    this.entityData.set(DATA_ID_HURTDIR, dir);
+  }
+
+  public float getHurtDir() {
+    return this.entityData.get(DATA_ID_HURTDIR);
+  }
+
   private void updateGun() {
     LivingEntity target = this.getActiveAttackTarget();
     this.prevGunAngle = this.gunAngle;
@@ -228,6 +268,34 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
       }
     }
     this.gunAngle += this.gunSpeed;
+  }
+
+  @Override
+  public void performRangedAttack(@NotNull LivingEntity target, float distanceFactor) {
+    BulletEntity projectile = new BulletEntity(this.level(), this);
+    double d0 = target.getEyeY() - (double) 0.75F;
+    double d1 = target.getX() - this.getX();
+    double d2 = d0 - projectile.getY();
+    double d3 = target.getZ() - this.getZ();
+    double d4 = Math.sqrt(Math.sqrt(d0)) * 0.25D;
+    projectile.shoot(d1, d2 + d4, d3, 6.0F, 1.0F);
+    this.level().addFreshEntity(projectile);
+  }
+
+  @Override
+  public boolean wantsToAttack(@NotNull LivingEntity livingentity, @NotNull LivingEntity owner) {
+    if (livingentity instanceof Wolf) {
+      Wolf wolf = (Wolf) livingentity;
+      return !wolf.isTame() || wolf.getOwner() != owner;
+    } else if (livingentity instanceof Player && owner instanceof Player && !((Player) owner).canHarmPlayer((Player) livingentity)) {
+      return false;
+    } else if (livingentity instanceof AbstractHorse && ((AbstractHorse) livingentity).isTamed()) {
+      return false;
+    } else if (livingentity instanceof AbstractDroneEntity && ((AbstractDroneEntity) livingentity).isTame()) {
+      return false;
+    } else {
+      return !(livingentity instanceof TamableAnimal) || !((TamableAnimal) livingentity).isTame();
+    }
   }
 
   public float getGunAngle() {
@@ -261,6 +329,6 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   public boolean isPushable() {
-    return false;
+    return !this.isTame() || this.isInSittingPose();
   }
 }

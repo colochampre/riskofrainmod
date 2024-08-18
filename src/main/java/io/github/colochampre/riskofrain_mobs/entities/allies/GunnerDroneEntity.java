@@ -15,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,6 +35,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -62,8 +64,8 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
   }
 
   @Override
-  protected int getPrice() {
-    return 40;
+  protected int getDronePrice() {
+    return 36;
   }
 
   @Override
@@ -151,6 +153,13 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
       }
     }
     return super.mobInteract(player, hand);
+  }
+
+  public boolean causeFallDamage(float p_149683_, float p_149684_, @NotNull DamageSource source) {
+    return false;
+  }
+
+  protected void checkFallDamage(double fallDistance, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
   }
 
   @Override

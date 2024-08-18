@@ -2,12 +2,7 @@ package io.github.colochampre.riskofrain_mobs.items;
 
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerTurretEntity;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
-import io.github.colochampre.riskofrain_mobs.init.ItemInit;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -48,7 +43,7 @@ public class GunnerTurretItem extends Item {
       if (!list.isEmpty()) {
         Vec3 vec31 = player.getEyePosition();
         for (Entity entity : list) {
-          AABB aabb = entity.getBoundingBox().inflate((double) entity.getPickRadius());
+          AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
           if (aabb.contains(vec31)) {
             return InteractionResultHolder.pass(itemstack);
           }

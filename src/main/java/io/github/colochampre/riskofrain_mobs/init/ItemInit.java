@@ -22,9 +22,9 @@ public class ItemInit {
   public static final RegistryObject<ForgeSpawnEggItem> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
           () -> new ForgeSpawnEggItem(EntityInit.WISP_ENTITY, 0x210502, 0xDE6B2C, props()));
   public static final RegistryObject<ForgeSpawnEggItem> GUNNER_DRONE_SPAWN_EGG = ITEMS.register("gunner_drone_spawn_egg",
-          () -> new ForgeSpawnEggItem(EntityInit.GUNNER_DRONE_ENTITY, 0x007ada, 0x202f51, props()));
-  /*public static final RegistryObject<ForgeSpawnEggItem> GUNNER_TURRET_SPAWN_EGG = ITEMS.register("gunner_turret_spawn_egg",
-          () -> new ForgeSpawnEggItem(EntityInit.GUNNER_TURRET_ENTITY, 0x007ada, 0x363636, props()));*/
+          () -> new ForgeSpawnEggItem(EntityInit.GUNNER_DRONE_ENTITY, 0x007ADA, 0x202F51, props()));
+  public static final RegistryObject<ForgeSpawnEggItem> GUNNER_TURRET_SPAWN_EGG = ITEMS.register("gunner_turret_spawn_egg",
+          () -> new ForgeSpawnEggItem(EntityInit.GUNNER_TURRET_ENTITY, 0x007ADA, 0xBCCCA8, props()));
 
   // Gunner Turret Colors
   public static final RegistryObject<Item> GUNNER_TURRET_ITEM = ITEMS.register("gunner_turret",

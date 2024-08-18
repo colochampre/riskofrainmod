@@ -54,6 +54,7 @@ public class RoRmod {
       event.accept(ItemInit.STONE_GOLEM_SPAWN_EGG);
       event.accept(ItemInit.WISP_SPAWN_EGG);
       event.accept(ItemInit.GUNNER_DRONE_SPAWN_EGG);
+      event.accept(ItemInit.GUNNER_TURRET_SPAWN_EGG);
       event.accept(ItemInit.GUNNER_TURRET_ITEM);
     }
   }

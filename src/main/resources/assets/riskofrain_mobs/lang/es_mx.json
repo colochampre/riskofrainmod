@@ -12,6 +12,7 @@
   "item.riskofrain_mobs.wisp_spawn_egg": "Generar wisp",
   "item.riskofrain_mobs.gunner_drone_spawn_egg": "Generar dron artillero",
   "item.riskofrain_mobs.gunner_turret_spawn_egg": "Generar torreta artillera",
+
   "item.riskofrain_mobs.gunner_turret": "Torreta artillera",
   "item.riskofrain_mobs.gunner_turret_white": "Torreta artillera",
   "item.riskofrain_mobs.gunner_turret_orange": "Torreta artillera",
@@ -29,6 +30,5 @@
   "item.riskofrain_mobs.gunner_turret_red": "Torreta artillera",
   "item.riskofrain_mobs.gunner_turret_black": "Torreta artillera",
 
-  "message.riskofrain_mobs.not_gold": "NO ES ORO!",
-  "message.riskofrain_mobs.smaller_gold": "MENOS ORO!"
+  "message.riskofrain_mobs.not_gold": "Los suministros militares de UES solo acepta oro como pago"
 }

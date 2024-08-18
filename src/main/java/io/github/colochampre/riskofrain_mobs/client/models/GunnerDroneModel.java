@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.ModelUtils;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -51,7 +50,6 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
   protected ModelPart gun_pitch;
   protected ModelPart gun_pitch_2;
 
-  private float bodyPitch;
   private float bodyXRot;
   private float bodyZRot;
 
@@ -143,16 +141,12 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
   public void prepareMobModel(@NotNull GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
     this.bodyXRot = entity.getBodyXRot();
     this.bodyZRot = entity.getBodyZRot();
-    this.bodyPitch = entity.getRollAmount(ageInTicks);
   }
 
   @Override
   public void setupAnim(@NotNull GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
-    this.core.xRot = 0.0F;
-    this.core.zRot = 0.0F;
-    this.eye.xRot = 0.0F;
-    this.eye.zRot = 0.0F;
     float partialTicks = ageInTicks - entity.tickCount;
+    this.resetBodyParts();
     this.getLookAnim(headYaw, headPitch);
     this.getFlyingAnim(entity, ageInTicks);
     this.getPropellerAnim(entity, partialTicks);
@@ -178,9 +172,9 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
   }
 
   private void getBuriedPosition(GunnerDroneEntity entity) {
-    if (this.bodyPitch > 0.0F && !entity.isTame()) {
-      this.core.xRot = ModelUtils.rotlerpRad(this.core.xRot, -0.261799F, this.bodyPitch);
-      this.core.zRot = ModelUtils.rotlerpRad(this.core.zRot, 0.261799F, this.bodyPitch);
+    if (!entity.isTame()) {
+      this.core.xRot = -0.261799F;
+      this.core.zRot = 0.261799F;
       this.core.y = 23.5F;
     } else if (entity.onGround() && entity.isTame()) {
       this.core.y = 18.75F;
@@ -211,5 +205,12 @@ public class GunnerDroneModel<T extends GunnerDroneEntity> extends EntityModel<T
     } else {
       this.gun_pitch.zRot = 0.7854F + interpolatedAngle;
     }
+  }
+
+  private void resetBodyParts() {
+    this.core.xRot = 0.0F;
+    this.core.zRot = 0.0F;
+    this.eye.xRot = 0.0F;
+    this.eye.zRot = 0.0F;
   }
 }

@@ -16,7 +16,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -27,19 +26,19 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -50,17 +49,24 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   public static final int MIN_FLIGHT_HEIGHT = 3;
   public static final int MAX_FLIGHT_HEIGHT = 8;
   public static final Set<EntityType<?>> DO_NOT_ATTACK = Sets.newHashSet(EntityType.CREEPER, EntityType.PIGLIN, EntityType.PIGLIN_BRUTE, EntityType.ZOMBIFIED_PIGLIN, EntityType.HOGLIN, EntityType.ZOGLIN);
-  private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_INGOT, Items.GOLD_NUGGET, Items.RAW_GOLD);
+  private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.GOLD_BLOCK, Items.RAW_GOLD_BLOCK, Items.GOLD_INGOT, Items.RAW_GOLD, Items.GOLD_NUGGET);
   private static final Set<Item> REPAIR_ITEMS = Sets.newHashSet(Items.IRON_INGOT, Items.IRON_NUGGET, Items.RAW_IRON);
   private static final EntityDataAccessor<Integer> DATA_PRICE = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(AbstractDroneEntity.class, EntityDataSerializers.INT);
+  private static final Map<Item, Integer> dronePriceMap = new HashMap<>();
   private LivingEntity clientSideCachedAttackTarget;
   private float bodyXRot;
   private float bodyZRot;
-  private float rollAmount;
-  private float rollAmountO;
   private int flyingSound;
   private int underWaterTicks;
+
+  static {
+    dronePriceMap.put(Items.GOLD_BLOCK, 81);
+    dronePriceMap.put(Items.RAW_GOLD_BLOCK, 54);
+    dronePriceMap.put(Items.GOLD_INGOT, 9);
+    dronePriceMap.put(Items.RAW_GOLD, 6);
+    dronePriceMap.put(Items.GOLD_NUGGET, 1);
+  }
 
   public AbstractDroneEntity(EntityType<? extends AbstractDroneEntity> type, Level level) {
     super(type, level);
@@ -78,7 +84,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
 
   protected abstract int getDroneType();
 
-  protected abstract int getPrice();
+  protected abstract int getDronePrice();
 
   @Override
   public void setTame(boolean tamed) {
@@ -94,11 +100,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   private void addLandDroneGoals() {
-    //DroneFollowOwnerGoal followOwnerGoal = new DroneFollowOwnerGoal(this, 1.0D, 8.0F, 4.0F, false);
-    //WaterAvoidingRandomStrollGoal randomStrollGoal = new WaterAvoidingRandomStrollGoal(this, 1.0D);
     RandomLookAroundGoal randomLookAroundGoal = new RandomLookAroundGoal(this);
-    //this.goalSelector.addGoal(4, followOwnerGoal);
-    //this.goalSelector.addGoal(5, randomStrollGoal);
     this.goalSelector.addGoal(8, randomLookAroundGoal);
   }
 
@@ -128,7 +130,6 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
       this.takeWaterDamage();
       EntityUtils.updateMovementInclinations(this, this.bodyXRot, this.bodyZRot, newBodyXRot -> this.bodyXRot = newBodyXRot, newBodyZRot -> this.bodyZRot = newBodyZRot);
     }
-    this.updateRollAmount();
   }
 
   protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
@@ -159,7 +160,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   protected void defineSynchedData() {
     super.defineSynchedData();
     Difficulty difficulty = this.level().getDifficulty();
-    int initialGold = difficulty == Difficulty.HARD ? (int) (this.getPrice() * 1.5) : this.getPrice();
+    int initialGold = difficulty == Difficulty.HARD ? (int) (this.getDronePrice() * 1.5) : this.getDronePrice();
     this.entityData.define(DATA_PRICE, initialGold);
     this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
   }
@@ -167,14 +168,14 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   @Override
   public void addAdditionalSaveData(@NotNull CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putByte("GoldPrice", (byte) this.getGoldPrice());
+    tag.putByte("GoldPrice", (byte) this.getCurrentGoldPrice());
   }
 
   @Override
   public void readAdditionalSaveData(@NotNull CompoundTag tag) {
     super.readAdditionalSaveData(tag);
     if (tag.contains("GoldPrice", 99)) {
-      this.setGoldPrice(tag.getInt("GoldPrice"));
+      this.setCurrentGoldPrice(tag.getInt("GoldPrice"));
     }
   }
 
@@ -244,23 +245,13 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
     }
   }
 
-  public boolean causeFallDamage(float p_149683_, float p_149684_, @NotNull DamageSource source) {
-    return this.getDroneType() == TYPE_LAND;
-  }
-
-  protected void checkFallDamage(double fallDistance, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
-    if (this.getDroneType() != TYPE_FLYING) {
-      super.checkFallDamage(fallDistance, onGround, state, pos);
-    }
-  }
-
   protected int decreaseAirSupply(int air) {
     return air;
   }
 
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
-    String price = String.valueOf(this.getGoldPrice());
+    String price = String.valueOf(this.getCurrentGoldPrice());
     Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
     this.setCustomName(component);
     this.setCustomNameVisible(true);
@@ -278,7 +269,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
           if (!player.getAbilities().instabuild) {
             itemstack.shrink(1);
           }
-          this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundEvents.IRON_GOLEM_REPAIR, this.getSoundSource(), 0.2F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+          this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.IRON_GOLEM_REPAIR, this.getSoundSource(), 0.5F, 1.25F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
           if (itemstack.getItem().equals(Items.IRON_INGOT)) {
             this.heal(18.0F);
           } else if (itemstack.getItem().equals(Items.RAW_IRON)) {
@@ -293,17 +284,15 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
       if (!(item instanceof DyeItem) && this.isOwnedBy(player)) {
         this.setOrderedToSit(!this.isOrderedToSit());
         this.navigation.stop();
-        this.setTarget((LivingEntity) null);
-        this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.2F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+        this.setTarget(null);
+        this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.2F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         return InteractionResult.SUCCESS;
       }
     } else if (!this.isTame()) {
       // Not gold
       if (!TAME_ITEMS.contains(itemstack.getItem())) {
-        Component goldMessage = itemstack.getItem().equals(Items.GOLD_BLOCK) || itemstack.getItem().equals(Items.RAW_GOLD_BLOCK)
-                ? Component.translatable("message.riskofrain_mobs.smaller_gold").withStyle(ChatFormatting.YELLOW)
-                : Component.translatable("message.riskofrain_mobs.not_gold").withStyle(ChatFormatting.YELLOW);
-        this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.INSUFFICIENT_FOUNDS_PROC.get(), this.getSoundSource(), 0.5F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+        Component goldMessage = Component.translatable("message.riskofrain_mobs.not_gold").withStyle(ChatFormatting.YELLOW);
+        this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundInit.INSUFFICIENT_FOUNDS_PROC.get(), this.getSoundSource(), 0.5F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         if (!this.level().isClientSide) {
           player.sendSystemMessage(goldMessage);
         }
@@ -314,19 +303,14 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
           itemstack.shrink(1);
         }
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundInit.COIN_PROC.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-        if (itemstack.getItem().equals(Items.GOLD_INGOT)) {
-          this.setGoldPrice(this.getGoldPrice() - 9);
-        } else if (itemstack.getItem().equals(Items.RAW_GOLD)) {
-          this.setGoldPrice(this.getGoldPrice() - 6);
-        } else {
-          this.setGoldPrice(this.getGoldPrice() - 1);
-        }
-        String price = String.valueOf(this.getGoldPrice());
+        this.updateGoldPrice(itemstack);
+
+        String price = String.valueOf(this.getCurrentGoldPrice());
         Component priceName = Component.literal(price).withStyle(ChatFormatting.YELLOW);
         this.setCustomName(priceName);
         this.setCustomNameVisible(true);
         if (!this.level().isClientSide) {
-          if (this.getGoldPrice() <= 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+          if (this.getCurrentGoldPrice() <= 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
             this.tame(player);
             this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundInit.DRONE_REPAIR.get(), this.getSoundSource(), 0.6F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
             this.level().broadcastEntityEvent(this, (byte) 7);
@@ -341,6 +325,11 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
       }
     }
     return super.mobInteract(player, hand);
+  }
+
+  private void updateGoldPrice(ItemStack itemstack) {
+    int priceReduction = dronePriceMap.get(itemstack.getItem());
+    this.setCurrentGoldPrice(this.getCurrentGoldPrice() - priceReduction);
   }
 
   @Override
@@ -408,11 +397,11 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
     }
   }*/
 
-  public int getGoldPrice() {
+  public int getCurrentGoldPrice() {
     return this.entityData.get(DATA_PRICE);
   }
 
-  public void setGoldPrice(int i) {
+  public void setCurrentGoldPrice(int i) {
     this.entityData.set(DATA_PRICE, i);
   }
 
@@ -422,19 +411,6 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
 
   public float getBodyZRot() {
     return this.bodyZRot;
-  }
-
-  public float getRollAmount(float pitch) {
-    return Mth.lerp(pitch, this.rollAmountO, this.rollAmount);
-  }
-
-  private void updateRollAmount() {
-    this.rollAmountO = this.rollAmount;
-    if (!this.isFlying() || this.isDroneMoving()) {
-      this.rollAmount = Math.min(1.0F, this.rollAmount + 0.2F);
-    } else {
-      this.rollAmount = Math.max(0.0F, this.rollAmount - 0.24F);
-    }
   }
 
   @Override
