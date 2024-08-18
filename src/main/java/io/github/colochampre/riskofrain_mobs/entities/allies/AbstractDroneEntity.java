@@ -128,7 +128,9 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
     super.tick();
     if (this.isTame()) {
       this.takeWaterDamage();
-      EntityUtils.updateMovementInclinations(this, this.bodyXRot, this.bodyZRot, newBodyXRot -> this.bodyXRot = newBodyXRot, newBodyZRot -> this.bodyZRot = newBodyZRot);
+      if (this.getDroneType() == TYPE_FLYING) {
+        EntityUtils.updateMovementInclinations(this, this.bodyXRot, this.bodyZRot, newBodyXRot -> this.bodyXRot = newBodyXRot, newBodyZRot -> this.bodyZRot = newBodyZRot);
+      }
     }
   }
 
@@ -251,10 +253,12 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
 
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
-    String price = String.valueOf(this.getCurrentGoldPrice());
-    Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
-    this.setCustomName(component);
-    this.setCustomNameVisible(true);
+    if (this.getCurrentGoldPrice() > 0) {
+      String price = String.valueOf(this.getCurrentGoldPrice());
+      Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
+      this.setCustomName(component);
+      this.setCustomNameVisible(true);
+    }
     return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
   }
 
@@ -304,7 +308,6 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
         }
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundInit.COIN_PROC.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         this.updateGoldPrice(itemstack);
-
         String price = String.valueOf(this.getCurrentGoldPrice());
         Component priceName = Component.literal(price).withStyle(ChatFormatting.YELLOW);
         this.setCustomName(priceName);

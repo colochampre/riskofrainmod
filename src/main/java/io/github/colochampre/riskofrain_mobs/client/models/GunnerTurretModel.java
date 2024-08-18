@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerTurretEntity;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.ModelUtils;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -178,10 +177,6 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
   }
 
   @Override
-  public void prepareMobModel(@NotNull GunnerTurretEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-  }
-
-  @Override
   public void setupAnim(@NotNull GunnerTurretEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     float partialTicks = ageInTicks - entity.tickCount;
     this.resetBodyParts();
@@ -192,9 +187,6 @@ public class GunnerTurretModel<T extends GunnerTurretEntity> extends EntityModel
   }
 
   private void getLookAnim(float headYaw, float headPitch) {
-    this.core.yRot = 0.0F;
-    this.hips_axis.yRot = 0.0F;
-    this.hips.yRot = 0.0F;
     this.head.xRot = headPitch * 0.0139626348F;
     this.spout.yRot = headYaw * (Mth.PI / 180);
   }
