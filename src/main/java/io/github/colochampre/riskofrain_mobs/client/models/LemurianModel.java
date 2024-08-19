@@ -2,7 +2,7 @@ package io.github.colochampre.riskofrain_mobs.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.LemurianEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -11,9 +11,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
+
   protected final ModelPart core;
   protected ModelPart stomach_axis;
   protected ModelPart stomach;
@@ -142,7 +144,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     PartDefinition right_forearm_axis = right_arm.addOrReplaceChild("right_forearm_axis", CubeListBuilder.create().texOffs(50, 60).addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 9.0F, 0.0F, -0.2617994F, 0.0F, 0.0F));
     PartDefinition right_forearm = right_forearm_axis.addOrReplaceChild("right_forearm", CubeListBuilder.create().texOffs(81, 36).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 7.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-0.5F, 1.0F, 0.0F));
     PartDefinition right_claws = right_forearm.addOrReplaceChild("right_claws", CubeListBuilder.create().texOffs(90, 36).addBox(-1.5F, 0.0F, -1.5F, 2.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.75F, 0.0F));
-    PartDefinition tail_1_axis = core.addOrReplaceChild("tail_1_axis", CubeListBuilder.create().texOffs(95, 60).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.5F, 0.34906584F, 0.0F, 0.0F));
+    PartDefinition tail_1_axis = core.addOrReplaceChild("tail_1_axis", CubeListBuilder.create().texOffs(95, 60).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 1.5F, 0.34906584F, 0.0F, 0.0F));
     PartDefinition tail_1 = tail_1_axis.addOrReplaceChild("tail_1", CubeListBuilder.create().texOffs(1, 21).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
     PartDefinition tail_2_axis = tail_1.addOrReplaceChild("tail_2_axis", CubeListBuilder.create().texOffs(100, 60).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 5.0F, -0.5F, 0.2617994F, 0.0F, 0.0F));
     PartDefinition tail_2 = tail_2_axis.addOrReplaceChild("tail_2", CubeListBuilder.create().texOffs(16, 23).addBox(-1.5F, 0.0F, -2.0F, 3.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -167,37 +169,32 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
 
     return LayerDefinition.create(mesh, 110, 64);
   }
-  /*
+
   @Override
-  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-    core.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-  }
-  */
-  @Override
-  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int i1, int i2) {
-    core.render(poseStack, vertexConsumer, i, i1, i2);
+  public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int i2) {
+    core.render(poseStack, vertexConsumer, packedLight, packedOverlay, i2);
   }
 
   @Override
-  public void setupAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
+  public void setupAnim(@NotNull LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
     getLookAnim(headYaw, headPitch);
     getIdleAnim(entity, ageInTicks);
-    getWalkAnim(entity, limbSwing, limbSwingAmount, ageInTicks);
+    getWalkAnim(limbSwing, limbSwingAmount);
   }
 
   @Override
   public void prepareMobModel(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    int i = entity.getAttackTimer();
+    int i = entity.getAttackTick();
     if (i > 0) {
       getAttackAnim(entity, i, ageInTicks);
     } else {
       entity.setIsSelectingHand(true);
-      this.left_arm_axis.xRot = -0.08726646F + Mth.cos(limbSwing * 0.75F) * 0.75F * limbSwingAmount;
-      this.left_forearm_axis.xRot = -0.2617994F + Mth.cos(limbSwing * 0.75F) * 0.75F * limbSwingAmount;
-      this.right_arm_axis.xRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.75F * limbSwingAmount;
-      this.right_forearm_axis.xRot = -0.2617994F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.75F * limbSwingAmount;
-      this.head_axis.xRot = -0.5235988F + -Mth.cos(limbSwing * 1.5F) * 0.3F * limbSwingAmount;
-      this.neck_axis.xRot = 0.2617994F + Mth.cos(limbSwing * 1.5F) * 0.3F * limbSwingAmount;
+      this.left_arm_axis.xRot = -0.08726646F + Mth.cos(limbSwing) * 0.90F * limbSwingAmount;
+      this.left_forearm_axis.xRot = -0.2617994F + Mth.cos(limbSwing) * 0.75F * limbSwingAmount;
+      this.right_arm_axis.xRot = -0.08726646F - Mth.cos(limbSwing) * 0.90F * limbSwingAmount;
+      this.right_forearm_axis.xRot = -0.2617994F - Mth.cos(limbSwing) * 0.75F * limbSwingAmount;
+      this.head_axis.xRot = -0.5235988F - Mth.cos(limbSwing * 2F) * 0.3F * limbSwingAmount;
+      this.neck_axis.xRot = 0.2617994F + Mth.cos(limbSwing * 2F) * 0.3F * limbSwingAmount;
       this.left_arm_axis.zRot = 0.0F;
       this.right_arm_axis.zRot = 0.0F;
       this.rib_cage_axis.xRot = 0.17453292F;
@@ -207,7 +204,6 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     }
   }
 
-  // field_f = xRot | field_g = yRot | field_h = zRot
   private void getLookAnim(float headYaw, float headPitch) {
     this.head.xRot = headPitch * 0.023271058F;
     this.head.yRot = headYaw * 0.017453292F / 2.0F;
@@ -221,7 +217,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     this.neck.yRot = Mth.cos(ageInTicks * 0.04F) * 0.06F;
     this.neck.zRot = -Mth.cos(ageInTicks * 0.04F) * 0.06F;
     this.rib_cage.xRot = -Mth.cos(ageInTicks * 0.06F) * 0.06F;
-    this.tail_1.xRot = Mth.cos(ageInTicks * 0.08F) * 0.09F;
+    this.tail_1.xRot = 0.34906584F + Mth.cos(ageInTicks * 0.08F) * 0.09F;
     this.tail_1.zRot = Mth.cos(ageInTicks * 0.12F) * 0.06F;
     this.tail_2.zRot = Mth.cos(ageInTicks * 0.12F) * 0.06F;
     this.tail_3.zRot = Mth.cos(ageInTicks * 0.12F) * 0.06F;
@@ -229,32 +225,40 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
       this.head_axis.xRot = -0.5235988F + Mth.cos(ageInTicks * 0.06F) * 0.06F;
       this.head_axis.yRot = Mth.cos(ageInTicks * 0.05F) * 0.06F;
       this.head_axis.zRot = -Mth.cos(ageInTicks * 0.05F) * 0.06F;
-      this.left_arm.xRot = -0.17453292F + -Mth.cos(ageInTicks * 0.06F) * 0.03F;
+      this.left_arm.xRot = -0.17453292F - Mth.cos(ageInTicks * 0.06F) * 0.03F;
       this.left_arm.zRot = Mth.cos(ageInTicks * 0.09F) * 0.03F;
       this.right_arm.xRot = -0.17453292F + Mth.cos(ageInTicks * 0.06F) * 0.03F;
       this.right_arm.zRot = -Mth.cos(ageInTicks * 0.09F) * 0.03F;
     }
   }
 
-  private void getWalkAnim(LemurianEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    this.rib_cage_axis.yRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.15F * limbSwingAmount;
-    this.stomach_axis.yRot = Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.3F * limbSwingAmount;
-    this.left_arm_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
-    this.right_arm_axis.yRot = -0.08726646F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 0.4F * limbSwingAmount;
-    this.left_leg_1_axis.xRot = -0.34906584F + Mth.cos(limbSwing * 0.75F + 3.1415927F) * 1.2F * limbSwingAmount;
-    this.left_leg_2_axis.xRot = 0.9599311F + -Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.0F * limbSwingAmount;
-    this.left_leg_3_axis.xRot = -0.87266463F + Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.5F * limbSwingAmount;
-    this.left_foot_axis.xRot = 0.34906584F + -Mth.cos(limbSwing * 0.5F + 3.1415927F) * 1.4F * limbSwingAmount;
-    this.right_leg_1_axis.xRot = -0.34906584F + Mth.cos(limbSwing * 0.75F) * 1.2F * limbSwingAmount;
-    this.right_leg_2_axis.xRot = 0.9599311F + -Mth.cos(limbSwing * 0.5F) * 1.0F * limbSwingAmount;
-    this.right_leg_3_axis.xRot = -0.87266463F + Mth.cos(limbSwing * 0.5F) * 1.5F * limbSwingAmount;
-    this.right_foot_axis.xRot = 0.34906584F + -Mth.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
-    this.tail_1_axis.zRot = Mth.cos(limbSwing * 0.5F) * 0.31F * limbSwingAmount;
-    this.tail_2_axis.zRot = Mth.cos(limbSwing * 0.5F) * 0.31F * limbSwingAmount;
-    this.tail_3_axis.zRot = Mth.cos(limbSwing * 0.5F) * 0.31F * limbSwingAmount;
+  private void getWalkAnim(float limbSwing, float limbSwingAmount) {
+    this.stomach_axis.y = 0 - Mth.cos(limbSwing * 2.0F) * 1.8F * limbSwingAmount;
+    this.tail_1_axis.y = -1.0F - Mth.cos(limbSwing * 2.0F) * 1.8F * limbSwingAmount;
+
+    this.neck_axis.yRot = 0 + Mth.cos(limbSwing) * 0.25F * limbSwingAmount;
+    this.rib_cage_axis.yRot = 0 - Mth.cos(limbSwing) * 0.25F * limbSwingAmount;
+    this.stomach_axis.yRot = 0 - Mth.cos(limbSwing) * 0.15F * limbSwingAmount;
+
+    this.left_arm_axis.yRot = 0 - Mth.cos(limbSwing) * 0.8F * limbSwingAmount;
+    this.right_arm_axis.yRot = 0 - Mth.cos(limbSwing) * 0.8F * limbSwingAmount;
+
+    this.left_leg_1_axis.xRot = -0.34906584F - Mth.cos(limbSwing) * 1.2F * limbSwingAmount;
+    this.left_leg_2_axis.xRot = 0.9599311F - Mth.cos(limbSwing) * 0.8F * limbSwingAmount;
+    //this.left_leg_3_axis.xRot = -0.87266463F - Mth.cos(limbSwing) * 1.5F * limbSwingAmount;
+    this.left_foot_axis.xRot = 0.34906584F + Mth.cos(limbSwing) * 2.0F * limbSwingAmount;
+
+    this.right_leg_1_axis.xRot = -0.34906584F + Mth.cos(limbSwing) * 1.2F * limbSwingAmount;
+    this.right_leg_2_axis.xRot = 0.9599311F + Mth.cos(limbSwing * 0.5F) * 1.0F * limbSwingAmount;
+    //this.right_leg_3_axis.xRot = -0.87266463F + Mth.cos(limbSwing * 0.5F) * 1.5F * limbSwingAmount;
+    this.right_foot_axis.xRot = 0.34906584F - Mth.cos(limbSwing) * 1.6F * limbSwingAmount;
+
+    this.tail_1_axis.zRot = Mth.cos(limbSwing * 0.75F) * 0.33F * limbSwingAmount;
+    this.tail_2_axis.zRot = Mth.cos(limbSwing * 0.75F) * 0.33F * limbSwingAmount;
+    this.tail_3_axis.zRot = Mth.cos(limbSwing * 0.75F) * 0.33F * limbSwingAmount;
   }
 
-  private void getAttackAnim(LemurianEntity entity, int i, float ageInTicks) {
+  private void getAttackAnim(LemurianEntity entity, int attackTick, float ageInTicks) {
     int random = RandomSource.create().nextIntBetweenInclusive(1, 3);
     if (entity.getIsSelectedHand()) {
       this.rightHandSelected = entity.getIsRightHandSelected();
@@ -264,7 +268,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     if (this.rightHandSelected) {
       //switch(random) {
       //case 1:
-      rightPunch(i, ageInTicks);
+      rightPunch(attackTick, ageInTicks);
       //break;
       //case 2:
       //break;
@@ -275,7 +279,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
     } else {
       //switch(random) {
       //case 1:
-      leftPunch(i, ageInTicks);
+      leftPunch(attackTick, ageInTicks);
       //break;
       //case 2:
       //break;

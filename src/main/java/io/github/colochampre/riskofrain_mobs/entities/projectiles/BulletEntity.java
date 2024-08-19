@@ -1,5 +1,7 @@
-package io.github.colochampre.riskofrain_mobs.entities;
+package io.github.colochampre.riskofrain_mobs.entities.projectiles;
 
+import io.github.colochampre.riskofrain_mobs.RoRConfig;
+import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractDroneEntity;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -16,6 +18,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.packets.SpawnEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class BulletEntity extends EntityMobProjectile {
 
@@ -24,10 +27,10 @@ public class BulletEntity extends EntityMobProjectile {
     super(type, level);
   }
 
-  public BulletEntity(Level worldIn, GunnerDroneEntity drone) {
+  public BulletEntity(Level worldIn, AbstractDroneEntity drone) {
     super(EntityInit.DRONE_BULLET_ENTITY.get(), worldIn, drone);
     Vec3 vec3 = drone.position().add(calcOffsetVec(new Vec3(0, 0, 0.2F * drone.getScale()), 0F, drone.getYRot()));
-    this.setPos(vec3.x, vec3.y, vec3.z);
+    this.setPos(vec3.x, drone.getEyeY(), vec3.z);
   }
 
   public BulletEntity(SpawnEntity entity, Level world) {
@@ -48,7 +51,8 @@ public class BulletEntity extends EntityMobProjectile {
 
   @Override
   protected float getDamage() {
-    return 1 + random.nextInt(3);
+    double d0 = RoRConfig.SERVER.BULLETS_DAMAGE.get();
+    return (float) d0;
   }
 
   @Override
@@ -64,7 +68,7 @@ public class BulletEntity extends EntityMobProjectile {
   }
 
   @Override
-  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+  protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
   }
 
   @Override

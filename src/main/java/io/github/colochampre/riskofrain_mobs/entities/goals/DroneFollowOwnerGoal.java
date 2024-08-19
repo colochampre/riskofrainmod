@@ -2,19 +2,14 @@ package io.github.colochampre.riskofrain_mobs.entities.goals;
 
 import java.util.EnumSet;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
-import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class DroneFollowOwnerGoal extends Goal {
   private final TamableAnimal tamable;
@@ -28,14 +23,14 @@ public class DroneFollowOwnerGoal extends Goal {
   private float oldWaterCost;
   private final boolean canFly;
 
-  public DroneFollowOwnerGoal(TamableAnimal drone, double speed, float start, float stop, boolean flies) {
+  public DroneFollowOwnerGoal(TamableAnimal drone, double speed, float start, float stop, boolean canFly) {
     this.tamable = drone;
     this.level = drone.level();
     this.speedModifier = speed;
     this.navigation = drone.getNavigation();
     this.startDistance = start;
     this.stopDistance = stop;
-    this.canFly = flies;
+    this.canFly = canFly;
     this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     if (!(drone.getNavigation() instanceof GroundPathNavigation) && !(drone.getNavigation() instanceof FlyingPathNavigation)) {
       throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
@@ -86,7 +81,7 @@ public class DroneFollowOwnerGoal extends Goal {
       this.timeToRecalcPath = this.adjustedTickDelay(10);
       if (!this.tamable.isLeashed() && !this.tamable.isPassenger()) {
         if (this.tamable.distanceToSqr(this.owner) >= 600.0D) {
-          this.teleportToOwner();
+          this.tamable.tryToTeleportToOwner();
         } else {
           this.navigation.moveTo(this.owner, this.speedModifier);
         }
@@ -94,7 +89,7 @@ public class DroneFollowOwnerGoal extends Goal {
     }
   }
 
-  private void teleportToOwner() {
+  /*private void teleportToOwner() {
     BlockPos blockpos = this.owner.blockPosition();
 
     for (int i = 0; i < 10; ++i) {
@@ -121,7 +116,7 @@ public class DroneFollowOwnerGoal extends Goal {
   }
 
   private boolean canTeleportTo(BlockPos pos) {
-    PathType blockpathtypes = WalkNodeEvaluator.getPathTypeStatic((Mob) this.tamable, pos.mutable());
+    PathType blockpathtypes = WalkNodeEvaluator.getPathTypeStatic((Mob) this.level, pos.mutable());
     if (blockpathtypes != PathType.WALKABLE) {
       return false;
     } else {
@@ -137,5 +132,5 @@ public class DroneFollowOwnerGoal extends Goal {
 
   private int randomIntInclusive(int p_25301_, int p_25302_) {
     return this.tamable.getRandom().nextInt(p_25302_ - p_25301_ + 1) + p_25301_;
-  }
+  }*/
 }

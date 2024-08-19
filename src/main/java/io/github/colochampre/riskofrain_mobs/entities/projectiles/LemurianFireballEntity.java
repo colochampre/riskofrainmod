@@ -1,4 +1,4 @@
-package io.github.colochampre.riskofrain_mobs.entities;
+package io.github.colochampre.riskofrain_mobs.entities.projectiles;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import net.minecraft.core.BlockPos;
@@ -35,16 +35,16 @@ public class LemurianFireballEntity extends Fireball {
   protected void onHitEntity(@NotNull EntityHitResult hitResult) {
     super.onHitEntity(hitResult);
     Level var3 = this.level();
-    if (var3 instanceof ServerLevel serverlevel) {
-      Entity entity1 = hitResult.getEntity();
+    if (var3 instanceof ServerLevel serverLevel) {
+      Entity entity = hitResult.getEntity();
       Entity owner = this.getOwner();
-      int ticks = entity1.getRemainingFireTicks();
-      entity1.igniteForSeconds(5.0F);
+      int ticks = entity.getRemainingFireTicks();
+      entity.igniteForSeconds(5);
       DamageSource source = this.damageSources().fireball(this, owner);
-      if (!entity1.hurt(source, 5.0F)) {
-        entity1.setRemainingFireTicks(ticks);
-      } else {
-        EnchantmentHelper.doPostAttackEffects(serverlevel, entity1, source);
+      if (!entity.hurt(this.damageSources().fireball(this, owner), 5.0F)) {
+        entity.setRemainingFireTicks(ticks);
+      } else if (owner instanceof LivingEntity) {
+        EnchantmentHelper.doPostAttackEffects(serverLevel, entity, source);
       }
     }
   }

@@ -1,28 +1,126 @@
 {
-  "entity.drone.death1": {
+  "entity.beetle.ambient": {
     "category": "entity",
-    "subtitle": "Drone shuts down ",
+    "subtitle": "Beetle noise",
     "sounds": [
       {
-        "name": "riskofrain_mobs:entity/drone/drone_death1_01",
+        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_ambient_04",
         "stream": true
       }
     ]
   },
-  "entity.drone.death2": {
+  "entity.beetle.attack": {
+    "category": "entity",
+    "subtitle": "Beetle attack",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_attack_01",
+        "stream": true
+      }
+    ]
+  },
+  "entity.beetle.death": {
+    "category": "entity",
+    "subtitle": "Beetle dies",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_death_01",
+        "stream": true
+      }
+    ]
+  },
+  "entity.beetle.hurt": {
+    "category": "entity",
+    "subtitle": "Beetle hurts",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_impact_05",
+        "stream": true
+      }
+    ]
+  },
+  "entity.beetle.step": {
+    "category": "entity",
+    "subtitle": "Beetle hurts",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_05",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/beetle/beetle_step_06",
+        "stream": true
+      }
+    ]
+  },
+  "entity.drone.breaks": {
+    "category": "entity",
+    "subtitle": "Drone breaks",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/drone/drone_breaks_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/drone/drone_breaks_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/drone/drone_breaks_03",
+        "stream": true
+      }
+    ]
+  },
+  "entity.drone.death": {
     "category": "entity",
     "subtitle": "Drone shuts down",
     "sounds": [
       {
-        "name": "riskofrain_mobs:entity/drone/drone_death2_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/drone/drone_death2_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:entity/drone/drone_death2_03",
+        "name": "riskofrain_mobs:entity/drone/drone_death_01",
         "stream": true
       }
     ]
@@ -47,9 +145,9 @@
       }
     ]
   },
-  "entity.gunner_drone.shoot": {
+  "entity.drone.bullet_shoot": {
     "category": "entity",
-    "subtitle": "Gunner Drone shoots",
+    "subtitle": "Bullet shoots",
     "sounds": [
       {
         "name": "riskofrain_mobs:entity/drone/drone_attack_01",
@@ -217,6 +315,16 @@
       }
     ]
   },
+  "entity.lemurian.spawn": {
+    "category": "entity",
+    "subtitle": "Lemurian spawns",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/lemurian/lemurian_spawn_01",
+        "stream": true
+      }
+    ]
+  },
   "entity.stone_golem.clap": {
     "category": "entity",
     "subtitle": "Stone Golem claps",
@@ -357,58 +465,214 @@
       }
     ]
   },
-  "entity.advancement.proc": {
+  "entity.wisp.ambient": {
     "category": "entity",
+    "subtitle": "Wisp energy",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_ambient_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_ambient_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_ambient_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_ambient_04",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.attack_charge": {
+    "category": "entity",
+    "subtitle": "Wisp charging attack",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_charge_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_charge_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_charge_03",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.attack_fire": {
+    "category": "entity",
+    "subtitle": "Wisp fires attack",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_fire_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_fire_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_attack_fire_03",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.death": {
+    "category": "entity",
+    "subtitle": "Wisp dies",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_death_01",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.hurt": {
+    "category": "entity",
+    "subtitle": "Wisp impact",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_05",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_impact_06",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.loop": {
+    "category": "entity",
+    "subtitle": "Wisp flying",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_04",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_active_loop_05",
+        "stream": true
+      }
+    ]
+  },
+  "entity.wisp.spawn": {
+    "category": "entity",
+    "subtitle": "Wisp spawns",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_spawn_01",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_spawn_02",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_spawn_03",
+        "stream": true
+      },
+      {
+        "name": "riskofrain_mobs:entity/wisp/wisp_spawn_04",
+        "stream": true
+      }
+    ]
+  },
+  "event.advancement": {
+    "category": "event",
     "subtitle": "Advancement",
     "sounds": [
       {
-        "name": "riskofrain_mobs:entity/event/advancement_proc_01",
+        "name": "riskofrain_mobs:event/advancement_01",
         "stream": true
       }
     ]
   },
-  "entity.level_up.proc": {
-    "category": "entity",
-    "subtitle": "Level up",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:entity/event/level_up_proc_01",
-        "stream": true
-      }
-    ]
-  },
-  "entity.player_death.proc": {
-    "category": "entity",
-    "subtitle": "Player dies",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:entity/event/player_death_proc_01",
-        "stream": true
-      }
-    ]
-  },
-  "interactive.chat_message": {
-    "category": "entity",
+  "event.chat_message": {
+    "category": "event",
     "subtitle": "Chat message",
     "sounds": [
       {
-        "name": "riskofrain_mobs:interactive/chat_message_01",
+        "name": "riskofrain_mobs:event/chat_message_01",
         "stream": true
       },
       {
-        "name": "riskofrain_mobs:interactive/chat_message_02",
+        "name": "riskofrain_mobs:event/chat_message_02",
         "stream": true
       },
       {
-        "name": "riskofrain_mobs:interactive/chat_message_03",
+        "name": "riskofrain_mobs:event/chat_message_03",
         "stream": true
       },
       {
-        "name": "riskofrain_mobs:interactive/chat_message_04",
+        "name": "riskofrain_mobs:event/chat_message_04",
         "stream": true
       },
       {
-        "name": "riskofrain_mobs:interactive/chat_message_05",
+        "name": "riskofrain_mobs:event/chat_message_05",
+        "stream": true
+      }
+    ]
+  },
+  "event.difficulty_change": {
+    "category": "event",
+    "subtitle": "Difficulty change",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:event/difficulty_change_01",
+        "stream": true
+      }
+    ]
+  },
+  "event.level_up": {
+    "category": "event",
+    "subtitle": "Level up",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:event/level_up_01",
+        "stream": true
+      }
+    ]
+  },
+  "event.player_death": {
+    "category": "event",
+    "subtitle": "Player dies",
+    "sounds": [
+      {
+        "name": "riskofrain_mobs:event/player_death_01",
         "stream": true
       }
     ]
@@ -441,128 +705,6 @@
     "sounds": [
       {
         "name": "riskofrain_mobs:interactive/insufficient_founds_01",
-        "stream": true
-      }
-    ]
-  },
-  "item.bustling_fungus.proc_1": {
-    "category": "item",
-    "subtitle": "Bustling Fungus proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/bustling_fungus/bustling_fungus_proc_01",
-        "stream": true
-      }
-    ]
-  },
-  "item.bustling_fungus.proc_2": {
-    "category": "item",
-    "subtitle": "Bustling Fungus proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/bustling_fungus/bustling_fungus_proc_02",
-        "stream": true
-      }
-    ]
-  },
-  "item.crowbar.proc": {
-    "category": "item",
-    "subtitle": "Crowbar proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/crowbar/crowbar_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/crowbar/crowbar_proc_02",
-        "stream": true
-      }
-    ]
-  },
-  "item.infusion.proc": {
-    "category": "item",
-    "subtitle": "Infusion proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_03",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_04",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_05",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/infusion/infusion_proc_06",
-        "stream": true
-      }
-    ]
-  },
-  "item.lens_crit.proc": {
-    "category": "item",
-    "subtitle": "Lens crit proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_03",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/lens_makers_glasses/lens_crit_proc_04",
-        "stream": true
-      }
-    ]
-  },
-  "item.rose_buckler.proc": {
-    "category": "item",
-    "subtitle": "Rose Buckler proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/rose_buckler/rose_buckler_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/rose_buckler/rose_buckler_proc_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/rose_buckler/rose_buckler_proc_03",
-        "stream": true
-      }
-    ]
-  },
-  "item.tougher_times.proc": {
-    "category": "item",
-    "subtitle": "Tougher Times proc",
-    "sounds": [
-      {
-        "name": "riskofrain_mobs:item/tougher_times/tougher_times_proc_01",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/tougher_times/tougher_times_proc_02",
-        "stream": true
-      },
-      {
-        "name": "riskofrain_mobs:item/tougher_times/tougher_times_proc_03",
         "stream": true
       }
     ]

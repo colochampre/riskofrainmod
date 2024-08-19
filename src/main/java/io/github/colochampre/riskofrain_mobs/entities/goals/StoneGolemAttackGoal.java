@@ -1,6 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities.goals;
 
-import io.github.colochampre.riskofrain_mobs.entities.StoneGolemEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.StoneGolemEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Difficulty;
@@ -36,45 +36,44 @@ public class StoneGolemAttackGoal extends Goal {
   }
 
   public boolean canUse() {
-    LivingEntity livingentity = this.golem.getTarget();
-    if (livingentity == null) {
+    LivingEntity target = this.golem.getTarget();
+    if (target == null) {
       return false;
-    } else if (!livingentity.isAlive()) {
+    } else if (!target.isAlive()) {
       return false;
     } else {
       if (canPenalize) {
         if (--this.ticksUntilNextPathRecalculation <= 0) {
-          this.path = this.golem.getNavigation().createPath(livingentity, 0);
+          this.path = this.golem.getNavigation().createPath(target, 0);
           this.ticksUntilNextPathRecalculation = 4 + this.golem.getRandom().nextInt(7);
           return this.path != null;
         } else {
           return true;
         }
       }
-      this.path = this.golem.getNavigation().createPath(livingentity, 0);
+      this.path = this.golem.getNavigation().createPath(target, 0);
       if (this.path != null) {
         return true;
       } else {
-        return this.getAttackReachSqr(livingentity) >= this.golem.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
+        return this.getAttackReachSqr(target) >= this.golem.distanceToSqr(target.getX(), target.getY(), target.getZ());
       }
     }
   }
 
   public boolean canContinueToUse() {
-    LivingEntity livingentity = this.golem.getTarget();
-    if (livingentity == null) {
+    LivingEntity target = this.golem.getTarget();
+    if (target == null) {
       return false;
-    } else if (!livingentity.isAlive()) {
+    } else if (!target.isAlive()) {
       return false;
     } else if (!this.followingTargetEvenIfNotSeen) {
       return !this.golem.getNavigation().isDone();
     } else {
-      return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player) livingentity).isCreative();
+      return !(target instanceof Player) || !target.isSpectator() && !((Player) target).isCreative();
     }
   }
 
   public void start() {
-    // Laser
     this.laserAttackTick = -10;
     LivingEntity livingentity = this.golem.getTarget();
     if (livingentity != null) {
@@ -88,7 +87,7 @@ public class StoneGolemAttackGoal extends Goal {
 
   public void stop() {
     this.golem.setActiveAttackTarget(0);
-    this.golem.setTarget((LivingEntity) null);
+    this.golem.setTarget(null);
     this.golem.setAggressive(false);
     this.golem.getNavigation().stop();
   }
@@ -98,36 +97,36 @@ public class StoneGolemAttackGoal extends Goal {
   }
 
   public void tick() {
-    LivingEntity livingentity = this.golem.getTarget();
+    super.tick();
+    LivingEntity target = this.golem.getTarget();
     --this.laserCooldown;
 
-    if (livingentity != null) {
-      boolean flag = this.golem.hasLineOfSight(livingentity);
-      this.golem.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
-      meleeAttackTick(livingentity);
-
-      if (!flag) {
-        this.golem.setTarget((LivingEntity) null);
+    if (target != null) {
+      boolean canSee = this.golem.hasLineOfSight(target);
+      this.golem.getLookControl().setLookAt(target, 90.0F, 90.0F);
+      meleeAttackTick(target);
+      if (!canSee) {
+        this.golem.setActiveAttackTarget(0);
+        this.golem.setTarget(null);
       } else {
-        laserTick(livingentity);
-        //super.tick();
+        laserTick(target);
       }
     }
   }
 
-  private void meleeAttackTick(LivingEntity livingentity) {
-    double d0 = this.golem.distanceToSqr(livingentity);
+  private void meleeAttackTick(LivingEntity target) {
+    double distance = this.golem.distanceToSqr(target);
     this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
-    if ((this.followingTargetEvenIfNotSeen || this.golem.getSensing().hasLineOfSight(livingentity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.golem.getRandom().nextFloat() < 0.05F)) {
-      this.pathedTargetX = livingentity.getX();
-      this.pathedTargetY = livingentity.getY();
-      this.pathedTargetZ = livingentity.getZ();
+    if ((this.followingTargetEvenIfNotSeen || this.golem.getSensing().hasLineOfSight(target)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || target.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.golem.getRandom().nextFloat() < 0.05F)) {
+      this.pathedTargetX = target.getX();
+      this.pathedTargetY = target.getY();
+      this.pathedTargetZ = target.getZ();
       this.ticksUntilNextPathRecalculation = 4 + this.golem.getRandom().nextInt(7);
       if (this.canPenalize) {
         this.ticksUntilNextPathRecalculation += failedPathFindingPenalty;
         if (this.golem.getNavigation().getPath() != null) {
           net.minecraft.world.level.pathfinder.Node finalPathPoint = this.golem.getNavigation().getPath().getEndNode();
-          if (finalPathPoint != null && livingentity.distanceToSqr(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
+          if (finalPathPoint != null && target.distanceToSqr(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
             failedPathFindingPenalty = 0;
           else
             failedPathFindingPenalty += 10;
@@ -135,26 +134,26 @@ public class StoneGolemAttackGoal extends Goal {
           failedPathFindingPenalty += 10;
         }
       }
-      if (d0 > 1024.0D) {
+      if (distance > 1024.0D) {
         this.ticksUntilNextPathRecalculation += 10;
-      } else if (d0 > 256.0D) {
+      } else if (distance > 256.0D) {
         this.ticksUntilNextPathRecalculation += 5;
       }
-      if (!this.golem.getNavigation().moveTo(livingentity, this.speedModifier)) {
+      if (!this.golem.getNavigation().moveTo(target, this.speedModifier)) {
         this.ticksUntilNextPathRecalculation += 15;
       }
       this.ticksUntilNextPathRecalculation = this.adjustedTickDelay(this.ticksUntilNextPathRecalculation);
     }
     this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
-    this.checkAndPerformAttack(livingentity, d0);
+    this.checkAndPerformAttack(target, distance);
   }
 
-  protected void laserTick(LivingEntity livingentity) {
+  protected void laserTick(LivingEntity target) {
     if (this.laserCooldown <= 0) {
       ++this.laserAttackTick;
     }
     if (this.laserAttackTick == 0) {
-      this.golem.setActiveAttackTarget(livingentity.getId());
+      this.golem.setActiveAttackTarget(target.getId());
       if (!this.golem.isSilent()) {
         this.golem.playSound(this.getLaserChargeSound(), 2.0F, 1.0F);
       }
@@ -166,11 +165,12 @@ public class StoneGolemAttackGoal extends Goal {
         f *= 2.0F;
       }
       this.golem.playSound(this.getLaserFireSound(), 3.0F, 1.0F);
-      livingentity.playSound(this.getLaserFireSound(), 3.0F, 1.0F);
-      livingentity.hurt(golem.damageSources().indirectMagic(this.golem, this.golem), f);
-      livingentity.hurt(golem.damageSources().mobAttack(this.golem), this.golem.getAttackDamage() / 2);
-      livingentity.addDeltaMovement(vec3);
-      this.golem.setTarget((LivingEntity) null);
+      target.playSound(this.getLaserFireSound(), 3.0F, 1.0F);
+      target.hurt(golem.damageSources().indirectMagic(this.golem, this.golem), f);
+      target.hurt(golem.damageSources().mobAttack(this.golem), this.golem.getAttackDamage() / 2);
+      target.addDeltaMovement(vec3);
+      this.golem.setActiveAttackTarget(0);
+      this.golem.setTarget(null);
       this.laserCooldown = 85;
     }
   }
@@ -190,14 +190,14 @@ public class StoneGolemAttackGoal extends Goal {
   }
 
   protected SoundEvent getLaserChargeSound() {
-    return (SoundEvent) SoundInit.STONE_GOLEM_LASER_CHARGE.get();
+    return SoundInit.STONE_GOLEM_LASER_CHARGE.get();
   }
 
   protected SoundEvent getLaserFireSound() {
-    return (SoundEvent) SoundInit.STONE_GOLEM_LASER_FIRE.get();
+    return SoundInit.STONE_GOLEM_LASER_FIRE.get();
   }
 
   protected double getAttackReachSqr(LivingEntity entity) {
-    return (double) (this.golem.getBbWidth() * 1.5F * this.golem.getBbWidth() * 1.5F + entity.getBbWidth());
+    return (this.golem.getBbWidth() * 1.5F * this.golem.getBbWidth() * 1.5F + entity.getBbWidth());
   }
 }

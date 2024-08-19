@@ -2,29 +2,20 @@ package io.github.colochampre.riskofrain_mobs.events;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
-import io.github.colochampre.riskofrain_mobs.entities.AbstractFlyingDroneEntity;
-import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
-import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
-import io.github.colochampre.riskofrain_mobs.entities.StoneGolemEntity;
-import io.github.colochampre.riskofrain_mobs.init.EntityInit;
+import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractDroneEntity;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
+import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.event.entity.player.AdvancementEvent;
+import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 public class ModCommonEvents {
 
@@ -32,27 +23,51 @@ public class ModCommonEvents {
   public static class ForgeEvents {
 
     @SubscribeEvent
-    public void onEntityJoinWorld(MobSpawnEvent.FinalizeSpawn event) {
-      try {
-        if (event.getEntity() instanceof final AbstractVillager villager) {
-          villager.targetSelector.addGoal(3, new AvoidEntityGoal<>(villager, LemurianEntity.class, 6.0F, 0.8D, 1.0D));
-        }
-      } catch (Exception e) {
-        RoRmod.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
+    public static void advancementsSound(AdvancementEvent event) {
+      double d0 = RoRConfig.SERVER.ADVANCEMENT.get();
+      if (d0 > 0 && Minecraft.getInstance().player != null) {
+        Minecraft.getInstance().player.playSound(SoundInit.ADVANCEMENT.get(), (float) (d0 / 100), 1.0F);
       }
     }
 
     @SubscribeEvent
+    public static void chatMessageSound(ClientChatReceivedEvent event) {
+      double d0 = RoRConfig.SERVER.CHAT_MESSAGE.get();
+      if (d0 > 0 && Minecraft.getInstance().player != null) {
+        Minecraft.getInstance().player.playSound(SoundInit.CHAT_MESSAGE.get(), (float) (d0 / 100), 1.0F);
+      }
+    }
+
+    /*@SubscribeEvent
+    public static void difficultyChangeSound(DifficultyChangeEvent event) {
+      if (RoRConfig.SERVER.DIFFICULTY_UPDATE.get() > 0) {
+        SoundEvent soundEvent = SoundInit.DIFFICULTY_CHANGE.get();
+        RoRmod.CHANNEL.send(PacketDistributor.ALL.noArg(), new DifficultyChangeSoundPacket(soundEvent));
+      }
+    }*/
+
+    @SubscribeEvent
     public static void playerDeathSound(LivingDeathEvent event) {
-      if (RoRConfig.SERVER.DEATH_SOUND.get() && event.getEntity() instanceof Player player) {
+      double d0 = RoRConfig.SERVER.PLAYER_DEATH_SOUND.get();
+      if (d0 > 0 && event.getEntity() instanceof Player player) {
         Level level = player.level();
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.PLAYER_DEATH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.PLAYER_DEATH.get(), SoundSource.PLAYERS, (float) d0 / 100, 1.0F);
+      }
+    }
+
+    @SubscribeEvent
+    public static void levelUpSound(PlayerXpEvent.LevelChange event) {
+      double d0 = RoRConfig.SERVER.LEVEL_UPDATE.get();
+      if (d0 > 0) {
+        Player player = event.getEntity();
+        Level level = player.level();
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.LEVEL_UP.get(), SoundSource.PLAYERS, (float) d0 / 100, 1.0F);
       }
     }
 
     @SubscribeEvent
     public static void immuneDrones(LivingAttackEvent event) {
-      if (event.getEntity() instanceof AbstractFlyingDroneEntity drone && event.getSource().getDirectEntity() instanceof LivingEntity) {
+      if (event.getEntity() instanceof AbstractDroneEntity drone && event.getSource().getDirectEntity() instanceof LivingEntity) {
         boolean isTamed = drone.isTame();
         if (isTamed) {
           return;
@@ -61,24 +76,6 @@ public class ModCommonEvents {
           event.setCanceled(true);
         }
       }
-    }
-  }
-
-  @Mod.EventBusSubscriber(modid = RoRmod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-  public static class ModEventBusEvents {
-
-    @SubscribeEvent
-    public static void commonSetup(SpawnPlacementRegisterEvent event) {
-      event.register(EntityInit.LEMURIAN_ENTITY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LemurianEntity::canSpawn, SpawnPlacementRegisterEvent.Operation.AND);
-      event.register(EntityInit.STONE_GOLEM_ENTITY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, StoneGolemEntity::canSpawn, SpawnPlacementRegisterEvent.Operation.AND);
-      event.register(EntityInit.GUNNER_DRONE_ENTITY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.WORLD_SURFACE, GunnerDroneEntity::checkDroneSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-    }
-
-    @SubscribeEvent
-    public static void entityAttributes(EntityAttributeCreationEvent event) {
-      event.put(EntityInit.LEMURIAN_ENTITY.get(), LemurianEntity.createAttributes().build());
-      event.put(EntityInit.STONE_GOLEM_ENTITY.get(), StoneGolemEntity.createAttributes().build());
-      event.put(EntityInit.GUNNER_DRONE_ENTITY.get(), GunnerDroneEntity.createAttributes().build());
     }
   }
 }

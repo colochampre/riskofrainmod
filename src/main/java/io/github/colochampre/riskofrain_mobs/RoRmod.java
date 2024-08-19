@@ -11,6 +11,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,10 +21,15 @@ import org.apache.logging.log4j.Logger;
 public class RoRmod {
   public static final Logger LOGGER = LogManager.getLogger();
   public static final String MODID = "riskofrain_mobs";
+  private static final String PROTOCOL_VERSION = "1";
+  /*public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(MODID, "main"),
+          () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);*/
 
   public RoRmod() {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    bus.addListener(this::setup);
     bus.addListener(this::addItemsToTabs);
+    ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, RoRConfig.SERVER_SPEC);
 
     SoundInit.SOUNDS.register(bus);
     ItemInit.ITEMS.register(bus);
@@ -31,14 +37,21 @@ public class RoRmod {
     BiomeModifierInit.BIOME_MODIFIER_SERIALIZERS.register(bus);
 
     MinecraftForge.EVENT_BUS.register(this);
-    ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, RoRConfig.SERVER_SPEC);
+  }
+
+  private void setup(final FMLCommonSetupEvent event) {
+    //CHANNEL.registerMessage(0, DifficultyChangeSoundPacket.class, DifficultyChangeSoundPacket::encode, DifficultyChangeSoundPacket::decode, DifficultyChangeSoundPacket::handle);
   }
 
   private void addItemsToTabs(BuildCreativeModeTabContentsEvent event) {
     if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
-      event.accept(ItemInit.LEMURIAN_SPAWN_EGG.get());
-      event.accept(ItemInit.STONE_GOLEM_SPAWN_EGG.get());
-      event.accept(ItemInit.GUNNER_DRONE_SPAWN_EGG.get());
+      event.accept(ItemInit.BEETLE_SPAWN_EGG);
+      event.accept(ItemInit.LEMURIAN_SPAWN_EGG);
+      event.accept(ItemInit.STONE_GOLEM_SPAWN_EGG);
+      event.accept(ItemInit.WISP_SPAWN_EGG);
+      event.accept(ItemInit.GUNNER_DRONE_SPAWN_EGG);
+      event.accept(ItemInit.GUNNER_TURRET_SPAWN_EGG);
+      event.accept(ItemInit.GUNNER_TURRET_ITEM);
     }
   }
 }

@@ -2,7 +2,7 @@ package io.github.colochampre.riskofrain_mobs.client.renderer.layers;
 
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.LemurianModel;
-import io.github.colochampre.riskofrain_mobs.entities.LemurianEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.LemurianEntity;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
@@ -19,8 +19,9 @@ public class LemurianEyesLayer extends EyesLayer<LemurianEntity, LemurianModel<L
     super(layer);
   }
 
+  @NotNull
   @Override
-  public @NotNull RenderType renderType() {
+  public RenderType renderType() {
     return LEMURIAN_EYES;
   }
 }

@@ -1,11 +1,34 @@
 {
-  "entity.riskofrain_mobs.gunner_drone_entity": "炮塔无人机",
+  "entity.riskofrain_mobs.beetle_entity": "Beetle",
   "entity.riskofrain_mobs.lemurian_entity":	 "月光石",
   "entity.riskofrain_mobs.stone_golem_entity":  "石魔像",
+  "entity.riskofrain_mobs.wisp_entity":  "Wisp",
+  "entity.riskofrain_mobs.gunner_drone_entity": "炮塔无人机",
+  "entity.riskofrain_mobs.gunner_turret_entity": "Gunner Turret",
 
-  "item.riskofrain_mobs.gunner_drone_spawn_egg": "Gunner Drone Spawn Egg",
+  "item.riskofrain_mobs.beetle_spawn_egg": "Beetle Spawn Egg",
   "item.riskofrain_mobs.lemurian_spawn_egg": "月光石刷怪蛋",
   "item.riskofrain_mobs.stone_golem_spawn_egg": "石傀儡刷怪蛋",
+  "item.riskofrain_mobs.wisp_spawn_egg": "Wisp Spawn Egg",
+  "item.riskofrain_mobs.gunner_drone_spawn_egg": "Gunner Drone Spawn Egg",
+  "item.riskofrain_mobs.gunner_turret_spawn_egg": "Gunner Turret Spawn Egg",
 
-  "message.riskofrain_mobs.not_gold": "NOT GOLD!"
+  "item.riskofrain_mobs.gunner_turret": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_white": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_orange": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_magenta": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_yellow": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_lime": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_pink": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_gray": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_light_gray": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_cyan": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_purple": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_blue": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_brown": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_green": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_red": "Gunner Turret",
+  "item.riskofrain_mobs.gunner_turret_black": "Gunner Turret",
+
+  "message.riskofrain_mobs.not_gold": "UES Military Supplies only accepts gold as payment"
 }

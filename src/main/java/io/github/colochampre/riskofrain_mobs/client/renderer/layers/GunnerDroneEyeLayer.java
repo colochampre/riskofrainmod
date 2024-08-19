@@ -1,8 +1,10 @@
 package io.github.colochampre.riskofrain_mobs.client.renderer.layers;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.client.models.GunnerDroneModel;
-import io.github.colochampre.riskofrain_mobs.entities.GunnerDroneEntity;
+import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerDroneEntity;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
@@ -17,6 +19,13 @@ public class GunnerDroneEyeLayer extends EyesLayer<GunnerDroneEntity, GunnerDron
 
   public GunnerDroneEyeLayer(RenderLayerParent<GunnerDroneEntity, GunnerDroneModel<GunnerDroneEntity>> layer) {
     super(layer);
+  }
+
+  @Override
+  public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource source, int packedLight, GunnerDroneEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    if (entity.isTame() && !entity.isInSittingPose()) {
+      super.render(poseStack, source, packedLight, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+    }
   }
 
   @Override
