@@ -3,19 +3,26 @@ package io.github.colochampre.riskofrain_mobs.events;
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.allies.AbstractDroneEntity;
+import io.github.colochampre.riskofrain_mobs.entities.enemies.StoneGolemEntity;
+import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Objects;
 
 public class ModCommonEvents {
 
@@ -76,6 +83,35 @@ public class ModCommonEvents {
           event.setCanceled(true);
         }
       }
+    }
+
+    @SubscribeEvent
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
+      if (event.getPlacedBlock().getBlock() == Blocks.REDSTONE_BLOCK) {
+        Level level = Objects.requireNonNull(event.getEntity()).level();
+        BlockPos pos = event.getPos();
+        if (isValidBlackstoneStructure(level, pos)) {
+          removeStructure(level, pos);
+          StoneGolemEntity golem = new StoneGolemEntity(EntityInit.STONE_GOLEM_ENTITY.get(), level);
+          golem.setPos(pos.getX() + 0.5, pos.getY() - 2, pos.getZ() + 0.5);
+          level.addFreshEntity(golem);
+        }
+      }
+    }
+
+    private static boolean isValidBlackstoneStructure(Level level, BlockPos pos) {
+      return level.getBlockState(pos.below()).getBlock() == Blocks.BLACKSTONE &&
+              level.getBlockState(pos.below(2)).getBlock() == Blocks.BLACKSTONE &&
+              level.getBlockState(pos.below().east()).getBlock() == Blocks.BLACKSTONE &&
+              level.getBlockState(pos.below().west()).getBlock() == Blocks.BLACKSTONE;
+    }
+
+    private static void removeStructure(Level level, BlockPos pos) {
+      level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+      level.setBlock(pos.below(), Blocks.AIR.defaultBlockState(), 3);
+      level.setBlock(pos.below(2), Blocks.AIR.defaultBlockState(), 3);
+      level.setBlock(pos.below().east(), Blocks.AIR.defaultBlockState(), 3);
+      level.setBlock(pos.below().west(), Blocks.AIR.defaultBlockState(), 3);
     }
   }
 }
