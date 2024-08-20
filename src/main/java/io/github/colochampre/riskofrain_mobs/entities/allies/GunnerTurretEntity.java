@@ -1,9 +1,9 @@
 package io.github.colochampre.riskofrain_mobs.entities.allies;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerTurretAttackGoal;
 import io.github.colochampre.riskofrain_mobs.entities.projectiles.BulletEntity;
+import io.github.colochampre.riskofrain_mobs.init.DataComponentInit;
 import io.github.colochampre.riskofrain_mobs.init.ItemInit;
 import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.core.BlockPos;
@@ -217,13 +217,12 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   private void tagItemStack(ItemStack stack) {
-    CompoundTag tag = new CompoundTag();
-    tag.putFloat("TurretHealth", this.getHealth());
+    float health = this.getHealth();
+    stack.set(DataComponentInit.HEALTH.get(), health);
+    stack.set(DataComponentInit.COLOR_ID.get(), this.getBodyColor().getId());
     if (this.getOwnerUUID() != null) {
-      tag.putUUID("OwnerUUID", this.getOwnerUUID());
+      stack.set(DataComponentInit.OWNER_UUID.get(), this.getOwnerUUID());
     }
-    int colorId = this.entityData.get(DATA_BODY_COLOR);
-    tag.putInt("BodyColor", colorId);
   }
 
   public void setDamage(float damage) {

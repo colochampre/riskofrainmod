@@ -1,9 +1,6 @@
 package io.github.colochampre.riskofrain_mobs;
 
-import io.github.colochampre.riskofrain_mobs.init.BiomeModifierInit;
-import io.github.colochampre.riskofrain_mobs.init.EntityInit;
-import io.github.colochampre.riskofrain_mobs.init.ItemInit;
-import io.github.colochampre.riskofrain_mobs.init.SoundInit;
+import io.github.colochampre.riskofrain_mobs.init.*;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -32,6 +29,7 @@ public class RoRmod {
     ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, RoRConfig.SERVER_SPEC);
 
     SoundInit.SOUNDS.register(bus);
+    DataComponentInit.COMPONENTS.register(bus);
     ItemInit.ITEMS.register(bus);
     EntityInit.ENTITY_TYPES.register(bus);
     BiomeModifierInit.BIOME_MODIFIER_SERIALIZERS.register(bus);

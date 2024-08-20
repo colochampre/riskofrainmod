@@ -28,7 +28,7 @@ public class ItemInit {
 
   // Gunner Turret Colors
   public static final RegistryObject<Item> GUNNER_TURRET_ITEM = ITEMS.register("gunner_turret",
-          () -> new GunnerTurretItem(props().stacksTo(16)));
+          () -> new GunnerTurretItem(props().stacksTo(16).component(DataComponentInit.COLOR_ID.get(), 3)));
   public static final RegistryObject<Item> GUNNER_TURRET_ITEM_WHITE = ITEMS.register("gunner_turret_white",
           () -> new GunnerTurretItem(props().stacksTo(16)));
   public static final RegistryObject<Item> GUNNER_TURRET_ITEM_ORANGE = ITEMS.register("gunner_turret_orange",
