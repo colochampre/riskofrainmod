@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +44,6 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class StoneGolemEntity extends Monster {
-  private static final ResourceLocation STONE_GOLEM_LOOT_TABLE = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "entities/stone_golem_entity");
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(StoneGolemEntity.class, EntityDataSerializers.INT);
   private final HurtByTargetGoal hurtByTargetGoal = new HurtByTargetGoal(this);
   private LivingEntity clientSideCachedAttackTarget;
@@ -131,7 +131,7 @@ public class StoneGolemEntity extends Monster {
   }
 
   private void destroyLeavesBlocks() {
-    if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+    if (this.horizontalCollision && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
       boolean flag = false;
       AABB aabb = this.getBoundingBox().inflate(0.2D);
       for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
@@ -304,11 +304,6 @@ public class StoneGolemEntity extends Monster {
   protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockState) {
     this.playSound(this.getStepSound(), 3.0F, 1.0F);
   }
-
-  /*@Override
-  protected @NotNull ResourceLocation getDefaultLootTable() {
-    return STONE_GOLEM_LOOT_TABLE;
-  }*/
 
   @Override
   public int getMaxFallDistance() {

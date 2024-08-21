@@ -10,12 +10,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -81,6 +85,19 @@ public class ModCommonEvents {
         }
         if (event.isCancelable()) {
           event.setCanceled(true);
+        }
+      }
+    }
+
+    @SubscribeEvent
+    public static void stoneGolemLoot(LivingDropsEvent event) {
+      if (event.getEntity() instanceof StoneGolemEntity) {
+        int count = 3 + event.getEntity().level().random.nextInt(3);
+        ItemStack blackstone = new ItemStack(Items.BLACKSTONE, count);
+        event.getDrops().add(new ItemEntity(event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), blackstone));
+        if (event.getEntity().level().random.nextFloat() < 0.5f) {
+          ItemStack redstone = new ItemStack(Items.REDSTONE_BLOCK);
+          event.getDrops().add(new ItemEntity(event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), redstone));
         }
       }
     }

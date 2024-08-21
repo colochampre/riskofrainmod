@@ -17,11 +17,14 @@ out
 build
 .gradle
 
-# other
+# windows
 desktop.ini
+
+# other
+changelog.txt
+ror_changelog.txt
 eclipse
 run
 
 # Files from Forge MDK
 forge*changelog.txt
-/riskofrain_changelog.txt
