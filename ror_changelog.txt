@@ -1,3 +1,8 @@
+v1.2.1
+Improved
+- Wisps and Stone golems cannot be affected by poison effect
+___________________________________________________________________________________________________
+
 v1.2.0
 New
 - Beetle mob

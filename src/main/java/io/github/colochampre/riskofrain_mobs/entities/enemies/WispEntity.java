@@ -16,6 +16,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -112,6 +114,10 @@ public class WispEntity extends Monster implements FlyingAnimal {
     }
   }
 
+  public static boolean canSpawn(EntityType<WispEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    return !level.getLevel().isRainingAt(pos) && checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
+  }
+
   @Override
   public void aiStep() {
     super.aiStep();
@@ -132,10 +138,6 @@ public class WispEntity extends Monster implements FlyingAnimal {
     this.stayElevated();
     this.takeWaterDamage();
     EntityUtils.updateMovementInclinations(this, this.currentBodyXRot, this.currentBodyZRot, newBodyXRot -> this.currentBodyXRot = newBodyXRot, newBodyZRot -> this.currentBodyZRot = newBodyZRot);
-  }
-
-  public static boolean canSpawn(EntityType<WispEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-    return !level.getLevel().isRainingAt(pos) && checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
   }
 
   private void doLoopSound() {
@@ -211,6 +213,17 @@ public class WispEntity extends Monster implements FlyingAnimal {
 
   public void doHitScanParticles(LivingEntity target) {
     EntityUtils.doParticlesAtEntity(target, ParticleTypes.LAVA, 3);
+  }
+
+  private void takeWaterDamage() {
+    if (this.isInWaterRainOrBubble()) {
+      ++this.underWaterTicks;
+    } else {
+      this.underWaterTicks = 0;
+    }
+    if (this.underWaterTicks > 20) {
+      this.hurt(this.damageSources().drown(), 1.0F);
+    }
   }
 
   @Nullable
@@ -310,15 +323,12 @@ public class WispEntity extends Monster implements FlyingAnimal {
     return flag;
   }
 
-  private void takeWaterDamage() {
-    if (this.isInWaterRainOrBubble()) {
-      ++this.underWaterTicks;
-    } else {
-      this.underWaterTicks = 0;
+  @Override
+  public boolean canBeAffected(@NotNull MobEffectInstance effect) {
+    if (effect.getEffect() == MobEffects.POISON) {
+      return false;
     }
-    if (this.underWaterTicks > 20) {
-      this.hurt(this.damageSources().drown(), 1.0F);
-    }
+    return super.canBeAffected(effect);
   }
 
   protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
