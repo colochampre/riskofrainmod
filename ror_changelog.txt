@@ -1,6 +1,11 @@
 v1.2.1
 New
 - Stone golems can be generated with a T shaped structure of Blackstone and a block of Redstone
+
+Improved
+- Wisps and Stone golems cannot be affected by poison effect
+___________________________________________________________________________________________________
+
 ___________________________________________________________________________________________________
 
 v1.2.0

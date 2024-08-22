@@ -15,6 +15,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -302,6 +304,14 @@ public class WispEntity extends Monster implements FlyingAnimal {
     boolean flag = super.hurt(source, amount);
     EntityUtils.doParticlesAtEntity(this, ParticleTypes.LAVA, 3);
     return flag;
+  }
+
+  @Override
+  public boolean canBeAffected(MobEffectInstance effect) {
+    if (effect.getEffect() == MobEffects.POISON) {
+      return false;
+    }
+    return super.canBeAffected(effect);
   }
 
   private void takeWaterDamage() {
