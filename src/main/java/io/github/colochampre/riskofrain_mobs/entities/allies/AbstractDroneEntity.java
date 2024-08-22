@@ -21,6 +21,8 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
@@ -435,6 +437,14 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
       }
       return super.hurt(source, damage);
     }
+  }
+
+  @Override
+  public boolean canBeAffected(@NotNull MobEffectInstance effect) {
+    if (effect.getEffect() == MobEffects.POISON) {
+      return false;
+    }
+    return super.canBeAffected(effect);
   }
 
   public boolean isDroneMoving() {
