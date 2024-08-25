@@ -5,7 +5,7 @@ import io.github.colochampre.riskofrain_items.RoRitems;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import io.github.colochampre.riskofrain_items.init.SoundInit;
 import io.github.colochampre.riskofrain_items.items.*;
-import io.github.colochampre.riskofrain_items.util.Util;
+import io.github.colochampre.riskofrain_items.util.ItemUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -56,8 +56,8 @@ public class ModCommonEvents {
       if (event.getSource().getEntity() instanceof Player player) {
         Level level = player.level();
         if (!level.isClientSide()) {
-          if (Util.hasItemStack(player, ItemInit.CROWBAR.get())) {
-            int total = Util.countItemStack(player, ItemInit.CROWBAR.get());
+          if (ItemUtil.hasItemStack(player, ItemInit.CROWBAR.get())) {
+            int total = ItemUtil.countItemStack(player, ItemInit.CROWBAR.get());
             LivingEntity livingentity = event.getEntity();
             boolean canProc = (double) livingentity.getHealth() >= (double) livingentity.getMaxHealth() * 0.8D;
             if (!canProc) {
@@ -79,7 +79,7 @@ public class ModCommonEvents {
       if (event.getSource().getEntity() instanceof Player player) {
         Level level = player.level();
         if (!level.isClientSide()) {
-          if (Util.hasItemStack(player, ItemInit.GOLDEN_GUN.get())) {
+          if (ItemUtil.hasItemStack(player, ItemInit.GOLDEN_GUN.get())) {
             int total = 0;
             int gold = 0;
             Inventory inv = player.getInventory();
@@ -118,8 +118,8 @@ public class ModCommonEvents {
         Level level = player.level();
         if (!level.isClientSide()) {
           if (!player.isCreative()) {
-            if (Util.hasItemStack(player, ItemInit.INFUSION.get())) {
-              int total = Util.countItemStack(player, ItemInit.INFUSION.get());
+            if (ItemUtil.hasItemStack(player, ItemInit.INFUSION.get())) {
+              int total = ItemUtil.countItemStack(player, ItemInit.INFUSION.get());
               if (player.getMaxHealth() < 20 + (total * 10 * 2)) {
                 player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(RoRitems.MODID, "Infusion hp increase"), 1.0, AttributeModifier.Operation.ADD_VALUE));
                 level.playSound(null, player.getX(), player.getY(), player.getZ(), InfusionItem.getProcSound(), SoundSource.PLAYERS, 0.4F, 1.0F);
@@ -135,8 +135,8 @@ public class ModCommonEvents {
       if (event.getSource().getEntity() instanceof Player player) {
         Level level = player.level();
         if (!level.isClientSide()) {
-          if (Util.hasItemStack(player, ItemInit.LENS_MAKERS_GLASSES.get())) {
-            int total = Util.countItemStack(player, ItemInit.LENS_MAKERS_GLASSES.get());
+          if (ItemUtil.hasItemStack(player, ItemInit.LENS_MAKERS_GLASSES.get())) {
+            int total = ItemUtil.countItemStack(player, ItemInit.LENS_MAKERS_GLASSES.get());
             double chance = 1.5625D * (double) total - 1.0D;
             int random = RandomSource.create().nextInt(100);
             boolean proc = random <= chance;
@@ -157,8 +157,8 @@ public class ModCommonEvents {
       if (event.getEntity() instanceof Player player) {
         Level level = player.level();
         if (!level.isClientSide()) {
-          if (Util.hasItemStack(player, ItemInit.REPULSION_ARMOR_PLATE.get())) {
-            int total = Util.countItemStack(player, ItemInit.REPULSION_ARMOR_PLATE.get());
+          if (ItemUtil.hasItemStack(player, ItemInit.REPULSION_ARMOR_PLATE.get())) {
+            int total = ItemUtil.countItemStack(player, ItemInit.REPULSION_ARMOR_PLATE.get());
             float damage = event.getAmount();
             float reducedDamage = damage - total < 1 ? 1 : damage - total;
             event.setAmount(reducedDamage);
@@ -173,8 +173,8 @@ public class ModCommonEvents {
       if (event.getEntity() instanceof Player player) {
         Level level = player.level();
         if (!level.isClientSide()) {
-          if (Util.hasItemStack(player, ItemInit.ROSE_BUCKLER.get())) {
-            int total = Util.countItemStack(player, ItemInit.ROSE_BUCKLER.get());
+          if (ItemUtil.hasItemStack(player, ItemInit.ROSE_BUCKLER.get())) {
+            int total = ItemUtil.countItemStack(player, ItemInit.ROSE_BUCKLER.get());
             if (player.isSprinting()) {
               level.playSound(null, player.getX(), player.getY(), player.getZ(), RoseBucklerItem.getProcSound(), SoundSource.PLAYERS, Math.min(0.4F * total, 8.0F), 1.0F + (RandomSource.create().nextFloat() - RandomSource.create().nextFloat()) * 0.2F);
             }
@@ -188,8 +188,8 @@ public class ModCommonEvents {
       if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof Enemy) {
         Level level = player.level();
         if (!level.isClientSide()) {
-          if (Util.hasItemStack(player, ItemInit.SMART_SHOPPER.get())) {
-            int total = Util.countItemStack(player, ItemInit.SMART_SHOPPER.get());
+          if (ItemUtil.hasItemStack(player, ItemInit.SMART_SHOPPER.get())) {
+            int total = ItemUtil.countItemStack(player, ItemInit.SMART_SHOPPER.get());
             LivingEntity livingentity = event.getEntity();
             ItemStack goldItem = new ItemStack(Items.GOLD_NUGGET, livingentity.getExperienceReward((ServerLevel) level, player));
             ItemEntity goldItemEntity = new ItemEntity(level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), goldItem);
@@ -211,8 +211,8 @@ public class ModCommonEvents {
       if (event.getSource().getEntity() instanceof Player player) {
         Level level = player.level();
         if (!level.isClientSide()) {
-          if (Util.hasItemStack(player, ItemInit.TOPAZ_BROOCH.get())) {
-            int total = Util.countItemStack(player, ItemInit.TOPAZ_BROOCH.get());
+          if (ItemUtil.hasItemStack(player, ItemInit.TOPAZ_BROOCH.get())) {
+            int total = ItemUtil.countItemStack(player, ItemInit.TOPAZ_BROOCH.get());
             if (total * 4 <= player.getMaxHealth()) {
               player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 160, total - 1, true, false));
             } else {
@@ -228,8 +228,8 @@ public class ModCommonEvents {
       if (event.getEntity() instanceof Player player) {
         Level level = player.level();
         if (!level.isClientSide()) {
-          if (Util.hasItemStack(player, ItemInit.TOUGHER_TIMES.get())) {
-            int total = Util.countItemStack(player, ItemInit.TOUGHER_TIMES.get());
+          if (ItemUtil.hasItemStack(player, ItemInit.TOUGHER_TIMES.get())) {
+            int total = ItemUtil.countItemStack(player, ItemInit.TOUGHER_TIMES.get());
             double chance = (1.0D - 1.0D / (1.0D + 0.15D * (double) total) - 0.01D) * 100.0D;
             int random = RandomSource.create().nextInt(100);
             boolean proc = random <= chance;

@@ -1,7 +1,6 @@
 {
   "replace": false,
   "entries": [
-    "riskofrain_items:inject_common_loot",
-    "riskofrain_items:inject_uncommon_loot"
+    "riskofrain_items:inject_common_loot"
   ]
 }

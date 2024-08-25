@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.colochampre.riskofrain_items.init.LootInit;
+import io.github.colochampre.riskofrain_items.util.ItemUtil;
 import net.minecraft.Util;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.ItemStack;
@@ -45,7 +46,7 @@ public class CommonLootTableModifier implements IGlobalLootModifier {
     if (context.getRandom().nextInt(2) == 0) { // 50% spawn chance
       Random random = new Random();
       int randomInt = random.nextInt(2) + 1; // 50/50 1-2 items
-      generatedLoot.add(new ItemStack(io.github.colochampre.riskofrain_items.util.Util.getSmallChestItem(), randomInt));
+      generatedLoot.add(new ItemStack(ItemUtil.getSmallChestItem(), randomInt));
     }
     return generatedLoot;
   }

@@ -1,6 +1,5 @@
 package io.github.colochampre.riskofrain_items.util;
 
-import io.github.colochampre.riskofrain_items.RoRitems;
 import io.github.colochampre.riskofrain_items.init.ItemInit;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Util {
+public class ItemUtil {
 
   private static final List<Item> commonItems = new ArrayList<>();
   private static final List<Item> uncommonItems = new ArrayList<>();
