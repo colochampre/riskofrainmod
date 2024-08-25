@@ -126,7 +126,10 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
   }
 
   public static boolean checkDroneSpawnRules(EntityType<GunnerDroneEntity> entity, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource randomSource) {
-    return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
+    return (level.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)
+            || level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON)
+            || level.getBlockState(pos.below()).is(BlockTags.ARMADILLO_SPAWNABLE_ON))
+            && isBrightEnoughToSpawn(level, pos);
   }
 
   @Override

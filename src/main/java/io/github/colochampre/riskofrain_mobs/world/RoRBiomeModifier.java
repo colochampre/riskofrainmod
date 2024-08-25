@@ -28,12 +28,10 @@ public class RoRBiomeModifier implements BiomeModifier {
     if (phase == Phase.ADD && biome.containsTag(BiomeTags.IS_OVERWORLD) && !biome.is(Biomes.DEEP_DARK) && !biome.is(Tags.Biomes.IS_VOID)) {
       int droneSpawnRate = RoRConfig.SERVER.DRONES_SPAWN_RATE.get();
       if (droneSpawnRate > 0) { // Drones
-        List<MobSpawnSettings.SpawnerData> droneList = Arrays.asList(
-                new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_DRONE_ENTITY.get(), droneSpawnRate, 1, 1),
-                new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_TURRET_ENTITY.get(), droneSpawnRate, 1, 1)
-        );
-        MobSpawnSettings.SpawnerData randomDrone = droneList.get(ThreadLocalRandom.current().nextInt(droneList.size()));
-        builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(randomDrone);
+        builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_DRONE_ENTITY.get(),
+                droneSpawnRate, 1, 1));
+        builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(EntityInit.GUNNER_TURRET_ENTITY.get(),
+                droneSpawnRate, 1, 1));
       }
       if (!biome.is(Tags.Biomes.IS_MUSHROOM)) {
         if (RoRConfig.SERVER.BEETLE_OVERWORLD_SPAWN_RATE.get() > 0) { // Beetles

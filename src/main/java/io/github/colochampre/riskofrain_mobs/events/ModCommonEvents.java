@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -110,6 +111,9 @@ public class ModCommonEvents {
         if (isValidBlackstoneStructure(level, pos)) {
           removeStructure(level, pos);
           StoneGolemEntity golem = new StoneGolemEntity(EntityInit.STONE_GOLEM_ENTITY.get(), level);
+          Objects.requireNonNull(golem.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_ATTACK_DAMAGE.get());
+          Objects.requireNonNull(golem.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_MAX_HEALTH.get());
+          golem.setHealth(golem.getMaxHealth());
           golem.setPos(pos.getX() + 0.5, pos.getY() - 2, pos.getZ() + 0.5);
           level.addFreshEntity(golem);
         }
@@ -117,16 +121,23 @@ public class ModCommonEvents {
     }
 
     private static boolean isValidBlackstoneStructure(Level level, BlockPos pos) {
-      return level.getBlockState(pos.below()).getBlock() == Blocks.BLACKSTONE &&
+      boolean northSouth = level.getBlockState(pos.below()).getBlock() == Blocks.BLACKSTONE &&
+              level.getBlockState(pos.below(2)).getBlock() == Blocks.BLACKSTONE &&
+              level.getBlockState(pos.below().north()).getBlock() == Blocks.BLACKSTONE &&
+              level.getBlockState(pos.below().south()).getBlock() == Blocks.BLACKSTONE;
+      boolean eastWest = level.getBlockState(pos.below()).getBlock() == Blocks.BLACKSTONE &&
               level.getBlockState(pos.below(2)).getBlock() == Blocks.BLACKSTONE &&
               level.getBlockState(pos.below().east()).getBlock() == Blocks.BLACKSTONE &&
               level.getBlockState(pos.below().west()).getBlock() == Blocks.BLACKSTONE;
+      return northSouth || eastWest;
     }
 
     private static void removeStructure(Level level, BlockPos pos) {
       level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
       level.setBlock(pos.below(), Blocks.AIR.defaultBlockState(), 3);
       level.setBlock(pos.below(2), Blocks.AIR.defaultBlockState(), 3);
+      level.setBlock(pos.below().north(), Blocks.AIR.defaultBlockState(), 3);
+      level.setBlock(pos.below().south(), Blocks.AIR.defaultBlockState(), 3);
       level.setBlock(pos.below().east(), Blocks.AIR.defaultBlockState(), 3);
       level.setBlock(pos.below().west(), Blocks.AIR.defaultBlockState(), 3);
     }
