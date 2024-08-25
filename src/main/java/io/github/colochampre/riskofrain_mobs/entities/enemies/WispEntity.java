@@ -41,6 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WispEntity extends Monster implements FlyingAnimal {
@@ -313,6 +314,9 @@ public class WispEntity extends Monster implements FlyingAnimal {
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
     this.playSound(this.getSpawnSound(), 0.6F, 1.0F);
+    Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.WISP_ATTACK_DAMAGE.get());
+    Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.WISP_MAX_HEALTH.get());
+    this.setHealth(this.getMaxHealth());
     return super.finalizeSpawn(level, difficulty, type, data, tag);
   }
 

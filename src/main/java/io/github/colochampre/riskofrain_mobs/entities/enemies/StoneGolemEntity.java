@@ -42,6 +42,7 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class StoneGolemEntity extends Monster {
@@ -100,9 +101,9 @@ public class StoneGolemEntity extends Monster {
     super.aiStep();
     if (this.isAlive()) {
       if (this.isImmobile()) {
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0);
+        Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.0);
       } else {
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.25D);
       }
       LivingEntity target = this.getTarget();
       if (target == null) {
@@ -210,8 +211,8 @@ public class StoneGolemEntity extends Monster {
   @Nullable
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
-    this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_ATTACK_DAMAGE.get());
-    this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_MAX_HEALTH.get());
+    Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_ATTACK_DAMAGE.get());
+    Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_MAX_HEALTH.get());
     this.setHealth(this.getMaxHealth());
     double d0 = RoRConfig.SERVER.STONE_GOLEM_SPAWN_VOLUME.get();
     if (d0 > 0) {

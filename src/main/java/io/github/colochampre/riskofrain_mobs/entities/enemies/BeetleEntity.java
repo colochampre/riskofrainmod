@@ -26,6 +26,8 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class BeetleEntity extends Monster {
 
   private int attackTick;
@@ -64,9 +66,9 @@ public class BeetleEntity extends Monster {
     super.aiStep();
     if (this.isAlive()) {
       if (this.isImmobile()) {
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0);
+        Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.0);
       } else {
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.21D);
+        Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.21D);
       }
       if (this.attackTick > 0) {
         --this.attackTick;
@@ -77,8 +79,8 @@ public class BeetleEntity extends Monster {
   @Nullable
   @Override
   public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor server, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
-    this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(RoRConfig.SERVER.BEETLE_ATTACK_DAMAGE.get());
-    this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(RoRConfig.SERVER.BEETLE_MAX_HEALTH.get());
+    Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.BEETLE_ATTACK_DAMAGE.get());
+    Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.BEETLE_MAX_HEALTH.get());
     this.setHealth(this.getMaxHealth());
     return super.finalizeSpawn(server, difficulty, type, groupData, tag);
   }
