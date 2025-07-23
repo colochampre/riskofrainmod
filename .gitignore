@@ -1,30 +1,66 @@
-# eclipse
-bin
+# IDEs and Editors
+## Eclipse
+bin/
 *.launch
-.settings
-.metadata
+.settings/
+.metadata/
 .classpath
 .project
 
-# idea
-out
+## IntelliJ IDEA
+out/
 *.ipr
 *.iws
 *.iml
-.idea
+.idea/
+*.iml
+*.iws
 
-# gradle
-build
-.gradle
+## VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-# windows
+# Build tools
+gradle/
+.gradle/
+build/
+.gradlet/
+
+# Minecraft/Forge specific
+run/
+run-data/
+crash-reports/
+logs/
+
+# Windows specific
 desktop.ini
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# other
+# Project specific
 changelog.txt
 ror_changelog.txt
-eclipse
-run
+
+# Local configuration files
+*.properties
+*.prefs
+*.preferences
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Files from Forge MDK
 forge*changelog.txt
