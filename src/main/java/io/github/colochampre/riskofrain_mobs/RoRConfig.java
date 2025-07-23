@@ -186,19 +186,19 @@ public class RoRConfig {
       builder.push("Sound effects from Risk of Rain");
       ADVANCEMENT = builder
               .comment("Advancement sound volume. Set this to 0 to disable")
-              .defineInRange("advancementSoundVolume", 10, 0, 100);
+              .defineInRange("advancementSoundVolume", 0, 0, 100);
       CHAT_MESSAGE = builder
               .comment("Chat sound volume. Set this to 0 to disable")
-              .defineInRange("chatSoundVolume", 100, 0, 100);
+              .defineInRange("chatSoundVolume", 0, 0, 100);
       DIFFICULTY_UPDATE = builder
               .comment("Difficulty update sound volume. Set this to 0 to disable")
-              .defineInRange("difficultyUpdateSoundVolume", 100, 0, 100);
+              .defineInRange("difficultyUpdateSoundVolume", 0, 0, 100);
       LEVEL_UPDATE = builder
               .comment("Level update sound volume. Set this to 0 to disable")
-              .defineInRange("levelUpdateSoundVolume", 100, 0, 100);
+              .defineInRange("levelUpdateSoundVolume", 0, 0, 100);
       PLAYER_DEATH_SOUND = builder
               .comment("Player death sound volume. Set this to 0 to disable")
-              .defineInRange("deathSoundVolume", 100, 0, 100);
+              .defineInRange("deathSoundVolume", 0, 0, 100);
       builder.pop();
     }
   }

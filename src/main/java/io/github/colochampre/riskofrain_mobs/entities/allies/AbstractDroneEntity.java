@@ -16,8 +16,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -34,7 +32,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
@@ -139,10 +136,10 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
     }
   }
 
-  protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
+  protected @NotNull PathNavigation createNavigation(@SuppressWarnings("null") @NotNull Level level) {
     if (this.getDroneType() == TYPE_FLYING) {
       FlyingPathNavigation flyingPathNavigation = new FlyingPathNavigation(this, level) {
-        public boolean isStableDestination(BlockPos pos) {
+        public boolean isStableDestination(@SuppressWarnings("null") BlockPos pos) {
           return !this.level.getBlockState(pos.below()).isAir();
         }
       };
@@ -155,7 +152,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
     }
   }
 
-  public float getWalkTargetValue(@NotNull BlockPos pos, @NotNull LevelReader level) {
+  public float getWalkTargetValue(@SuppressWarnings("null") @NotNull BlockPos pos, @SuppressWarnings("null") @NotNull LevelReader level) {
     if (this.getDroneType() == TYPE_FLYING) {
       return level.getBlockState(pos).isAir() ? 20.0F : 0.0F;
     } else {
@@ -164,7 +161,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   @Override
-  protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+  protected void defineSynchedData(@SuppressWarnings("null") SynchedEntityData.@NotNull Builder builder) {
     super.defineSynchedData(builder);
     Difficulty difficulty = this.level().getDifficulty();
     int initialGold = difficulty == Difficulty.HARD ? (int) (this.getDronePrice() * 1.5) : this.getDronePrice();
@@ -173,13 +170,13 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   @Override
-  public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+  public void addAdditionalSaveData(@SuppressWarnings("null") @NotNull CompoundTag tag) {
     super.addAdditionalSaveData(tag);
     tag.putByte("GoldPrice", (byte) this.getCurrentGoldPrice());
   }
 
   @Override
-  public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+  public void readAdditionalSaveData(@SuppressWarnings("null") @NotNull CompoundTag tag) {
     super.readAdditionalSaveData(tag);
     if (tag.contains("GoldPrice", 99)) {
       this.setCurrentGoldPrice(tag.getInt("GoldPrice"));
@@ -187,7 +184,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   @Override
-  public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> accessor) {
+  public void onSyncedDataUpdated(@SuppressWarnings("null") @NotNull EntityDataAccessor<?> accessor) {
     super.onSyncedDataUpdated(accessor);
     if (DATA_ID_ATTACK_TARGET.equals(accessor)) {
       this.clientSideCachedAttackTarget = null;
@@ -257,7 +254,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   @Override
-  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData) {
+  public SpawnGroupData finalizeSpawn(@SuppressWarnings("null") @NotNull ServerLevelAccessor level, @SuppressWarnings("null") @NotNull DifficultyInstance instance, @SuppressWarnings("null") @NotNull MobSpawnType type, @SuppressWarnings("null") @Nullable SpawnGroupData groupData) {
     if (this.getCurrentGoldPrice() > 0) {
       String price = String.valueOf(this.getCurrentGoldPrice());
       Component component = Component.literal(price).withStyle(ChatFormatting.YELLOW);
@@ -268,7 +265,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   @Override
-  public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+  public @NotNull InteractionResult mobInteract(@SuppressWarnings("null") Player player, @SuppressWarnings("null") @NotNull InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
     Item item = itemstack.getItem();
     if (this.isTame()) {
@@ -376,7 +373,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   @Override
-  public void die(@NotNull DamageSource source) {
+  public void die(@SuppressWarnings("null") @NotNull DamageSource source) {
     this.playSound(this.getShutDownSound(), 1.0F, 1.0F);
     super.die(source);
   }
@@ -427,7 +424,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   @Override
-  public boolean hurt(@NotNull DamageSource source, float damage) {
+  public boolean hurt(@SuppressWarnings("null") @NotNull DamageSource source, float damage) {
     if (this.isInvulnerableTo(source)) {
       return false;
     } else {
@@ -443,7 +440,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   @Override
-  public boolean canBeAffected(MobEffectInstance effect) {
+  public boolean canBeAffected(@SuppressWarnings("null") MobEffectInstance effect) {
     if (effect.getEffect() == MobEffects.POISON) {
       return false;
     }
@@ -459,7 +456,7 @@ public abstract class AbstractDroneEntity extends TamableAnimal {
   }
 
   @Override
-  public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mob) {
+  public AgeableMob getBreedOffspring(@SuppressWarnings("null") @NotNull ServerLevel level, @SuppressWarnings("null") @NotNull AgeableMob mob) {
     return null;
   }
 }
