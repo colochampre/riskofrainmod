@@ -43,10 +43,9 @@ Desktop.ini
 
 # Project specific
 changelog.txt
-ror_changelog.txt
+#ror_changelog.txt
 
 # Local configuration files
-*.properties
 *.prefs
 *.preferences
 
