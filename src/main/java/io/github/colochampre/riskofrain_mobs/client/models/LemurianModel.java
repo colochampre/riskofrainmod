@@ -8,7 +8,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -258,7 +257,7 @@ public class LemurianModel<T extends LemurianEntity> extends EntityModel<T> {
   }
 
   private void getAttackAnim(LemurianEntity entity, int attackTick, float ageInTicks) {
-    int random = RandomSource.create().nextIntBetweenInclusive(1, 3);
+    //int random = entity.getRandom().nextIntBetweenInclusive(1, 3);
     if (entity.getIsSelectedHand()) {
       this.rightHandSelected = entity.getIsRightHandSelected();
       entity.setIsSelectingHand(false);
