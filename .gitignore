@@ -26,6 +26,7 @@ out/
 # Build tools
 gradle/
 .gradle/
+gradlew
 build/
 .gradlet/
 
