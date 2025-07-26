@@ -1,3 +1,12 @@
+v1.2.2
+Changes
+- Sounds default config values set to 0
+- Fixed crash caused by RandomSource usage in LemurianModel
+- Updated Forge version
+___________________________________________________________________________________________________
+
+___________________________________________________________________________________________________
+
 v1.2.1
 New
 - Stone golems can be generated with a T shaped structure of Blackstone and a block of Redstone

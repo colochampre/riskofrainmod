@@ -1,12 +1,19 @@
 # IDEs and Editors
 ## Eclipse
 bin/
+# IDEs and Editors
+## Eclipse
+bin/
 *.launch
+.settings/
+.metadata/
 .settings/
 .metadata/
 .classpath
 .project
 
+## IntelliJ IDEA
+out/
 ## IntelliJ IDEA
 out/
 *.ipr
@@ -36,11 +43,39 @@ crash-reports/
 logs/
 
 # Windows specific
+.idea/
+*.iml
+*.iws
+
+## VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Build tools
+gradle/
+.gradle/
+build/
+.gradlet/
+
+# Minecraft/Forge specific
+run/
+run-data/
+crash-reports/
+logs/
+
+# Windows specific
 desktop.ini
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
+# Project specific
 # Project specific
 changelog.txt
 
