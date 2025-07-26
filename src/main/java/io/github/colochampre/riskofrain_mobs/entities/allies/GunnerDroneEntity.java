@@ -3,6 +3,7 @@ package io.github.colochampre.riskofrain_mobs.entities.allies;
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerDroneAttackGoal;
 import io.github.colochampre.riskofrain_mobs.entities.projectiles.BulletEntity;
+import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -43,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAttackMob {
+  private static final EntityDimensions GUNNER_DRONE_DIMENSIONS = EntityInit.GUNNER_TURRET_ENTITY.get().getDimensions().withEyeHeight(1.15625F);
   private static final EntityDataAccessor<Integer> DATA_BODY_COLOR = SynchedEntityData.defineId(GunnerDroneEntity.class, EntityDataSerializers.INT);
   private static final float MAX_ROTATION_SPEED = Mth.PI * 0.3F;
   private static final float ROTATION_ACCELERATION = 0.16F;
@@ -88,9 +90,9 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
   }
 
   @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_BODY_COLOR, DyeColor.LIGHT_BLUE.getId());
+  protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(DATA_BODY_COLOR, DyeColor.LIGHT_BLUE.getId());
   }
 
   @Override
@@ -108,6 +110,11 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
   }
 
   @Override
+  public boolean isFood(ItemStack p_27600_) {
+    return false;
+  }
+
+  @Override
   public void aiStep() {
     super.aiStep();
     if (this.isTame()) {
@@ -117,9 +124,9 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
   }
 
   @Override
-  public void setTame(boolean tamed) {
+  public void setTame(boolean tamed, boolean b2) {
     GunnerDroneAttackGoal attackGoal = new GunnerDroneAttackGoal(this, 16.0F);
-    super.setTame(tamed);
+    super.setTame(tamed, b2);
     if (tamed) {
       this.goalSelector.addGoal(3, attackGoal);
     }
@@ -132,11 +139,11 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
   }
 
   @Override
-  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData) {
     Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.BULLETS_DAMAGE.get());
     Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.GUNNER_DRONE_MAX_HEALTH.get());
     this.setHealth(this.getMaxHealth());
-    return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
+    return super.finalizeSpawn(level, instance, type, groupData);
   }
 
   @Override
@@ -249,11 +256,6 @@ public class GunnerDroneEntity extends AbstractDroneEntity implements RangedAtta
 
   public void setBodyColor(DyeColor color) {
     this.entityData.set(DATA_BODY_COLOR, color.getId());
-  }
-
-  @Override
-  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
-    return 0.055F;
   }
 
   public @NotNull Vec3 getLeashOffset() {

@@ -28,8 +28,8 @@ import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolemModel<StoneGolemEntity>> {
-  private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/stone_golem/stone_golem_default.png");
-  private static final ResourceLocation BEAM_LOCATION = new ResourceLocation(RoRmod.MODID, "textures/entity/stone_golem/laser_beam.png");
+  private static final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/stone_golem/stone_golem_default.png");
+  private static final ResourceLocation BEAM_LOCATION = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/stone_golem/laser_beam.png");
   private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(BEAM_LOCATION);
 
   public StoneGolemRenderer(EntityRendererProvider.Context context) {
@@ -140,7 +140,7 @@ public class StoneGolemRenderer extends MobRenderer<StoneGolemEntity, StoneGolem
             .uv(f4, f5)
             .overlayCoords(OverlayTexture.NO_OVERLAY)
             .uv2(15728880)
-            .normal(matrix3f, 0.0F, 1.0F, 0.0F)
+            .normal(0.0F, 1.0F, 0.0F)
             .endVertex();
   }
 

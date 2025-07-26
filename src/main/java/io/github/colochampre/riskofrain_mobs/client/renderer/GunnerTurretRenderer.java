@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class GunnerTurretRenderer extends MobRenderer<GunnerTurretEntity, GunnerTurretModel<GunnerTurretEntity>> {
-  private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/gunner_turret/gunner_turret_default.png");
+  private static final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/gunner_turret/gunner_turret_default.png");
 
   public GunnerTurretRenderer(EntityRendererProvider.Context context) {
     super(context, new GunnerTurretModel<>(context.bakeLayer(ModClientEvents.GUNNER_TURRET_LAYER)), 0.40F);

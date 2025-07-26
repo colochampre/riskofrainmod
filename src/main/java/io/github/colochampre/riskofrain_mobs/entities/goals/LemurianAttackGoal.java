@@ -165,7 +165,7 @@ public class LemurianAttackGoal extends Goal {
   }
 
   private void meleeAttackTick(LivingEntity target) {
-    double distance = this.lemurian.getPerceivedTargetDistanceSquareForMeleeAttack(target);
+    double distance = this.lemurian.distanceToSqr(target);
     this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
     if ((this.followingTargetEvenIfNotSeen || this.lemurian.getSensing().hasLineOfSight(target)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || target.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.lemurian.getRandom().nextFloat() < 0.05F)) {
       this.pathedTargetX = target.getX();

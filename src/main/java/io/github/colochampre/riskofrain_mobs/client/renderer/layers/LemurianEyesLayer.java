@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class LemurianEyesLayer extends EyesLayer<LemurianEntity, LemurianModel<LemurianEntity>> {
-  static final RenderType LEMURIAN_EYES = RenderType.eyes(new ResourceLocation(RoRmod.MODID, "textures/entity/lemurian/lemurian_eyes.png"));
+  static final RenderType LEMURIAN_EYES = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/lemurian/lemurian_eyes.png"));
 
   public LemurianEyesLayer(RenderLayerParent<LemurianEntity, LemurianModel<LemurianEntity>> layer) {
     super(layer);

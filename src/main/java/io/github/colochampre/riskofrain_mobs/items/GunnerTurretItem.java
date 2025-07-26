@@ -1,8 +1,9 @@
 package io.github.colochampre.riskofrain_mobs.items;
 
+import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.entities.allies.GunnerTurretEntity;
+import io.github.colochampre.riskofrain_mobs.init.DataComponentInit;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -32,7 +33,7 @@ public class GunnerTurretItem extends Item {
   }
 
   @Override
-  public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+  public @NotNull InteractionResultHolder<ItemStack> use(@SuppressWarnings("null") @NotNull Level level, @SuppressWarnings("null") @NotNull Player player, @SuppressWarnings("null") @NotNull InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
     HitResult hitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
     if (hitresult.getType() == HitResult.Type.MISS) {
@@ -51,29 +52,18 @@ public class GunnerTurretItem extends Item {
       }
       if (hitresult.getType() == HitResult.Type.BLOCK) {
         GunnerTurretEntity turret = new GunnerTurretEntity(EntityInit.GUNNER_TURRET_ENTITY.get(), level);
-        CompoundTag tag = itemstack.getTag();
         turret.moveTo(hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
         turret.setYRot(player.getYRot());
-        if (itemstack.hasTag()) {
-          if (tag != null) {
-            if (tag.contains("TurretHealth")) {
-              float health = tag.getFloat("TurretHealth");
-              turret.setHealth(health);
-            }
-            if (tag.contains("OwnerUUID")) {
-              UUID ownerUUID = tag.getUUID("OwnerUUID");
-              turret.tame(Objects.requireNonNull(level.getPlayerByUUID(ownerUUID)));
-            } else {
-              turret.tame(player);
-            }
-            if (tag.contains("BodyColor")) {
-              int colorId = tag.getInt("BodyColor");
-              turret.setBodyColor(DyeColor.byId(colorId));
-            }
-          }
-        } else {
-          turret.tame(player);
-        }
+
+        float maxHealth = RoRConfig.SERVER.GUNNER_TURRET_MAX_HEALTH.get().floatValue();
+        float health = itemstack.getOrDefault(DataComponentInit.HEALTH.get(), maxHealth);
+        int colorId = itemstack.getOrDefault(DataComponentInit.COLOR_ID.get(), 3);
+        UUID ownerUUID = itemstack.getOrDefault(DataComponentInit.OWNER_UUID.get(), player.getUUID());
+
+        turret.setHealth(health);
+        turret.setBodyColor(DyeColor.byId(colorId));
+        turret.tame(Objects.requireNonNull(level.getPlayerByUUID(ownerUUID)));
+
         if (!level.noCollision(turret, turret.getBoundingBox())) {
           return InteractionResultHolder.fail(itemstack);
         } else {

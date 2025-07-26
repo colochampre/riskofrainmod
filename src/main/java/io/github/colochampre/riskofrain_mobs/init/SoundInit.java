@@ -58,6 +58,6 @@ public final class SoundInit {
   public static final RegistryObject<SoundEvent> WISP_SPAWN = registerSoundEvent("entity.wisp.spawn");
 
   private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
-    return SOUNDS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(RoRmod.MODID, soundName)));
+    return SOUNDS.register(soundName, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, soundName)));
   }
 }

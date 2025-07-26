@@ -35,7 +35,7 @@ public class LemurianFireballEntity extends Fireball {
       Entity entity = hitResult.getEntity();
       Entity entity1 = this.getOwner();
       int i = entity.getRemainingFireTicks();
-      entity.setSecondsOnFire(5);
+      entity.setRemainingFireTicks(5);
       if (!entity.hurt(this.damageSources().fireball(this, entity1), 5.0F)) {
         entity.setRemainingFireTicks(i);
       } else if (entity1 instanceof LivingEntity) {

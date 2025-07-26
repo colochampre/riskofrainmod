@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class GunnerDroneEyeLayer extends EyesLayer<GunnerDroneEntity, GunnerDroneModel<GunnerDroneEntity>> {
-  static final RenderType GUNNER_DRONE_EYE = RenderType.eyes(new ResourceLocation(RoRmod.MODID, "textures/entity/gunner_drone/gunner_drone_eye.png"));
+  static final RenderType GUNNER_DRONE_EYE = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/gunner_drone/gunner_drone_eye.png"));
 
   public GunnerDroneEyeLayer(RenderLayerParent<GunnerDroneEntity, GunnerDroneModel<GunnerDroneEntity>> layer) {
     super(layer);

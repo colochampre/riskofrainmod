@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class GunnerTurretEyeLayer extends EyesLayer<GunnerTurretEntity, GunnerTurretModel<GunnerTurretEntity>> {
-  static final RenderType GUNNER_TURRET_EYE = RenderType.eyes(new ResourceLocation(RoRmod.MODID, "textures/entity/gunner_turret/gunner_turret_eye.png"));
+  static final RenderType GUNNER_TURRET_EYE = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/gunner_turret/gunner_turret_eye.png"));
 
   public GunnerTurretEyeLayer(RenderLayerParent<GunnerTurretEntity, GunnerTurretModel<GunnerTurretEntity>> layer) {
     super(layer);

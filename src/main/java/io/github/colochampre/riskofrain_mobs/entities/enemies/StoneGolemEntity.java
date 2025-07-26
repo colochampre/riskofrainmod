@@ -1,7 +1,6 @@
 package io.github.colochampre.riskofrain_mobs.entities.enemies;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
-import io.github.colochampre.riskofrain_mobs.RoRmod;
 import io.github.colochampre.riskofrain_mobs.entities.goals.StoneGolemAttackGoal;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
@@ -11,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -37,7 +35,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,7 +44,7 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class StoneGolemEntity extends Monster {
-  private static final ResourceLocation STONE_GOLEM_LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
+  //private static final ResourceLocation STONE_GOLEM_LOOT_TABLE = new ResourceLocation(RoRmod.MODID, "entities/stone_golem_entity");
   private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(StoneGolemEntity.class, EntityDataSerializers.INT);
   private final HurtByTargetGoal hurtByTargetGoal = new HurtByTargetGoal(this);
   private LivingEntity clientSideCachedAttackTarget;
@@ -55,9 +53,8 @@ public class StoneGolemEntity extends Monster {
 
   public StoneGolemEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
-    this.setMaxUpStep(1.0F);
     this.xpReward = 24;
-    this.setPathfindingMalus(BlockPathTypes.LEAVES, 0.0F);
+    this.setPathfindingMalus(PathType.LEAVES, 0.0F);
   }
 
   @Override
@@ -79,12 +76,13 @@ public class StoneGolemEntity extends Monster {
             .add(Attributes.FOLLOW_RANGE, 24.0D)
             .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
             .add(Attributes.MAX_HEALTH, 100.0D)
-            .add(Attributes.MOVEMENT_SPEED, 0.25D);
+            .add(Attributes.MOVEMENT_SPEED, 0.25D)
+            .add(Attributes.STEP_HEIGHT, 1.0);
   }
 
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
+  protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(DATA_ID_ATTACK_TARGET, 0);
   }
 
   @Override
@@ -209,19 +207,6 @@ public class StoneGolemEntity extends Monster {
   }
 
   @Nullable
-  @Override
-  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
-    Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_ATTACK_DAMAGE.get());
-    Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_MAX_HEALTH.get());
-    this.setHealth(this.getMaxHealth());
-    double d0 = RoRConfig.SERVER.STONE_GOLEM_SPAWN_VOLUME.get();
-    if (d0 > 0) {
-      this.playSound(this.getSpawnSound(), (float) ((d0 * 3) / 100), 1.0F);
-    }
-    return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
-  }
-
-  @Nullable
   public LivingEntity getActiveAttackTarget() {
     if (!this.hasActiveAttackTarget()) {
       return null;
@@ -240,6 +225,19 @@ public class StoneGolemEntity extends Monster {
     } else {
       return this.getTarget();
     }
+  }
+
+  @Nullable
+  @Override
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData) {
+    Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_ATTACK_DAMAGE.get());
+    Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.STONE_GOLEM_MAX_HEALTH.get());
+    this.setHealth(this.getMaxHealth());
+    double d0 = RoRConfig.SERVER.STONE_GOLEM_SPAWN_VOLUME.get();
+    if (d0 > 0) {
+      this.playSound(this.getSpawnSound(), (float) ((d0 * 3) / 100), 1.0F);
+    }
+    return super.finalizeSpawn(level, instance, type, groupData);
   }
 
   public void setActiveAttackTarget(int p_32818_) {
@@ -308,19 +306,14 @@ public class StoneGolemEntity extends Monster {
     this.playSound(this.getStepSound(), 3.0F, 1.0F);
   }
 
-  @Override
+  /*@Override
   protected @NotNull ResourceLocation getDefaultLootTable() {
     return STONE_GOLEM_LOOT_TABLE;
-  }
+  }*/
 
   @Override
   public int getMaxFallDistance() {
     return 24;
-  }
-
-  @Override
-  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
-    return 3.5F;
   }
 
   @Override

@@ -15,13 +15,13 @@ import org.joml.Matrix4f;
 import org.jetbrains.annotations.NotNull;
 
 public class BulletRenderer extends EntityRenderer<BulletEntity> {
-  private static final ResourceLocation TEXTURE = new ResourceLocation("textures/item/iron_nugget.png");
+  private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/item/iron_nugget.png");
 
   public BulletRenderer(EntityRendererProvider.Context context) {
     super(context);
   }
   // code from AlexsMod MudBall
-  public void render(@NotNull BulletEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+  public void render(@SuppressWarnings("null") @NotNull BulletEntity entity, float entityYaw, float partialTicks, @SuppressWarnings("null") PoseStack poseStack, @SuppressWarnings("null") MultiBufferSource buffer, int packedLight) {
     poseStack.pushPose();
     poseStack.scale(0.5F, 0.5F, 0.5F);
     poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
@@ -39,10 +39,15 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
   }
 
   private static void vertex(VertexConsumer p_114090_, Matrix4f matrix4f, Matrix3f matrix3f, int i1, float f1, int i2, int i3, int i4) {
-    p_114090_.vertex(matrix4f, f1 - 0.5F, (float) i2 - 0.25F, 0.0F).color(255, 255, 255, 255).uv((float) i3, (float) i4).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i1).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+    p_114090_.vertex(matrix4f, f1 - 0.5F, (float) i2 - 0.25F, 0.0F)
+            .color(255, 255, 255, 255)
+            .uv((float) i3, (float) i4)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(i1)
+            .normal(0.0F, 1.0F, 0.0F).endVertex();
   }
 
-  public @NotNull ResourceLocation getTextureLocation(@NotNull BulletEntity renderer) {
+  public @NotNull ResourceLocation getTextureLocation(@SuppressWarnings("null") @NotNull BulletEntity renderer) {
     return TEXTURE;
   }
 }

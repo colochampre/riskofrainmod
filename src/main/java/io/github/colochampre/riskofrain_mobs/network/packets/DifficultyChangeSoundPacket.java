@@ -1,12 +1,11 @@
 package io.github.colochampre.riskofrain_mobs.network.packets;
 
-import io.github.colochampre.riskofrain_mobs.RoRConfig;
+/*import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
@@ -43,4 +42,4 @@ public class DifficultyChangeSoundPacket {
     });
     context.setPacketHandled(true);
   }
-}
+}*/

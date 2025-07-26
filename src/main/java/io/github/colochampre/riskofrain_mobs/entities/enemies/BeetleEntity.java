@@ -1,9 +1,9 @@
 package io.github.colochampre.riskofrain_mobs.entities.enemies;
 
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
+import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.SoundInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -22,7 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,12 +31,13 @@ import java.util.Objects;
 public class BeetleEntity extends Monster {
 
   private int attackTick;
+  private static final EntityDimensions BEETLE_DIMENSIONS = EntityInit.BEETLE_ENTITY.get().getDimensions().withEyeHeight(1.4375F);
 
   public BeetleEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
     this.xpReward = 8;
-    this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, -1.0F);
+    this.setPathfindingMalus(PathType.POWDER_SNOW, -1.0F);
+    this.setPathfindingMalus(PathType.DANGER_POWDER_SNOW, -1.0F);
   }
 
   @Override
@@ -78,11 +79,11 @@ public class BeetleEntity extends Monster {
 
   @Nullable
   @Override
-  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor server, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor server, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData) {
     Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.BEETLE_ATTACK_DAMAGE.get());
     Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.BEETLE_MAX_HEALTH.get());
     this.setHealth(this.getMaxHealth());
-    return super.finalizeSpawn(server, difficulty, type, groupData, tag);
+    return super.finalizeSpawn(server, difficulty, type, groupData);
   }
 
   @Override
@@ -160,9 +161,14 @@ public class BeetleEntity extends Monster {
     this.playSound(this.getStepSound(), 0.25F, 1.0F);
   }
 
-  @Override
+  /*@Override
   protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
     return 1.4375F;
+  }*/
+
+  @Override
+  public @NotNull EntityDimensions getDefaultDimensions(@NotNull Pose pose) {
+    return BEETLE_DIMENSIONS;
   }
 
   public static boolean isMoving(LivingEntity entity) {

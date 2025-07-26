@@ -36,7 +36,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -59,11 +59,11 @@ public class WispEntity extends Monster implements FlyingAnimal {
   public WispEntity(EntityType<? extends Monster> type, Level level) {
     super(type, level);
     this.moveControl = new FlyingMoveControl(this, 16, true);
-    this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-    this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
+    this.setPathfindingMalus(PathType.COCOA, -1.0F);
+    this.setPathfindingMalus(PathType.DAMAGE_OTHER, -1.0F);
+    this.setPathfindingMalus(PathType.FENCE, -1.0F);
+    this.setPathfindingMalus(PathType.WATER, -1.0F);
+    this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
     this.xpReward = 10;
   }
 
@@ -101,9 +101,9 @@ public class WispEntity extends Monster implements FlyingAnimal {
     return level.getBlockState(pos).isAir() ? 10.0F : 0.0F;
   }
 
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
+  protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(DATA_ID_ATTACK_TARGET, 0);
   }
 
   @Override
@@ -305,19 +305,19 @@ public class WispEntity extends Monster implements FlyingAnimal {
     return this.currentBodyZRot;
   }
 
-  @Override
+  /*@Override
   protected float getStandingEyeHeight(@NotNull Pose p_21131_, @NotNull EntityDimensions p_21132_) {
     return 0.28125F;
-  }
+  }*/
 
   @Nullable
   @Override
-  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType type, @Nullable SpawnGroupData data) {
     this.playSound(this.getSpawnSound(), 0.6F, 1.0F);
     Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.WISP_ATTACK_DAMAGE.get());
     Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.WISP_MAX_HEALTH.get());
     this.setHealth(this.getMaxHealth());
-    return super.finalizeSpawn(level, difficulty, type, data, tag);
+    return super.finalizeSpawn(level, difficulty, type, data);
   }
 
   @Override

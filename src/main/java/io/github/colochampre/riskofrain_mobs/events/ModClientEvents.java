@@ -13,12 +13,12 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = RoRmod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModClientEvents {
-  public static final ModelLayerLocation BEETLE_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "beetle_entity"), "main");
-  public static final ModelLayerLocation LEMURIAN_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "lemurian_entity"), "main");
-  public static final ModelLayerLocation STONE_GOLEM_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "stone_golem_entity"), "main");
-  public static final ModelLayerLocation WISP_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "wisp_entity"), "main");
-  public static final ModelLayerLocation GUNNER_DRONE_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "gunner_drone_entity"), "main");
-  public static final ModelLayerLocation GUNNER_TURRET_LAYER = new ModelLayerLocation(new ResourceLocation(RoRmod.MODID, "gunner_turret_entity"), "main");
+  public static final ModelLayerLocation BEETLE_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "beetle_entity"), "main");
+  public static final ModelLayerLocation LEMURIAN_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "lemurian_entity"), "main");
+  public static final ModelLayerLocation STONE_GOLEM_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "stone_golem_entity"), "main");
+  public static final ModelLayerLocation WISP_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "wisp_entity"), "main");
+  public static final ModelLayerLocation GUNNER_DRONE_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "gunner_drone_entity"), "main");
+  public static final ModelLayerLocation GUNNER_TURRET_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "gunner_turret_entity"), "main");
 
   @SubscribeEvent
   public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {

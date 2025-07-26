@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class GunnerTurretBodyLayer extends RenderLayer<GunnerTurretEntity, GunnerTurretModel<GunnerTurretEntity>> {
-  private static final ResourceLocation GUNNER_TURRET_BODY_COLOR = new ResourceLocation(RoRmod.MODID, "textures/entity/gunner_turret/gunner_turret_color.png");
+  private static final ResourceLocation GUNNER_TURRET_BODY_COLOR = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/gunner_turret/gunner_turret_color.png");
 
   public GunnerTurretBodyLayer(RenderLayerParent<GunnerTurretEntity, GunnerTurretModel<GunnerTurretEntity>> layer) {
     super(layer);

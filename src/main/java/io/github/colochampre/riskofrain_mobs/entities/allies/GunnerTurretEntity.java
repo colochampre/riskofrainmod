@@ -3,10 +3,13 @@ package io.github.colochampre.riskofrain_mobs.entities.allies;
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.entities.goals.GunnerTurretAttackGoal;
 import io.github.colochampre.riskofrain_mobs.entities.projectiles.BulletEntity;
+import io.github.colochampre.riskofrain_mobs.init.DataComponentInit;
+import io.github.colochampre.riskofrain_mobs.init.EntityInit;
 import io.github.colochampre.riskofrain_mobs.init.ItemInit;
 import io.github.colochampre.riskofrain_mobs.utils.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -32,7 +35,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -89,12 +91,12 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_BODY_COLOR, DyeColor.LIGHT_BLUE.getId());
-    this.entityData.define(DATA_ID_HURT, 0);
-    this.entityData.define(DATA_ID_HURTDIR, 1);
-    this.entityData.define(DATA_ID_DAMAGE, 0.0F);
+  protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(DATA_BODY_COLOR, DyeColor.LIGHT_BLUE.getId());
+    builder.define(DATA_ID_HURT, 0);
+    builder.define(DATA_ID_HURTDIR, 1);
+    builder.define(DATA_ID_DAMAGE, 0.0F);
   }
 
   @Override
@@ -109,6 +111,11 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
     if (tag.contains("BodyColor", 99)) {
       this.setBodyColor(DyeColor.byId(tag.getInt("BodyColor")));
     }
+  }
+
+  @Override
+  public boolean isFood(@SuppressWarnings("null") ItemStack stack) {
+    return false;
   }
 
   @Override
@@ -136,9 +143,9 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   @Override
-  public void setTame(boolean tamed) {
+  public void setTame(boolean tamed, boolean b2) {
     GunnerTurretAttackGoal attackGoal = new GunnerTurretAttackGoal(this, 24.0F);
-    super.setTame(tamed);
+    super.setTame(tamed, b2);
     if (tamed) {
       this.goalSelector.addGoal(3, attackGoal);
     }
@@ -151,11 +158,11 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   @Override
-  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+  public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance instance, @NotNull MobSpawnType type, @Nullable SpawnGroupData groupData) {
     Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(RoRConfig.SERVER.BULLETS_DAMAGE.get());
     Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(RoRConfig.SERVER.GUNNER_TURRET_MAX_HEALTH.get());
     this.setHealth(this.getMaxHealth());
-    return super.finalizeSpawn(level, instance, type, groupData, compoundTag);
+    return super.finalizeSpawn(level, instance, type, groupData);
   }
 
   @Override
@@ -218,14 +225,12 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   private void tagItemStack(ItemStack stack) {
-    CompoundTag tag = new CompoundTag();
-    tag.putFloat("TurretHealth", this.getHealth());
+    float health = this.getHealth();
+    stack.set(DataComponentInit.HEALTH.get(), health);
+    stack.set(DataComponentInit.COLOR_ID.get(), this.getBodyColor().getId());
     if (this.getOwnerUUID() != null) {
-      tag.putUUID("OwnerUUID", this.getOwnerUUID());
+      stack.set(DataComponentInit.OWNER_UUID.get(), this.getOwnerUUID());
     }
-    int colorId = this.entityData.get(DATA_BODY_COLOR);
-    tag.putInt("BodyColor", colorId);
-    stack.setTag(tag);
   }
 
   public void setDamage(float damage) {
@@ -273,7 +278,7 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   @Override
-  public void performRangedAttack(@NotNull LivingEntity target, float distanceFactor) {
+  public void performRangedAttack(@SuppressWarnings("null") @NotNull LivingEntity target, float distanceFactor) {
     BulletEntity projectile = new BulletEntity(this.level(), this);
     double d0 = target.getEyeY() - (double) 0.75F;
     double d1 = target.getX() - this.getX();
@@ -285,7 +290,7 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
   }
 
   @Override
-  public boolean wantsToAttack(@NotNull LivingEntity livingentity, @NotNull LivingEntity owner) {
+  public boolean wantsToAttack(@SuppressWarnings("null") @NotNull LivingEntity livingentity, @SuppressWarnings("null") @NotNull LivingEntity owner) {
     if (livingentity instanceof Wolf) {
       Wolf wolf = (Wolf) livingentity;
       return !wolf.isTame() || wolf.getOwner() != owner;
@@ -318,11 +323,6 @@ public class GunnerTurretEntity extends AbstractDroneEntity implements RangedAtt
 
   public void setBodyColor(DyeColor color) {
     this.entityData.set(DATA_BODY_COLOR, color.getId());
-  }
-
-  @Override
-  protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
-    return 1.15625F;
   }
 
   @Override

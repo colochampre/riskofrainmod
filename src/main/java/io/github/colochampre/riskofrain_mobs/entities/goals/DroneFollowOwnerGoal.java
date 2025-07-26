@@ -12,7 +12,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class DroneFollowOwnerGoal extends Goal {
@@ -69,14 +69,14 @@ public class DroneFollowOwnerGoal extends Goal {
 
   public void start() {
     this.timeToRecalcPath = 0;
-    this.oldWaterCost = this.tamable.getPathfindingMalus(BlockPathTypes.WATER);
-    this.tamable.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+    this.oldWaterCost = this.tamable.getPathfindingMalus(PathType.WATER);
+    this.tamable.setPathfindingMalus(PathType.WATER, 0.0F);
   }
 
   public void stop() {
     this.owner = null;
     this.navigation.stop();
-    this.tamable.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+    this.tamable.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
   }
 
   public void tick() {
@@ -108,20 +108,20 @@ public class DroneFollowOwnerGoal extends Goal {
   }
 
   private boolean maybeTeleportTo(int p_25304_, int p_25305_, int p_25306_) {
-    if (Math.abs((double) p_25304_ - this.owner.getX()) < 2.0D && Math.abs((double) p_25306_ - this.owner.getZ()) < 2.0D) {
+    if (Math.abs((double) p_25304_ - this.owner.getX()) < 2.0 && Math.abs((double) p_25306_ - this.owner.getZ()) < 2.0) {
       return false;
     } else if (!this.canTeleportTo(new BlockPos(p_25304_, p_25305_, p_25306_))) {
       return false;
     } else {
-      this.tamable.moveTo((double) p_25304_ + 0.5D, (double) p_25305_, (double) p_25306_ + 0.5D, this.tamable.getYRot(), this.tamable.getXRot());
+      this.tamable.moveTo((double) p_25304_ + 0.5, (double) p_25305_, (double) p_25306_ + 0.5, this.tamable.getYRot(), this.tamable.getXRot());
       this.navigation.stop();
       return true;
     }
   }
 
   private boolean canTeleportTo(BlockPos p_25308_) {
-    BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, p_25308_.mutable());
-    if (blockpathtypes != BlockPathTypes.WALKABLE) {
+    PathType pathtype = WalkNodeEvaluator.getPathTypeStatic(this.tamable, p_25308_);
+    if (pathtype != PathType.WALKABLE) {
       return false;
     } else {
       BlockState blockstate = this.level.getBlockState(p_25308_.below());

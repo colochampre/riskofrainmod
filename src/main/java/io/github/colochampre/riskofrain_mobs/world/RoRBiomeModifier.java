@@ -1,6 +1,7 @@
 package io.github.colochampre.riskofrain_mobs.world;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import io.github.colochampre.riskofrain_mobs.RoRConfig;
 import io.github.colochampre.riskofrain_mobs.init.BiomeModifierInit;
 import io.github.colochampre.riskofrain_mobs.init.EntityInit;
@@ -75,7 +76,7 @@ public class RoRBiomeModifier implements BiomeModifier {
   }
 
   @Override
-  public Codec<? extends BiomeModifier> codec() {
+  public MapCodec<? extends BiomeModifier> codec() {
     return BiomeModifierInit.ROR_ENTITY_MODIFIER_TYPE.get();
   }
 }

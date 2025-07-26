@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class BeetleEyesLayer extends EyesLayer<BeetleEntity, BeetleModel<BeetleEntity>> {
-  static final RenderType BEETLE_EYES = RenderType.eyes(new ResourceLocation(RoRmod.MODID, "textures/entity/beetle/beetle_eyes.png"));
+  static final RenderType BEETLE_EYES = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/beetle/beetle_eyes.png"));
 
   public BeetleEyesLayer(RenderLayerParent<BeetleEntity, BeetleModel<BeetleEntity>> layer) {
     super(layer);

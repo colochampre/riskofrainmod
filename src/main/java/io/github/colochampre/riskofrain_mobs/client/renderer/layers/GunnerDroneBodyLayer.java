@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class GunnerDroneBodyLayer extends RenderLayer<GunnerDroneEntity, GunnerDroneModel<GunnerDroneEntity>> {
-  private static final ResourceLocation GUNNER_DRONE_BODY_COLOR = new ResourceLocation(RoRmod.MODID, "textures/entity/gunner_drone/gunner_drone_color.png");
+  private static final ResourceLocation GUNNER_DRONE_BODY_COLOR = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/gunner_drone/gunner_drone_color.png");
 
   public GunnerDroneBodyLayer(RenderLayerParent<GunnerDroneEntity, GunnerDroneModel<GunnerDroneEntity>> layer) {
     super(layer);

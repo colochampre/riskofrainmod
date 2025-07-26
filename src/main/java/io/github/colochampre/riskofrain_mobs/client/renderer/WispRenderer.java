@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class WispRenderer extends MobRenderer<WispEntity, WispModel<WispEntity>> {
-  private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/wisp/wisp_default.png");
+  private static final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/wisp/wisp_default.png");
 
   public WispRenderer(EntityRendererProvider.Context context) {
     super(context, new WispModel<>(context.bakeLayer(ModClientEvents.WISP_LAYER)), 0.33F);

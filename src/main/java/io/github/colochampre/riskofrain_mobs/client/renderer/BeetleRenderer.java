@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class BeetleRenderer extends MobRenderer<BeetleEntity, BeetleModel<BeetleEntity>> {
-  private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(RoRmod.MODID, "textures/entity/beetle/beetle_default.png");
+  private static final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.fromNamespaceAndPath(RoRmod.MODID, "textures/entity/beetle/beetle_default.png");
 
   public BeetleRenderer(EntityRendererProvider.Context context) {
     super(context, new BeetleModel<>(context.bakeLayer(ModClientEvents.BEETLE_LAYER)), 0.66F);
