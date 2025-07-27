@@ -34,6 +34,7 @@ out/
 gradle/
 .gradle/
 build/
+gradlew
 .gradlet/
 
 # Minecraft/Forge specific
