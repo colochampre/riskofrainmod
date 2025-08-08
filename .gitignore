@@ -1,29 +1,55 @@
-# eclipse
-bin
-*.launch
-.settings
-.metadata
-.classpath
-.project
+# Gradle
+.gradle/
+build/
 
-# idea
-out
-*.ipr
+# IDEs and Editors
+.idea/
 *.iws
 *.iml
-.idea
+*.ipr
+.idea_modules/
+.vscode/
+*.code-workspace
 
-# gradle
-.gradle
-build
-7.5.1
+# Build Output
+bin/
+out/
+*.class
+*.war
+*.ear
 
-# other
-changelog.txt
+# Minecraft
+run/
+logs/
+*.log
+crash-reports/
+screenshots/
+
+# Environment and Local Settings
+.env
+local/
+
+# OS Specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
 desktop.ini
-eclipse
-run
+Desktop.ini
+$RECYCLE.BIN/
 
-# Files from Forge MDK
-forge*changelog.txt
-/.gradle/
+# Version Control
+*.orig
+*.rej
+*.patch
+
+# Node (if used)
+node_modules/
+.npm
+.versionrc.json
+.gitattributes
+package.json
+package-lock.json

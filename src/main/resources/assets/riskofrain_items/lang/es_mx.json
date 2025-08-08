@@ -18,9 +18,7 @@
   "item.riskofrain_items.tougher_times": "Tiempos mas dificiles",
   "item.riskofrain_items.ukulele": "§aUkelele",
 
-  "item.riskofrain_items.bustling_fungus.tooltip_1": "Al permanecer quieto 2 segundos:",
-  "item.riskofrain_items.bustling_fungus.tooltip_2": "Cura 5% (+5% por stack) de",
-  "item.riskofrain_items.bustling_fungus.tooltip_3": "la vida maxima por segundo",
+  "item.riskofrain_items.bustling_fungus.tooltip": "Al permanecer quieto 2 segundos:\nCura 5% (+5% por stack) de\nla vida maxima por segundo",
 
   "item.riskofrain_items.crowbar.tooltip_1": "Al golpear:",
   "item.riskofrain_items.crowbar.tooltip_2": "Inflige 150% (+30% por stack) de daño",

@@ -19,9 +19,7 @@
   "item.riskofrain_items.tougher_times": "Tougher Times",
   "item.riskofrain_items.ukulele": "§aUkulele",
 
-  "item.riskofrain_items.bustling_fungus.tooltip_1": "After standing still for 2 seconds:",
-  "item.riskofrain_items.bustling_fungus.tooltip_2": "Heals for 5% (+5% per stack) of",
-  "item.riskofrain_items.bustling_fungus.tooltip_3": "the player max health per second",
+  "item.riskofrain_items.bustling_fungus.tooltip": "After standing still for 2 seconds:\nHeals for 4.5% (+4.5% per stack) of\nthe player max health per second",
 
   "item.riskofrain_items.crowbar.tooltip_1": "On hit:",
   "item.riskofrain_items.crowbar.tooltip_2": "Deal 150% (+30% per stack) damage",
